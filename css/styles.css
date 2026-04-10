@@ -1028,3 +1028,109 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 }
 @keyframes splashIn{to{opacity:1;transform:translateY(0);}}
 @keyframes glowPulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}}
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE — iPhone 15 / 16 / 17  (≤ 430 px, 393 px target)
+   Overrides the 900px breakpoint where needed.
+   ════════════════════════════════════════════════════════════════ */
+@media(max-width:430px){
+
+  /* ── NAV ─────────────────────────────────────────────────────── */
+  .nav-btn-primary{padding:7px 12px;font-size:12px;letter-spacing:.5px;}
+
+  /* ── HERO ────────────────────────────────────────────────────── */
+  .hero-content{padding:120px 20px 48px;}
+  .hero-title{font-size:48px;letter-spacing:-2px;}
+  .hero-sub{font-size:13px;margin-bottom:28px;}
+  .hero-ctas{flex-direction:column;align-items:stretch;}
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-ghost{width:100%;text-align:center;}
+  /* Hero countdown — clear conflicting left+right from 900px rule */
+  .hero-countdown{left:0;right:0;top:72px;transform:none;padding:0 16px;width:100%;}
+  .cd-save{font-size:13px;letter-spacing:3px;}
+  .cd-date-line{font-size:15px;letter-spacing:2px;margin-bottom:14px;}
+  .cd-num{font-size:14px;}
+  .cd-nums-row{gap:6px;}
+  .cd-sep{font-size:20px;}
+
+  /* ── SECTIONS (general) ──────────────────────────────────────── */
+  section{padding:56px 20px;}
+  .section-title{font-size:36px;letter-spacing:-.5px;}
+
+  /* ── EVENTS SECTION ──────────────────────────────────────────── */
+  .events-header{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:24px;}
+  /* Flyer carousel: pull to edge */
+  .flyer-carousel-wrap{margin-left:-20px!important;margin-right:-20px!important;}
+  /* Single-column grid for mobile */
+  .events-grid{grid-template-columns:1fr;gap:2px;}
+  /* Featured MANSITA card: portrait removed, landscape instead */
+  .ev-card:first-child{
+    grid-column:span 1;
+    grid-row:span 1;
+    aspect-ratio:16/9;
+  }
+  .ev-card:first-child .ev-card-name{font-size:28px;}
+  /* All other cards: shorter portrait */
+  .ev-card{aspect-ratio:4/3;}
+  .ev-card-name{font-size:22px;}
+  .ev-card-content{padding:16px;}
+  .ev-card-tags{margin-bottom:8px;}
+
+  /* ── HOW IT WORKS ────────────────────────────────────────────── */
+  .how-grid{grid-template-columns:1fr;}
+  .how-step{padding:28px 20px;}
+
+  /* ── SOCIAL PROOF ────────────────────────────────────────────── */
+  /* already 1fr at 900px — just fix padding */
+  .proof-card{padding:24px 20px;}
+
+  /* ── NEWSLETTER ──────────────────────────────────────────────── */
+  .nl-right{flex-direction:column;gap:10px;}
+  .nl-btn{width:100%;}
+
+  /* ── FOOTER ──────────────────────────────────────────────────── */
+  footer{padding:40px 20px 24px;}
+  .footer-top{grid-template-columns:1fr;gap:28px;}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+
+  /* ── EVENT DETAIL ────────────────────────────────────────────── */
+  .ed-hero{height:55vh;}
+  .ed-title{font-size:40px;letter-spacing:-1px;}
+  .ed-body{padding:28px 20px;gap:32px;}
+  .ed-widget{padding:20px;position:static;} /* remove sticky on mobile */
+  .ed-price-val{font-size:40px;}
+  /* keep pay-methods at 3 cols — fits at 353px widget width */
+
+  /* ── ORGANIZER FORM (public pg-organizer) ────────────────────── */
+  .org-form{padding:24px 16px;}
+  .form-row{grid-template-columns:1fr;}
+
+  /* ── LOGIN PAGE ──────────────────────────────────────────────── */
+  .login-card{padding:32px 20px;}
+
+  /* ── SUCCESS OVERLAY ─────────────────────────────────────────── */
+  .success-card{padding:28px 20px;width:95%;border-radius:16px;}
+  .suc-title{font-size:38px;}
+  .suc-ticket{border-radius:12px;}
+  .suc-ticket-mid{flex-direction:column;align-items:flex-start;gap:12px;}
+  .suc-qr{width:80px;height:80px;}
+
+  /* ── MY TICKETS ──────────────────────────────────────────────── */
+  .mt-page{padding:80px 16px 40px;}
+  .mt-grid{grid-template-columns:1fr;}
+
+  /* ── SUPPORT PANEL ───────────────────────────────────────────── */
+  .support-panel{
+    right:0;bottom:0;
+    width:100%;
+    border-radius:20px 20px 0 0;
+    max-height:80vh;
+  }
+  .support-fab{right:16px;bottom:16px;}
+
+  /* ── MENU DRAWER ─────────────────────────────────────────────── */
+  .menu-drawer{width:100%;right:-100%;}
+
+  /* ── DASHBOARD LOGIN CARDS ───────────────────────────────────── */
+  .dash-login-card{width:calc(100% - 40px);padding:36px 24px;}
+}
