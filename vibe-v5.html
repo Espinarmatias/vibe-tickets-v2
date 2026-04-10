@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VIBE. — Tickets Costa Rica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,300&family=Unbounded:wght@900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+
+<!-- ════ SPLASH SCREEN ════ -->
+<div id="splash">
+  <div class="splash-glow"></div>
+  <div class="splash-logo-wrap" onclick="enterSite()">
+    <div class="splash-vibe">VIBE<span class="splash-dot">.</span></div>
+    <div style="font-family:'Bulkside',sans-serif;font-size:clamp(18px,3vw,36px);color:rgba(255,255,255,0.5);letter-spacing:4px;margin-top:8px;opacity:0;animation:splashIn .7s ease 1s forwards;">JOIN THE VIBE</div>
+    <div class="splash-tagline">Tickets &nbsp;·&nbsp; Costa Rica &nbsp;·&nbsp; 2026</div>
+  </div>
+  <button class="splash-enter" onclick="enterSite()">
+    <span class="splash-enter-line"></span>
+    Enter
+    <span class="splash-enter-line"></span>
+  </button>
+</div>
+
+<nav id="main-nav">
+  <div class="nav-logo" onclick="goPage('home')" ondblclick="window.open('admin/')" id="nav-logo-area">
+    <div class="nav-logo-globe">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+    </div>
+    <span class="nav-logo-text">VIBE.</span>
+  </div>
+  <div class="nav-center">
+    <button class="nav-center-link" onclick="closeMenu();goPage('login')">Account</button>
+    <button class="nav-center-link" onclick="goPage('my-tickets')">Your Events</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn-primary" style="background:transparent;border:2px solid var(--green);color:var(--green);" onclick="goPage('organizer')">LIST YOUR EVENT</button>
+    <button class="nav-btn-primary" onclick="document.getElementById('events-section')&&document.getElementById('events-section').scrollIntoView({behavior:'smooth'})">BUY TICKETS</button>
+    <button class="nav-hamburger" onclick="toggleMenu()" id="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ════ MENU DRAWER ════ -->
+<div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
+<div class="menu-drawer" id="menu-drawer">
+  <div class="menu-drawer-header">
+    <div class="menu-user-avatar" id="menu-avatar">ME</div>
+    <div>
+      <div class="menu-user-name" id="menu-username">Guest</div>
+      <div class="menu-user-email" id="menu-useremail">Sign in to view your tickets</div>
+    </div>
+    <button class="menu-close" onclick="closeMenu()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="menu-items">
+    <div class="menu-item" onclick="closeMenu();goPage('home')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </div>
+    <div class="menu-item" onclick="closeMenu();goPage('home');document.getElementById('events-section').scrollIntoView({behavior:'smooth'})">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Events
+    </div>
+    <div class="menu-item" onclick="closeMenu();goPage('my-tickets')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+      My Tickets
+      <span class="menu-badge" id="menu-ticket-badge" style="display:none">0</span>
+    </div>
+    <div class="menu-item" onclick="closeMenu();openSupportChat()">
+      <svg width="15" height="15" viewBox="0 0 40 40" fill="none"><path d="M8 22v-4C8 13.373 13.373 8 20 8s12 5.373 12 12v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="5" y="20" width="6" height="10" rx="3" fill="currentColor"/><rect x="29" y="20" width="6" height="10" rx="3" fill="currentColor"/><path d="M35 30v2a4 4 0 01-4 4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="27" cy="36" r="2" fill="currentColor"/></svg>
+      Support
+    </div>
+    <div class="menu-sep"></div>
+    <div class="menu-item" onclick="closeMenu();goPage('terms')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Terms & Conditions
+    </div>
+    <div class="menu-item" onclick="closeMenu();goPage('privacy')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Data Privacy
+    </div>
+    <div class="menu-sep"></div>
+    <div class="menu-item menu-item-green" id="menu-auth-btn" onclick="closeMenu();goPage('login')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Sign In
+    </div>
+  </div>
+</div>
+
+<!-- ════ TICKER ════ -->
+<div class="ticker" style="position:fixed;top:64px;left:0;right:0;z-index:498;">
+  <div class="ticker-inner">
+    <span class="ticker-item">TICKETS AVAILABLE</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">RAWDEO 2</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">MANSITA SUNSET SESSIONS</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">BLUE NIGHT CR</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">GOLDEN HOUR</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">UNDERGROUND CR</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">LATIN FEVER</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">NYE GALA 2026</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">TICKETS AVAILABLE</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">RAWDEO 2</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">MANSITA SUNSET SESSIONS</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">BLUE NIGHT CR</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">GOLDEN HOUR</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">UNDERGROUND CR</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">LATIN FEVER</span><span class="ticker-item ticker-sep">✦</span><span class="ticker-item">NYE GALA 2026</span><span class="ticker-item ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- ════════════ PAGES ════════════ -->
+
+<!-- HOME PAGE -->
+<div class="page active" id="pg-home">
+
+  <!-- HERO (PNG 10 + 11 design) -->
+  <section style="padding:0;position:relative;" class="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-accent-line"></div>
+
+    <!-- Globe decoration (PNG 10) -->
+    <div class="hero-globe-deco">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="90" stroke="#39ff14" stroke-width="1"/>
+        <ellipse cx="100" cy="100" rx="50" ry="90" stroke="#39ff14" stroke-width="1"/>
+        <ellipse cx="100" cy="100" rx="90" ry="35" stroke="#39ff14" stroke-width="1"/>
+        <line x1="10" y1="100" x2="190" y2="100" stroke="#39ff14" stroke-width="1"/>
+        <line x1="100" y1="10" x2="100" y2="190" stroke="#39ff14" stroke-width="1"/>
+        <ellipse cx="100" cy="100" rx="75" ry="90" stroke="#39ff14" stroke-width=".5" opacity=".5"/>
+        <ellipse cx="100" cy="100" rx="25" ry="90" stroke="#39ff14" stroke-width=".5" opacity=".5"/>
+        <ellipse cx="100" cy="100" rx="90" ry="60" stroke="#39ff14" stroke-width=".5" opacity=".5"/>
+      </svg>
+    </div>
+
+    <!-- Stats bar (PNG 11) -->
+    <div class="hero-stats-bar">
+      <div class="hero-stat-item">
+        <span class="hero-stat-val">1,200+</span>
+        <span class="hero-stat-sub">Tickets · Rawdeo 2</span>
+      </div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-val">$45</span>
+        <span class="hero-stat-sub">Ticket Price</span>
+      </div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-val">Jun 6</span>
+        <span class="hero-stat-sub">Next Event</span>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+
+
+    <!-- Main content -->
+    <div class="hero-content fade-in">
+      <div class="hero-event-label">Costa Rica · Season 2026</div>
+      <h1 class="hero-title">JOIN THE<br><span class="green">VIBE.</span></h1>
+      <p class="hero-ticket-cta">Buy your tickets <em onclick="openCheckout('rawdeo')">here.</em></p>
+      <p class="hero-sub">The #1 ticket platform in Costa Rica. Parties, concerts, and unique events — instant secure payments via card, SINPE Móvil, or Apple Pay.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="document.getElementById('events-section').scrollIntoView({behavior:'smooth'})">Explore Events</button>
+        <button class="btn-ghost" onclick="goPage('organizer')">For Organizers</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events-section">
+    <div class="events-header fade-in">
+      <div>
+        <div class="section-eyebrow">✦ Upcoming events</div>
+        <h2 class="section-title">ALL <em>EVENTS.</em></h2>
+      </div>
+      <button class="view-all" onclick="document.getElementById('events-grid-wrap').scrollIntoView({behavior:'smooth'})">View all →</button>
+    </div>
+
+    <!-- FLYER CAROUSEL -->
+    <div style="overflow:hidden;margin:0 -64px 32px;position:relative;">
+      <div id="flyer-track" style="display:flex;gap:16px;width:max-content;animation:ticker 30s linear infinite;">
+      </div>
+    </div>
+
+    <div class="fade-in" style="margin-bottom:24px;">
+      <div style="position:relative;max-width:420px;">
+        <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.4;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="event-search" type="text" placeholder="Search events..." oninput="filterEvents(this.value)"
+          style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--white);padding:11px 14px 11px 42px;border-radius:40px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+          onfocus="this.style.borderColor='rgba(57,255,20,.3)'" onblur="this.style.borderColor='var(--border)'"/>
+      </div>
+    </div>
+    <div class="cats fade-in">
+      <button class="cat on" onclick="filterCat(this)">All</button>
+      <button class="cat" onclick="filterCat(this)">Parties</button>
+      <button class="cat" onclick="filterCat(this)">Concerts</button>
+      <button class="cat" onclick="filterCat(this)">Fitness</button>
+      <button class="cat" onclick="filterCat(this)">Rooftop</button>
+      <button class="cat" onclick="filterCat(this)">Cultural</button>
+      <button class="cat" onclick="filterCat(this)">Electronic</button>
+    </div>
+    <div class="events-grid fade-in fade-in-delay-1" id="events-grid-wrap">
+      <!-- MANSITA SUNSET SESSIONS -->
+      <div class="ev-card" onclick="openCheckout('mansita')" style="aspect-ratio:9/16;grid-row:span 2;">
+        <img class="ev-card-img" src="public/images/mansita.jpg" alt="Mansita Sunset Sessions" style="object-position:center top;"/>
+        <div class="ev-card-overlay"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags">
+            <span class="ev-tag ev-tag-green">NEW</span>
+            <span class="ev-tag ev-tag-outline">SUNSET · ROOFTOP</span>
+          </div>
+          <div class="ev-card-name">MANSITA</div>
+          <div class="ev-card-meta" style="font-size:11px;opacity:.6;">SUNSET SESSIONS</div>
+          <div class="ev-card-meta">APR 4, 2026 · JW MARRIOTT GUANACASTE</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$10</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('mansita')">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <!-- RAWDEO 2 - Featured (spans 2 cols) -->
+      <div class="ev-card" onclick="goPage('event-detail')">
+        <img class="ev-card-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2"/>
+        <div class="ev-card-overlay"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags">
+            <span class="ev-tag ev-tag-green">SELLING OUT</span>
+            <span class="ev-tag ev-tag-outline">PARTY · ELECTRONIC</span>
+            <span class="ev-tag ev-tag-outline">14TH ANNIVERSARY</span>
+          </div>
+          <div class="ev-card-name">RAWDEO 2</div>
+          <div class="ev-card-meta">JUN 6, 2026 · 8:00 PM · PEDREGAL EVENT CENTER</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-rawdeo-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-rawdeo-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-rawdeo-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-rawdeo-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$45</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('rawdeo')">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <!-- BLUE NIGHT CR -->
+      <div class="ev-card">
+        <div class="ev-card-placeholder"><span class="ev-placeholder-num">02</span></div>
+        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(0,30,80,.4) 100%);"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">ELECTRONIC · TECHNO</span></div>
+          <div class="ev-card-name">BLUE NIGHT CR</div>
+          <div class="ev-card-meta">JUL 12, 2026 · SAN JOSÉ</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$35</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('noche')">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <!-- GOLDEN HOUR -->
+      <div class="ev-card">
+        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#1a0a00,#3d1f00);"><span class="ev-placeholder-num">03</span></div>
+        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(80,40,0,.4) 100%);"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">FESTIVAL · HOUSE</span></div>
+          <div class="ev-card-name">GOLDEN HOUR</div>
+          <div class="ev-card-meta">AUG 2–3, 2026 · GUANACASTE</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$80</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('golden')">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <!-- UNDERGROUND CR -->
+      <div class="ev-card">
+        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#000,#0a0a1a);"><span class="ev-placeholder-num">04</span></div>
+        <div class="ev-card-overlay"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">ELECTRONIC</span></div>
+          <div class="ev-card-name">UNDERGROUND CR</div>
+          <div class="ev-card-meta">SEP 19, 2026 · ESCAZÚ</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$25</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('underground')">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <!-- LATIN FEVER -->
+      <div class="ev-card">
+        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#1a0000,#400010);"><span class="ev-placeholder-num">05</span></div>
+        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(80,0,20,.4) 100%);"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">SALSA · LATIN</span></div>
+          <div class="ev-card-name">LATIN FEVER</div>
+          <div class="ev-card-meta">OCT 4, 2026 · HEREDIA</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$30</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('salsa')">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <!-- NYE GALA -->
+      <div class="ev-card">
+        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#0a0800,#2a2000);"><span class="ev-placeholder-num">06</span></div>
+        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(60,50,0,.4) 100%);"></div>
+        <div class="ev-card-content">
+          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">GALA · NEW YEAR</span></div>
+          <div class="ev-card-name">NYE GALA 2026</div>
+          <div class="ev-card-meta">DEC 31, 2026 · SAN JOSÉ</div>
+          
+          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
+          <div class="ev-card-footer">
+            <div class="ev-card-price">$120</div>
+            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('nye')">Buy now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="fade-in">
+      <div class="section-eyebrow">The process</div>
+      <h2 class="section-title">BUY IN <em>2 MINUTES</em></h2>
+    </div>
+    <div class="how-grid fade-in fade-in-delay-1">
+      <div class="how-step" data-num="01">
+        <div class="how-icon">🎯</div>
+        <div class="how-title">Pick your event</div>
+        <div class="how-desc">Browse the best events in Costa Rica all in one place. Filter by category, date, or venue.</div>
+      </div>
+      <div class="how-step" data-num="02">
+        <div class="how-icon">🎟</div>
+        <div class="how-title">Select tickets</div>
+        <div class="how-desc">Choose your quantity and ticket type. See the exact price breakdown before paying.</div>
+      </div>
+      <div class="how-step" data-num="03">
+        <div class="how-icon">🔒</div>
+        <div class="how-title">Pay securely</div>
+        <div class="how-desc">Card, SINPE Móvil, or Apple Pay. Encrypted payment and instant confirmation.</div>
+      </div>
+      <div class="how-step" data-num="04">
+        <div class="how-icon">📲</div>
+        <div class="how-title">Get your QR</div>
+        <div class="how-desc">Instant digital ticket with unique QR code to your email. Show it at the door.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section>
+    <div class="fade-in">
+      <div class="section-eyebrow">What people say</div>
+      <h2 class="section-title">REAL <em>REVIEWS</em></h2>
+    </div>
+    <div class="proof-grid fade-in fade-in-delay-1">
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-text">"I bought my Rawdeo 2 ticket in under 2 minutes from my phone. The QR arrived instantly. Couldn't be easier."</p>
+        <div class="proof-author">Maria Rodriguez</div>
+        <div class="proof-location">San José · Verified buyer</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-text">"Finally a Costa Rican platform that accepts SINPE. Sent the payment and had my ticket in 3 minutes. Amazing."</p>
+        <div class="proof-author">Andres Castro</div>
+        <div class="proof-location">Heredia · Verified buyer</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-text">"As an organizer, VIBE changed my life. Zero manual work — tickets are generated automatically and I see sales in real time."</p>
+        <div class="proof-author">DJ Karlo</div>
+        <div class="proof-location">Costa Rica · Event organizer</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="nl-section">
+    <div class="nl-inner fade-in">
+      <div class="nl-left">
+        <div class="section-eyebrow">Exclusive list</div>
+        <h2 class="nl-title">FIRST TO<br/><em>KNOW</em></h2>
+        <p class="nl-sub">Exclusive presales, discounts, and the best events in CR before anyone else. No spam, unsubscribe anytime.</p>
+      </div>
+      <div class="nl-right">
+        <input class="nl-input" type="email" placeholder="you@email.com"/>
+        <button class="nl-btn">JOIN</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="public/images/logo.jpg" alt="VIBE."/>
+        <p class="footer-brand-sub">The #1 ticket platform in Costa Rica. Parties, concerts, and unique experiences — instant secure payments.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <div class="footer-links">
+          <a href="#">Browse Events</a>
+          <a href="#">My Tickets</a>
+          <a href="#">For Organizers</a>
+          <a href="#">How it works</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-links">
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Refunds</a>
+          <a href="#">Security</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 VIBE. CR · vibeticketscr.com</span>
+      <span class="footer-powered">Powered by <span>OnvoPay</span> · PCI DSS Compliant</span>
+    </div>
+  </footer>
+</div>
+
+<!-- MY TICKETS PAGE -->
+<div class="page" id="pg-my-tickets">
+  <div class="mt-page">
+    <div class="mt-header fade-in">
+      <div class="section-eyebrow">Your area</div>
+      <h1 class="section-title">MY <em>TICKETS</em></h1>
+    </div>
+    <div id="mt-content"></div>
+  </div>
+</div>
+
+<!-- EVENT DETAIL PAGE -->
+<div class="page" id="pg-event-detail">
+  <div class="ed-hero">
+    <img class="ed-hero-img" id="ed-hero-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2"/>
+    <div class="ed-hero-overlay"></div>
+    <div class="ed-hero-content">
+      <div class="ed-tags">
+        <span class="ev-tag ev-tag-green">SELLING OUT</span>
+        <span class="ev-tag ev-tag-outline">PARTY · ELECTRONIC</span>
+      </div>
+      <h1 class="ed-title" id="ed-hero-title">RAWDEO 2</h1>
+      <p class="ed-sub" id="ed-hero-sub">14th Anniversary · RAW FITNESS</p>
+    </div>
+  </div>
+  <div class="ed-body">
+    <div class="ed-left">
+      <div id="ed-lineup-section">
+      <div class="section-eyebrow">Confirmed artists</div>
+      <div class="ed-dj-card fade-in">
+        <img class="ed-dj-img" src="public/images/karlo.jpg" alt="Karlo"/>
+        <div>
+          <div class="ed-dj-role">DJ · Main Set</div>
+          <div class="ed-dj-name">KARLO</div>
+          <div class="ed-dj-desc">One of the most recognized DJs in the Costa Rican electronic scene, known for his high-energy sets blending tech house and minimal.</div>
+        </div>
+      </div>
+      <div class="ed-dj-card fade-in fade-in-delay-1">
+        <img class="ed-dj-img" src="public/images/retana.jpg" alt="Retana"/>
+        <div>
+          <div class="ed-dj-role">DJ · Special Set</div>
+          <div class="ed-dj-name">RETANA</div>
+          <div class="ed-dj-desc">With a unique style mixing deep grooves and hypnotic melodies, RETANA has conquered dance floors across Costa Rica.</div>
+        </div>
+      </div>
+      </div><!-- end lineup-section -->
+    </div>
+    <div class="ed-right">
+      <div class="ed-widget">
+        <div class="ed-widget-event" id="ed-widget-event-name">RAWDEO 2</div>
+        <div class="ed-widget-sub" id="ed-widget-sub-text">14TH ANNIVERSARY · RAW FITNESS</div>
+        <div class="ed-info-row"><span class="ed-info-k">Date</span><span class="ed-info-v" id="ed-info-date">June 6, 2026</span></div>
+        <div class="ed-info-row"><span class="ed-info-k">Venue</span><span class="ed-info-v" id="ed-info-place">Pedregal Event Center</span></div>
+        <div class="ed-info-row"><span class="ed-info-k">Time</span><span class="ed-info-v">8:00 PM</span></div>
+
+        <!-- TIER SELECTOR -->
+        <div style="margin:20px 0 0;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:10px;">Select your ticket</div>
+          <div id="tier-selector" style="display:flex;flex-direction:column;gap:7px;"></div>
+        </div>
+
+        <div class="ed-price-row">
+          <div class="ed-price-val" id="ed-price">$20</div>
+          <div class="ed-price-note" id="ed-price-note">per ticket · incl. service fee</div>
+        </div>
+        <div class="ed-qty">
+          <span class="ed-qty-label">Tickets</span>
+          <div class="ed-qty-controls">
+            <button class="ed-qty-btn" onclick="chQ(-1)">−</button>
+            <span class="ed-qty-num" id="ed-q">1</span>
+            <button class="ed-qty-btn" onclick="chQ(1)">+</button>
+          </div>
+        </div>
+        <div class="pay-methods">
+          <div class="pay-opt on" onclick="selPay('card',this)"><span class="pay-opt-icon">💳</span><span class="pay-opt-label">Card</span></div>
+          <div class="pay-opt" onclick="selPay('sinpe',this)"><span class="pay-opt-icon">📱</span><span class="pay-opt-label">SINPE</span></div>
+          <div class="pay-opt" onclick="selPay('apple',this)"><span class="pay-opt-icon">🍎</span><span class="pay-opt-label">Apple Pay</span></div>
+          <div class="pay-opt" onclick="selPay('google',this)"><span class="pay-opt-icon">🔵</span><span class="pay-opt-label">Google Pay</span></div>
+        </div>
+        <div class="pay-panel show" id="pp-card">
+          <input class="pay-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19"/>
+          <div class="pay-row">
+            <input class="pay-input" type="text" placeholder="MM / YY" maxlength="5"/>
+            <input class="pay-input" type="text" placeholder="CVV" maxlength="4"/>
+          </div>
+          <input class="pay-input" type="text" placeholder="Name on card"/>
+          <input class="pay-input" type="email" placeholder="your@email.com"/>
+        </div>
+        <div class="pay-panel" id="pp-sinpe">
+          <input class="pay-input" type="tel" placeholder="Your SINPE number"/>
+          <input class="pay-input" type="email" placeholder="your@email.com"/>
+          <div class="pay-sinpe-info" id="sinpe-amt">📲 ₡10,000 → 7019-8460</div>
+        </div>
+        <div class="pay-panel" id="pp-apple">
+          <div class="pay-apple-inner"><div class="icon">🍎</div><div class="title">Apple Pay</div><div class="sub">Confirm with Face ID or Touch ID on your Apple device.</div></div>
+        </div>
+        <div class="pay-panel" id="pp-google">
+          <div class="pay-apple-inner"><div class="icon">🔵</div><div class="title">Google Pay</div><div class="sub">Confirm with your fingerprint or PIN on your Android device.</div></div>
+        </div>
+        <div id="discount-wrap" style="margin-bottom:12px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;">Discount code</div>
+          <div style="display:flex;gap:8px;">
+            <input class="pay-input" id="discount-input" type="text" placeholder="Enter code" style="flex:1;margin-bottom:0;text-transform:uppercase;letter-spacing:1px;"/>
+            <button onclick="applyDiscount()" style="background:var(--green);border:none;color:#080808;padding:0 16px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px;white-space:nowrap;">Apply</button>
+          </div>
+          <div id="discount-msg" style="font-size:10px;margin-top:4px;font-family:'JetBrains Mono',monospace;display:none;"></div>
+        </div>
+        <div class="ed-total-row">
+          <span class="ed-total-label" id="ed-qty-label">1 ticket</span>
+          <span class="ed-total-val" id="ed-total">$20</span>
+        </div>
+        <button class="ed-buy-btn" id="ed-buy-btn" onclick="doPay()">🔒 Complete purchase</button>
+
+        
+
+        <div class="ed-secure">🔐 Seguro · OnvoPay · PCI DSS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORGANIZER PAGE -->
+<div class="page" id="pg-organizer">
+  <section style="padding-top:120px;padding-bottom:80px;">
+    <div class="org-inner">
+      <div>
+        <div class="section-eyebrow">For organizers</div>
+        <h1 class="section-title">SELL YOUR<br/><em>TICKETS</em><br/>WITH VIBE.</h1>
+        <p class="section-sub">The #1 ticket platform in Costa Rica. You bring the event, we handle payments, tickets and logistics.</p>
+        <div class="org-features">
+          <div class="org-feature"><div class="org-feature-icon">💰</div><div><div class="org-feature-title">You get paid</div><div class="org-feature-desc">Payments go directly to your account. VIBE. charges the service fee to the buyer.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon">🎟</div><div><div class="org-feature-title">Automatic tickets</div><div class="org-feature-desc">After purchase, buyers receive their QR ticket by email. Zero manual work.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon">📊</div><div><div class="org-feature-title">Live dashboard</div><div class="org-feature-desc">Sales, revenue and buyers in real time from your phone.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon">💳</div><div><div class="org-feature-title">All payment methods</div><div class="org-feature-desc">Card, SINPE Móvil, Apple Pay and Google Pay.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon">📄</div><div><div class="org-feature-title">Tax report included</div><div class="org-feature-desc">PDF ready for Hacienda at the close of each event.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon">🇨🇷</div><div><div class="org-feature-title">100% Local</div><div class="org-feature-desc">Made in Costa Rica. Payments in USD and colones. Spanish support.</div></div></div>
+        </div>
+      </div>
+      <div class="org-form">
+        <div class="org-form-title">Request organizer access</div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:20px;font-family:'JetBrains Mono',monospace;line-height:1.6;">The VIBE. team reviews your request and contacts you within 24 hours.</div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Your name *</label><input class="form-input" type="text" placeholder="Full name"/></div>
+          <div class="form-group"><label class="form-label">WhatsApp *</label><input class="form-input" type="tel" placeholder="+506 8888-0000"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email address *</label><input class="form-input" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Event name *</label><input class="form-input" type="text" placeholder="e.g. Summer Festival 2026"/></div>
+        <div class="form-group"><label class="form-label">Event type *</label>
+          <select class="form-select">
+            <option>Party / Club</option><option>Concert</option><option>Festival</option>
+            <option>Fitness / Sports</option><option>Corporate</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Currency *</label>
+          <div class="currency-opts">
+            <div class="currency-opt" id="curr-usd" onclick="selectCurrency('usd')">
+              <div class="currency-opt-radio"></div>
+              <div class="currency-opt-flag">🇺🇸</div>
+              <div class="currency-opt-body">
+                <div class="currency-opt-name">USD only ($)</div>
+                <div class="currency-opt-desc">All prices and payments in US dollars.</div>
+              </div>
+            </div>
+            <div class="currency-opt" id="curr-crc" onclick="selectCurrency('crc')">
+              <div class="currency-opt-radio"></div>
+              <div class="currency-opt-flag">🇨🇷</div>
+              <div class="currency-opt-body">
+                <div class="currency-opt-name">Colones only (₡)</div>
+                <div class="currency-opt-desc">All prices and payments in Costa Rican colones.</div>
+              </div>
+            </div>
+            <div class="currency-opt" id="curr-both" onclick="selectCurrency('both')">
+              <div class="currency-opt-radio"></div>
+              <div class="currency-opt-flag">🔄</div>
+              <div class="currency-opt-body">
+                <div class="currency-opt-name">Both currencies</div>
+                <div class="currency-opt-desc">Buyer chooses at checkout.</div>
+              </div>
+              <div class="currency-opt-badge">Popular</div>
+            </div>
+          </div>
+          <div class="currency-both-detail" id="currency-both-detail">
+            <div class="cbd-title">Price per currency</div>
+            <div class="cbd-row">
+              <div class="cbd-label">USD $</div>
+              <input class="cbd-input" type="number" placeholder="e.g. 40" min="0" step="0.01"/>
+            </div>
+            <div class="cbd-row">
+              <div class="cbd-label">CRC ₡</div>
+              <input class="cbd-input" type="number" placeholder="e.g. 21000" min="0" step="100"/>
+            </div>
+            <div class="cbd-note">Reference exchange rate: <span>₡525 per $1</span>. You can adjust the colones price manually.</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Estimated date</label><input class="form-input" type="date"/></div>
+          <div class="form-group"><label class="form-label">Approx. capacity</label><input class="form-input" type="number" placeholder="500"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Tell us about your event</label><textarea class="form-textarea" placeholder="Briefly describe the event, artists, venue, what makes it special..."></textarea></div>
+        <button class="btn-submit" onclick="submitOrgRequest()">Submit request →</button>
+        <div style="font-size:10px;color:var(--gray2);text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace;">We respond within 24 hours · No commitment</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-card">
+    <div class="suc-mark">✦</div>
+    <div class="suc-title">YOU'RE IN!</div>
+    <div class="suc-event" id="suc-event-name">RAWDEO 2</div>
+    <p class="suc-note">Ticket confirmed. Check your email for your QR code.</p>
+    <div class="suc-ticket">
+      <div class="suc-ticket-top">
+        <div class="suc-ticket-name" id="suc-ev-name">RAWDEO 2</div>
+        <div class="suc-ticket-meta"><span id="suc-date">June 6, 2026</span> · <span id="suc-place">Pedregal Event Center</span></div>
+      </div>
+      <div class="suc-ticket-mid">
+        <div class="suc-qr"><img src="public/images/qr.svg" alt="QR" id="suc-qr"/></div>
+        <div class="suc-info">
+          <div class="suc-row"><span class="suc-k">Tickets</span><span class="suc-v" id="suc-qty">1</span></div>
+          <div class="suc-row"><span class="suc-k">Total</span><span class="suc-v" id="suc-total">$45</span></div>
+          <div class="suc-row"><span class="suc-k">Code</span><span class="suc-v suc-code" id="suc-code">VB-XXXXXX</span></div>
+        </div>
+      </div>
+      <div class="suc-ticket-bottom">NON-REFUNDABLE · PRESENT AT DOOR · VIBE.</div>
+    </div>
+    <button class="suc-btn" onclick="closeSuccess();goPage('my-tickets');renderTickets()">View my tickets →</button>
+  </div>
+</div>
+
+<script>
+var RAWDEO_B64 = "public/images/rawdeo.jpg";
+var QR_B64 = "public/images/qr.svg";
+
+var MANSITA_B64 = "public/images/mansita.jpg";
+var KARLO_B64 = "public/images/karlo.jpg";
+var RETANA_B64 = "public/images/retana.jpg";
+
+var EVENTS = {
+  mansita:{name:"MANSITA",sub:"Apr 4 · JW Marriott Guanacaste",date:"April 4, 2026",place:"JW Marriott Guanacaste Beach",price:10,priceCRC:5000,isMansita:true,
+    tiers:[
+      {id:"mansita-vibes",  name:"Mansita Vibes",    price:10,  priceCRC:5000,  capacity:200, sold:124, color:"#39ff14"},
+      {id:"mansita-vip",    name:"Mansita VIP",      price:20,  priceCRC:10000, capacity:50,  sold:38,  color:"#ffb800"},
+      {id:"mansita-cortesia",name:"Complimentary",        price:0,   priceCRC:0,     capacity:30,  sold:8,   color:"#ff6b35"}
+    ]
+  },
+  rawdeo:{name:"RAWDEO 2",sub:"Jun 6 · Pedregal · Karlo & Retana",date:"June 6, 2026",place:"Pedregal Event Center",price:20,priceCRC:10000,isRawdeo:true,
+    tiers:[
+      {id:"raw-earlybird",  name:"Raw Fitness Early Bird", price:20,  priceCRC:10000, capacity:200, sold:200, color:"#4488ff", soldout:true},
+      {id:"raw-tier1",      name:"Raw Fitness Tier 1",     price:40,  priceCRC:20000, capacity:400, sold:287, color:"#39ff14"},
+      {id:"raw-tier2",      name:"Raw Fitness Tier 2",     price:50,  priceCRC:25000, capacity:400, sold:142, color:"#ffb800"},
+      {id:"raw-vip",        name:"Raw Fitness VIP",        price:75,  priceCRC:37500, capacity:100, sold:61,  color:"#ff6b35"},
+      {id:"raw-cortesia",   name:"Complimentary",               price:0,   priceCRC:0,     capacity:50,  sold:18,  color:"#888"}
+    ]
+  },
+  noche:{name:"BLUE NIGHT CR",sub:"Jul 12 · San José",date:"Jul 12, 2026",place:"San José",price:35,priceCRC:17500,isRawdeo:false,
+    tiers:[
+      {id:"noche-general",  name:"General",   price:35, priceCRC:17500, capacity:300, sold:89,  color:"#39ff14"},
+      {id:"noche-vip",      name:"VIP",       price:65, priceCRC:32500, capacity:80,  sold:22,  color:"#ffb800"}
+    ]
+  },
+  golden:{name:"GOLDEN HOUR",sub:"Aug 2 · Guanacaste",date:"Aug 2, 2026",place:"Guanacaste",price:80,priceCRC:40000,isRawdeo:false,
+    tiers:[
+      {id:"golden-general", name:"General",   price:80,  priceCRC:40000, capacity:200, sold:44, color:"#39ff14"},
+      {id:"golden-vip",     name:"VIP Table", price:150, priceCRC:75000, capacity:30,  sold:12, color:"#ffb800"}
+    ]
+  },
+  underground:{name:"UNDERGROUND CR",sub:"Sep 19 · Escazú",date:"Sep 19, 2026",place:"Escazú",price:25,priceCRC:12500,isRawdeo:false,
+    tiers:[
+      {id:"ug-general",     name:"General",   price:25, priceCRC:12500, capacity:400, sold:67, color:"#39ff14"}
+    ]
+  },
+  salsa:{name:"LATIN FEVER",sub:"Oct 4 · Heredia",date:"Oct 4, 2026",place:"Heredia",price:30,priceCRC:15000,isRawdeo:false,
+    tiers:[
+      {id:"salsa-general",  name:"General",   price:30, priceCRC:15000, capacity:300, sold:38, color:"#39ff14"},
+      {id:"salsa-vip",      name:"VIP",       price:55, priceCRC:27500, capacity:50,  sold:11, color:"#ffb800"}
+    ]
+  },
+  fitness:{name:"RAW OPEN BOX",sub:"Nov 8 · San José",date:"Nov 8, 2026",place:"San José",price:20,priceCRC:10000,isRawdeo:false,
+    tiers:[
+      {id:"fit-general",    name:"General",   price:20, priceCRC:10000, capacity:200, sold:28, color:"#39ff14"}
+    ]
+  },
+  nye:{name:"NYE GALA 2026",sub:"Dec 31 · San José",date:"Dec 31, 2026",place:"San José",price:120,priceCRC:60000,isRawdeo:false,
+    tiers:[
+      {id:"nye-general",    name:"General",   price:120, priceCRC:60000, capacity:200, sold:55, color:"#39ff14"},
+      {id:"nye-vip",        name:"VIP",       price:200, priceCRC:100000, capacity:50, sold:18, color:"#ffb800"},
+      {id:"nye-table",      name:"Table x4",  price:700, priceCRC:350000, capacity:20, sold:7,  color:"#ff6b35"}
+    ]
+  },
+};
+
+var tickets = [];
+var currentEvent = "rawdeo";
+var qty = 1;
+var payM = "card";
+
+// ─── PAGES ───
+function goPage(p) {
+  document.querySelectorAll(".page").forEach(function(x){ x.classList.remove("active"); });
+  document.getElementById("pg-" + p).classList.add("active");
+  window.scrollTo(0,0);
+  initFadeIns();
+}
+
+// ─── FADE IN OBSERVER ───
+function initFadeIns() {
+  var els = document.querySelectorAll(".fade-in:not(.visible)");
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); }
+      });
+    }, {threshold: 0.1});
+    els.forEach(function(el) { obs.observe(el); });
+  } else {
+    els.forEach(function(el) { el.classList.add("visible"); });
+  }
+}
+
+// ─── NAV SCROLL ───
+window.addEventListener("scroll", function() {
+  var nav = document.getElementById("main-nav");
+  if (window.scrollY > 20) { nav.classList.add("scrolled"); }
+  else { nav.classList.remove("scrolled"); }
+});
+
+function filterCat(el) {
+  document.querySelectorAll(".cat").forEach(function(c){ c.classList.remove("on"); });
+  el.classList.add("on");
+}
+
+// ─── CHECKOUT (opens event detail page) ───
+var currentTier = null;
+var discountApplied = false;
+var discountPct = 0;
+function openCheckout(evKey) {
+  discountApplied = false; discountPct = 0;
+  var di = document.getElementById('discount-input');
+  var dm = document.getElementById('discount-msg');
+  if (di) { di.value = ''; di.disabled = false; }
+  if (dm) { dm.style.display = 'none'; dm.textContent = ''; }
+  currentEvent = evKey || "rawdeo";
+  qty = 1;
+  payM = "card";
+  currentTier = null;
+  goPage("event-detail");
+  renderTiers();
+  updWidget();
+  document.querySelectorAll(".pay-panel").forEach(function(p){ p.classList.remove("show"); });
+  document.getElementById("pp-card").classList.add("show");
+  document.querySelectorAll(".pay-opt").forEach(function(o){ o.classList.remove("on"); });
+  document.querySelector(".pay-opt").classList.add("on");
+}
+
+function selectTier(tierId) {
+  var ev = EVENTS[currentEvent];
+  var tier = ev.tiers.find(function(t){ return t.id === tierId; });
+  if (!tier || tier.soldout) return;
+  currentTier = tier;
+  // Update UI
+  document.querySelectorAll(".tier-option").forEach(function(el){
+    el.classList.toggle("selected", el.dataset.tierId === tierId);
+  });
+  // Update price display
+  var priceEl = document.getElementById("ed-price");
+  var noteEl  = document.getElementById("ed-price-note");
+  if (priceEl) priceEl.textContent = tier.price === 0 ? "Free" : "$" + tier.price;
+  if (noteEl)  noteEl.textContent  = tier.price === 0 ? "Complimentary" : "per ticket · incl. service fee";
+  updTotals();
+}
+
+function updTotals() {
+  var ev = EVENTS[currentEvent];
+  var tier = currentTier || (ev.tiers ? ev.tiers[0] : ev);
+  var price = tier.price !== undefined ? tier.price : ev.price;
+  var priceCRC = tier.priceCRC !== undefined ? tier.priceCRC : ev.priceCRC;
+  if (discountApplied && discountPct > 0) { price = price * (1 - discountPct/100); priceCRC = priceCRC * (1 - discountPct/100); }
+  var t = qty * price;
+  var tc = qty * priceCRC;
+  var disp = payM === "sinpe" ? "₡" + Math.round(tc).toLocaleString() : (price === 0 ? "Free" : "$" + t.toFixed(2).replace(/\.00$/,''));
+  var lbl = qty + " ticket" + (qty > 1 ? "s" : "");
+  var sinpeAmt = document.getElementById("sinpe-amt");
+  if (sinpeAmt) sinpeAmt.textContent = "📲 ₡" + tc.toLocaleString() + " → 7019-8460";
+  var totalEl = document.getElementById("ed-total");
+  if (totalEl) totalEl.textContent = disp;
+  var lblEl = document.getElementById("ed-qty-label");
+  if (lblEl) lblEl.textContent = lbl;
+}
+
+function renderTiers() {
+  var ev = EVENTS[currentEvent];
+  var container = document.getElementById("tier-selector");
+  if (!container) return;
+  if (!ev.tiers || ev.tiers.length === 0) {
+    container.innerHTML = "";
+    return;
+  }
+  container.innerHTML = ev.tiers.filter(function(t){ return !(t.price === 0 && t.id && t.id.indexOf('cortesia') !== -1); }).map(function(t){
+    var avail = t.capacity - t.sold;
+    var availText = t.soldout || avail <= 0 ? "Sold out" : "Available";
+    var availColor = t.soldout || avail <= 0 ? "#ff4444" : (avail <= 20 ? "#ffb800" : "var(--gray)");
+    var priceText = t.price === 0 ? "<span style='color:var(--gray);font-size:14px'>Gratis</span>" : "<span style='color:var(--green)'>" + (t.soldout||avail<=0 ? "<span style='color:#ff4444'>$"+t.price+"</span>" : "$"+t.price) + "</span>";
+    return '<div class="tier-option' + (t.soldout||avail<=0?" soldout":"") + '" data-tier-id="'+t.id+'" onclick="selectTier(\''+t.id+'\')">'
+      +'<div class="tier-left">'
+      +'<div class="tier-dot" style="background:'+t.color+'"></div>'
+      +'<div><div class="tier-name">'+t.name+'</div>'
+      +'<div class="tier-cap" style="color:'+availColor+'">'+availText+'</div></div>'
+      +'</div>'
+      +(t.soldout||avail<=0 ? '<span class="tier-soldout-badge">SOLD OUT</span>' : '<div class="tier-price">'+priceText+'</div>')
+      +'</div>';
+  }).join("");
+  // Auto-select first available tier
+  var firstAvail = ev.tiers.find(function(t){ return !t.soldout && (t.capacity - t.sold) > 0; });
+  if (firstAvail) selectTier(firstAvail.id);
+}
+
+function addToAppleWallet() {
+  // In production this calls the backend to generate a .pkpass file
+  alert("🍎 Apple Wallet\n\nIn the production version with Onvo Tix, your ticket downloads as a .pkpass file that is automatically added to your Apple Wallet.\n\nFor now, your ticket arrives by email with the QR code.");
+}
+
+// ─── QUANTITY ───
+function chQ(d) {
+  qty = Math.max(1, Math.min(10, qty + d));
+  document.getElementById("ed-q").textContent = qty;
+  updTotals();
+}
+
+// ─── PAYMENT METHOD ───
+function selPay(m, el) {
+  payM = m;
+  document.querySelectorAll(".pay-opt").forEach(function(o){ o.classList.remove("on"); });
+  el.classList.add("on");
+  document.querySelectorAll(".pay-panel").forEach(function(p){ p.classList.remove("show"); });
+  document.getElementById("pp-" + m).classList.add("show");
+  updTotals();
+}
+
+// ─── UPDATE WIDGET ───
+function updWidget() {
+  var ev = EVENTS[currentEvent];
+  // Update hero image
+  var heroImg = document.getElementById("ed-hero-img");
+  if (heroImg) {
+    if (ev.isMansita) heroImg.src = MANSITA_B64;
+    else if (ev.isRawdeo) heroImg.src = RAWDEO_B64;
+    else heroImg.src = RAWDEO_B64;
+  }
+  var heroTitle = document.getElementById("ed-hero-title");
+  if (heroTitle) heroTitle.textContent = ev.name;
+  var heroSub = document.getElementById("ed-hero-sub");
+  if (heroSub) heroSub.textContent = ev.sub;
+  var wEvt = document.getElementById("ed-widget-event-name");
+  if (wEvt) wEvt.textContent = ev.name;
+  var wSub = document.getElementById("ed-widget-sub-text");
+  if (wSub) wSub.textContent = ev.sub.toUpperCase();
+  var wDate = document.getElementById("ed-info-date");
+  if (wDate) wDate.textContent = ev.date;
+  var wPlace = document.getElementById("ed-info-place");
+  if (wPlace) wPlace.textContent = ev.place;
+  // Render tiers
+  renderTiers();
+  updTotals();
+  updateLineup(ev);
+}
+
+function updateLineup(ev) {
+  var lineupSection = document.getElementById("ed-lineup-section");
+  if (!lineupSection) return;
+  var html = "";
+  html += '<div class="section-eyebrow">Confirmed artists</div>';
+  if (ev.isMansita) {
+    html += '<div class="ed-dj-card fade-in visible">';
+    html += '<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#ff6b35,#f7931e);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🎤</div>';
+    html += '<div><div class="ed-dj-role">DJ &middot; MAIN ACT</div><div class="ed-dj-name">JESSI G.</div>';
+    html += '<div class="ed-dj-desc">One of Costa Rica&#39;s most sought-after DJs, known for her infectious energy and sets that keep dance floors moving all night.</div></div>';
+    html += '</div>';
+    html += '<div class="ed-dj-card fade-in visible">';
+    html += '<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#c0392b,#e74c3c);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🎧</div>';
+    html += '<div><div class="ed-dj-role">DJ &middot; SPECIAL SET</div><div class="ed-dj-name">CELE ARABAL</div>';
+    html += '<div class="ed-dj-desc">With a signature style blending deep house and Latin rhythms, Cele Arabal delivers unforgettable sunset sessions on the Guanacaste coast.</div></div>';
+    html += '</div>';
+  } else if (ev.isRawdeo) {
+    html += '<div class="ed-dj-card fade-in visible">';
+    html += '<img class="ed-dj-img" src="' + KARLO_B64 + '" alt="Karlo"/>';
+    html += '<div><div class="ed-dj-role">DJ &middot; Main Set</div><div class="ed-dj-name">KARLO</div>';
+    html += '<div class="ed-dj-desc">One of the most recognized DJs in the Costa Rican electronic scene, known for his high-energy sets blending tech house and minimal.</div></div>';
+    html += '</div>';
+    html += '<div class="ed-dj-card fade-in visible">';
+    html += '<img class="ed-dj-img" src="' + RETANA_B64 + '" alt="Retana"/>';
+    html += '<div><div class="ed-dj-role">DJ &middot; Special Set</div><div class="ed-dj-name">RETANA</div>';
+    html += '<div class="ed-dj-desc">With a unique style mixing deep grooves and hypnotic melodies, RETANA has conquered dance floors across Costa Rica.</div></div>';
+    html += '</div>';
+  } else {
+    html += '<p style="color:var(--gray);font-size:14px;margin-top:8px;">Lineup to be announced.</p>';
+  }
+  lineupSection.innerHTML = html;
+}
+// ─── PAY ───
+function doPay() {
+  var btn = document.getElementById("ed-buy-btn");
+  btn.textContent = "⏳ Processing...";
+  btn.disabled = true;
+  setTimeout(function() {
+    var ev = EVENTS[currentEvent];
+    var tier = currentTier || (ev.tiers ? ev.tiers.find(function(t){return !t.soldout&&(t.capacity-t.sold)>0;})||ev.tiers[0] : ev);
+    var price = tier.price !== undefined ? tier.price : ev.price;
+    var priceCRC = tier.priceCRC !== undefined ? tier.priceCRC : ev.priceCRC;
+    var t = qty * price;
+    var tc = qty * priceCRC;
+    var code = "VB-" + Math.random().toString(36).substring(2,8).toUpperCase();
+    var totalStr = price === 0 ? "Complimentary" : (payM === "sinpe" ? "₡" + tc.toLocaleString() : "$" + t);
+    var tierName = tier.name || "General";
+
+    document.getElementById("suc-event-name").textContent = ev.name;
+    document.getElementById("suc-ev-name").textContent = ev.name;
+    document.getElementById("suc-date").textContent = ev.date;
+    document.getElementById("suc-place").textContent = ev.place;
+    document.getElementById("suc-qty").textContent = qty + " ticket" + (qty > 1 ? "s" : "") + " · " + tierName;
+    document.getElementById("suc-total").textContent = totalStr;
+    document.getElementById("suc-code").textContent = code;
+
+    tickets.push({
+      ev: ev.name, date: ev.date, place: ev.place,
+      qty: qty + " ticket" + (qty > 1 ? "s" : ""),
+      total: totalStr, code: code, tier: tierName,
+      isRawdeo: ev.isRawdeo, isMansita: ev.isMansita
+    });
+
+    // Show Apple Wallet button after purchase
+    var walletSection = document.getElementById("apple-wallet-section");
+    if (walletSection) walletSection.style.display = "block";
+
+    btn.textContent = "🔒 Complete purchase";
+    btn.disabled = false;
+    document.getElementById("success-overlay").classList.add("show");
+  }, 1800);
+}
+
+// ─── CLOSE SUCCESS ───
+function closeSuccess() {
+  var ov = document.getElementById("success-overlay");
+  if(ov) ov.classList.remove("show");
+}
+
+// ─── MY TICKETS ───
+function renderTickets() {
+  var c = document.getElementById("mt-content");
+  if (!tickets.length) {
+    c.innerHTML = '<div class="mt-empty"><div class="mt-empty-icon">🎟</div><div class="mt-empty-title">No tickets yet</div><div class="mt-empty-sub">Buy your first ticket and it will show up here</div></div>';
+    var btn = document.createElement("button");
+    btn.className = "btn-primary";
+    btn.style = "margin: 0 auto; display: block;";
+    btn.textContent = "View events";
+    btn.onclick = function() { goPage("home"); };
+    c.querySelector(".mt-empty").appendChild(btn);
+    return;
+  }
+  var html = '<div class="mt-grid">';
+  tickets.forEach(function(t) {
+    var imgHtml = t.isRawdeo
+      ? '<img src="' + RAWDEO_B64 + '" alt="event" style="width:100%;height:100%;object-fit:cover;"/>'
+      : t.isMansita
+      ? '<img src="' + MANSITA_B64 + '" alt="event" style="width:100%;height:100%;object-fit:cover;"/>'
+      : '<div style="width:100%;height:100%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:36px;">🎟</div>';
+    html += '<div class="mt-card">';
+    html += '<div class="mt-card-banner">' + imgHtml + '</div>';
+    html += '<div class="mt-card-body">';
+    html += '<div class="mt-card-name">' + t.ev + '</div>';
+    html += '<div class="mt-card-sub">' + t.date + ' · ' + t.place + '</div>';
+    html += '<div class="mt-card-divider"></div>';
+    html += '<div class="mt-card-qr-row">';
+    html += '<div class="mt-card-qr"><img src="' + QR_B64 + '" alt="QR"/></div>';
+    html += '<div class="mt-card-info">';
+    html += '<div class="mt-info-row"><span class="mt-info-k">Tickets</span><span class="mt-info-v">' + t.qty + '</span></div>';
+    html += '<div class="mt-info-row"><span class="mt-info-k">Total</span><span class="mt-info-v">' + t.total + '</span></div>';
+    html += '<div class="mt-code">' + t.code + '</div>';
+    html += '<button onclick="addToAppleWallet()" style="margin-top:12px;width:100%;background:#000;border:none;border-radius:10px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><span style="color:white;font-family:\'Barlow\',sans-serif;font-size:13px;font-weight:500;">Add to Apple Wallet</span></button>';
+    html += '</div></div></div></div>';
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+
+// ════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════
+
+
+// ─── SPLASH ───
+function enterSite(){
+  var splash = document.getElementById("splash");
+  if(!splash) return;
+  splash.classList.add("hide");
+  setTimeout(function(){ splash.style.display = "none"; }, 900);
+}
+// Auto-dismiss after 5 seconds if user doesn't click
+setTimeout(function(){
+  var splash = document.getElementById("splash");
+  if(splash && !splash.classList.contains("hide")) enterSite();
+}, 5000);
+// ─── INIT ───
+window.addEventListener("DOMContentLoaded", function() {
+  initFadeIns();
+  // Trigger fade for initially visible elements
+  setTimeout(function() {
+    document.querySelectorAll(".fade-in").forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) { el.classList.add("visible"); }
+    });
+  }, 100);
+});
+</script>
+
+
+
+<!-- ════ LOGIN PAGE ════ -->
+<div class="page" id="pg-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">VIBE<span>.</span></div>
+      <div class="login-title" id="login-mode-title">Create account</div>
+      <div class="login-sub" id="login-mode-sub">JOIN THE VIBE. COMMUNITY</div>
+
+      <div id="login-register-fields">
+        <div class="login-row">
+          <div class="login-field">
+            <label>First name</label>
+            <input class="login-input" type="text" id="reg-firstname" placeholder="Matías"/>
+          </div>
+          <div class="login-field">
+            <label>Last name</label>
+            <input class="login-input" type="text" id="reg-lastname1" placeholder="Espinar"/>
+          </div>
+        </div>
+        <div class="login-field">
+          <label>Second last name <span style="color:var(--gray2);font-size:8px">(optional)</span></label>
+          <input class="login-input" type="text" id="reg-lastname2" placeholder="Opcional"/>
+        </div>
+        <div class="login-field">
+          <label>Phone (WhatsApp)</label>
+          <input class="login-input" type="tel" id="reg-phone" placeholder="+506 8888-0000"/>
+        </div>
+      </div>
+
+      <div class="login-field">
+        <label>Email address</label>
+        <input class="login-input" type="email" id="login-email" placeholder="you@gmail.com"/>
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <input class="login-input" type="password" id="login-password" placeholder="••••••••"/>
+      </div>
+
+      <button class="login-btn" id="login-submit-btn" onclick="submitLogin()">CREATE ACCOUNT</button>
+
+      <div class="login-divider"><span id="login-divider-text">already have an account</span></div>
+      <button class="login-ghost" id="login-toggle-btn" onclick="toggleLoginMode()">Sign in</button>
+
+      <p class="login-legal">By creating your account you agree to our <a href="#" onclick="event.preventDefault();closeMenu();goPage('terms')">Terms & Conditions</a> and the <a href="#" onclick="event.preventDefault();closeMenu();goPage('privacy')">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TÉRMINOS Y CONDICIONES ════ -->
+<div class="page" id="pg-terms">
+  <div class="legal-wrap">
+    <button class="legal-back" onclick="history.length>1?goPage('home'):goPage('home')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <div class="legal-eyebrow">✦ Documento legal</div>
+    <h1 class="legal-title">Términos y <em>Condiciones</em></h1>
+    <div class="legal-updated">Última actualización: 26 de marzo de 2026 · VIBE. Costa Rica</div>
+
+    <div class="legal-highlight">
+      <p>Al usar la plataforma VIBE. para comprar, vender o gestionar entradas a eventos, aceptás los siguientes términos. Leelos con atención antes de continuar.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>1. Sobre VIBE.</h2>
+      <p>VIBE. es una plataforma de venta de tickets digitales operada por persona física con actividad lucrativa registrada en Costa Rica ante el Ministerio de Hacienda. VIBE. actúa como intermediario entre los organizadores de eventos y los compradores de entradas.</p>
+      <p>VIBE. <strong>no es</strong> el organizador de los eventos publicados en la plataforma. Cada evento es responsabilidad exclusiva de su organizador respectivo.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>2. Compra de entradas</h2>
+      <ul>
+        <li>Todas las ventas son finales. Una vez completada la transacción, <strong>no se realizan reembolsos</strong> salvo en los casos indicados en el punto 3.</li>
+        <li>El comprador recibirá un ticket digital con código QR único al correo electrónico registrado dentro de los 10 minutos posteriores al pago.</li>
+        <li>Cada código QR es de <strong>un solo uso</strong>. Una vez escaneado en la puerta del evento, queda invalidado automáticamente.</li>
+        <li>El comprador es responsable de guardar y no compartir su QR con terceros.</li>
+        <li>VIBE. cobra un cargo por servicio (service fee) sobre el precio de cada entrada, el cual se detalla al momento del checkout.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>3. Cancelación y reembolsos</h2>
+      <ul>
+        <li><strong>Si el evento es cancelado por el organizador:</strong> VIBE. gestionará el reembolso del precio de la entrada. El service fee de VIBE. no es reembolsable.</li>
+        <li><strong>Si el evento es pospuesto:</strong> El ticket conserva su validez para la nueva fecha. Si el comprador no puede asistir a la nueva fecha, debe contactar al organizador directamente.</li>
+        <li><strong>Si el comprador no puede asistir:</strong> VIBE. no procesa reembolsos por decisión personal del comprador. La reventa de entradas está prohibida.</li>
+        <li>Los reembolsos, cuando apliquen, se procesarán al método de pago original en un plazo de 5 a 15 días hábiles.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>4. Responsabilidad de VIBE.</h2>
+      <p>VIBE. es responsable únicamente del procesamiento seguro de los pagos y la entrega digital del ticket. VIBE. no se responsabiliza por:</p>
+      <ul>
+        <li>El contenido, calidad o realización del evento.</li>
+        <li>Daños físicos, materiales o de cualquier otra índole ocurridos en el evento.</li>
+        <li>Cambios en el programa, artistas o locación del evento realizados por el organizador.</li>
+        <li>Problemas de conectividad que impidan al comprador recibir o mostrar su ticket digital.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>5. Uso permitido</h2>
+      <ul>
+        <li>Cada cuenta de VIBE. es personal e intransferible.</li>
+        <li>Queda prohibido el uso de bots, scripts o cualquier medio automatizado para comprar entradas.</li>
+        <li>La reventa de entradas adquiridas en VIBE. a precios superiores al original está expresamente prohibida.</li>
+        <li>VIBE. se reserva el derecho de cancelar cuentas y anular transacciones que violen estos términos.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>6. Pagos</h2>
+      <p>VIBE. acepta pagos con tarjeta de crédito/débito vía Onvo Pay, SINPE Móvil, PayPal y Google Pay. Al realizar una compra, aceptás los términos y condiciones de cada procesador de pagos utilizado.</p>
+      <p>Los precios pueden estar expresados en dólares estadounidenses (USD) o colones costarricenses (CRC) según lo definido por cada evento.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>7. Modificaciones</h2>
+      <p>VIBE. se reserva el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigencia al publicarse en este sitio. El uso continuado de la plataforma implica la aceptación de los términos actualizados.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>8. Legislación aplicable</h2>
+      <p>Estos términos se rigen por las leyes de la República de Costa Rica. Cualquier disputa será resuelta ante los tribunales competentes de Costa Rica.</p>
+    </div>
+
+    <div class="legal-contact-box">
+      <h3>¿Preguntas sobre estos términos?</h3>
+      <div class="legal-contact-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dba8b4abb4a9afbe9badb2b9beafb2b8b0beafa8f5b8a9">[email&#160;protected]</a>
+      </div>
+      <div class="legal-contact-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+        +506 7019-8460
+      </div>
+      <div class="legal-contact-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        vibetickets.cr
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PRIVACIDAD DE DATOS ════ -->
+<div class="page" id="pg-privacy">
+  <div class="legal-wrap">
+    <button class="legal-back" onclick="goPage('home')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <div class="legal-eyebrow">✦ Documento legal</div>
+    <h1 class="legal-title">Política de <em>Privacidad</em></h1>
+    <div class="legal-updated">Última actualización: 26 de marzo de 2026 · Conforme a la Ley 8968 de Costa Rica</div>
+
+    <div class="legal-highlight">
+      <p>En VIBE. tomamos la privacidad de tus datos en serio. Este documento explica qué información recopilamos, por qué, y cómo la protegemos, en cumplimiento de la <strong>Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales (Ley 8968)</strong> de Costa Rica.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>1. Responsable del tratamiento</h2>
+      <p>VIBE. Costa Rica, operada por persona física con actividad lucrativa registrada ante el Ministerio de Hacienda de Costa Rica, es la responsable del tratamiento de tus datos personales.</p>
+      <p>Contacto: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="681b0718071a1c0d281e010a0d1c010b030d1c1b460b1a">[email&#160;protected]</a> | +506 7019-8460</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>2. Datos que recopilamos</h2>
+      <p>Al crear una cuenta o comprar un ticket en VIBE., recopilamos los siguientes datos:</p>
+      <ul>
+        <li><strong>Datos de identidad:</strong> Nombre completo (primer nombre, primer y segundo apellido).</li>
+        <li><strong>Datos de contacto:</strong> Correo electrónico y número de celular (WhatsApp).</li>
+        <li><strong>Datos de pago:</strong> No almacenamos datos de tarjeta. Los pagos son procesados por Onvo Pay, PayPal u otros procesadores certificados PCI DSS.</li>
+        <li><strong>Datos de transacciones:</strong> Historial de compras, eventos, fechas, montos y métodos de pago utilizados.</li>
+        <li><strong>Datos de uso:</strong> Dispositivo utilizado, dirección IP, fecha y hora de acceso (para seguridad y análisis).</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>3. Para qué usamos tus datos</h2>
+      <ul>
+        <li>Procesar y confirmar la compra de tus entradas.</li>
+        <li>Enviarte tu ticket digital con código QR al correo registrado.</li>
+        <li>Gestionar tu cuenta y el historial de compras.</li>
+        <li>Atender solicitudes de soporte y resolver problemas.</li>
+        <li>Cumplir con obligaciones legales y fiscales ante el Ministerio de Hacienda de Costa Rica.</li>
+        <li>Mejorar la plataforma mediante análisis de uso (datos anonimizados).</li>
+        <li>Enviarte comunicaciones sobre eventos de tu interés (podés darte de baja en cualquier momento).</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>4. Con quién compartimos tus datos</h2>
+      <p>VIBE. <strong>no vende</strong> tus datos personales a terceros. Podemos compartirlos únicamente con:</p>
+      <ul>
+        <li><strong>Organizadores de eventos:</strong> Nombre y datos de contacto para gestión del evento y lista de asistentes.</li>
+        <li><strong>Procesadores de pago:</strong> Onvo Pay, PayPal, Google Pay — solo los datos necesarios para completar la transacción.</li>
+        <li><strong>Autoridades competentes:</strong> Cuando sea requerido por ley, orden judicial o autoridad tributaria costarricense.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>5. Seguridad de tus datos</h2>
+      <p>Implementamos medidas técnicas y organizativas para proteger tus datos personales:</p>
+      <ul>
+        <li>Transmisión cifrada mediante HTTPS/TLS.</li>
+        <li>Datos de pago procesados por plataformas certificadas PCI DSS.</li>
+        <li>Acceso restringido a datos personales solo al personal autorizado.</li>
+        <li>Códigos QR únicos e irrepetibles por transacción.</li>
+        <li>Contraseñas almacenadas con hash criptográfico (nunca en texto plano).</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>6. Tus derechos (Ley 8968)</h2>
+      <p>Como titular de los datos, tenés derecho a:</p>
+      <ul>
+        <li><strong>Acceso:</strong> Conocer qué datos tuyos tenemos almacenados.</li>
+        <li><strong>Rectificación:</strong> Corregir datos incorrectos o incompletos.</li>
+        <li><strong>Supresión:</strong> Solicitar la eliminación de tus datos personales (excepto los requeridos por ley).</li>
+        <li><strong>Oposición:</strong> Oponerte al tratamiento de tus datos para fines de marketing.</li>
+        <li><strong>Portabilidad:</strong> Recibir tus datos en formato legible por máquina.</li>
+      </ul>
+      <p>Para ejercer cualquiera de estos derechos, enviá un correo a <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e89b8798879a9c8da89e818a8d9c818b838d9c9bc68b9a">[email&#160;protected]</a></strong> con tu nombre completo y número de cédula. Responderemos en un plazo máximo de 10 días hábiles.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>7. Retención de datos</h2>
+      <p>Conservamos tus datos personales mientras tu cuenta esté activa o según lo requieran nuestras obligaciones legales y fiscales en Costa Rica. Los datos de transacciones se conservan por un mínimo de 5 años conforme a la legislación tributaria costarricense.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>8. Cookies y tecnologías de rastreo</h2>
+      <p>VIBE. utiliza cookies estrictamente necesarias para el funcionamiento de la plataforma (sesión, autenticación). También podemos usar cookies de análisis para mejorar la experiencia (Google Analytics o similar). Podés desactivar las cookies no esenciales desde la configuración de tu navegador.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>9. Cambios a esta política</h2>
+      <p>VIBE. puede actualizar esta política en cualquier momento. Los cambios se publicarán en este sitio con la fecha de actualización. Te notificaremos por correo electrónico si los cambios son significativos.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>10. Autoridad supervisora</h2>
+      <p>Si considerás que el tratamiento de tus datos viola la Ley 8968, podés presentar una denuncia ante la <strong>Agencia de Protección de Datos de los Habitantes (PRODHAB)</strong> en <a href="https://www.prodhab.go.cr" target="_blank" style="color:var(--green)">prodhab.go.cr</a>.</p>
+    </div>
+
+    <div class="legal-contact-box">
+      <h3>Contacto de privacidad</h3>
+      <div class="legal-contact-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f5869a859a878190b5839c9790819c969e908186db9687">[email&#160;protected]</a>
+      </div>
+      <div class="legal-contact-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+        +506 7019-8460 (WhatsApp Business)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CUSTOMER SUPPORT WIDGET ════ -->
+<button class="support-fab" id="support-fab" onclick="toggleSupportPanel()" title="Soporte VIBE.">
+  <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
+    <path d="M8 22v-4C8 13.373 13.373 8 20 8s12 5.373 12 12v4" stroke="#080808" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <rect x="5" y="20" width="6" height="10" rx="3" fill="#080808"/>
+    <rect x="29" y="20" width="6" height="10" rx="3" fill="#080808"/>
+    <path d="M35 30v2a4 4 0 01-4 4h-4" stroke="#080808" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <circle cx="27" cy="36" r="2" fill="#080808"/>
+  </svg>
+</button>
+
+<div class="support-panel" id="support-panel">
+  <div class="support-header">
+    <div class="support-avatar">
+      <svg width="16" height="16" viewBox="0 0 40 40" fill="none">
+        <path d="M8 22v-4C8 13.373 13.373 8 20 8s12 5.373 12 12v4" stroke="#39ff14" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <rect x="5" y="20" width="6" height="10" rx="3" fill="#39ff14"/>
+        <rect x="29" y="20" width="6" height="10" rx="3" fill="#39ff14"/>
+        <path d="M35 30v2a4 4 0 01-4 4h-4" stroke="#39ff14" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <circle cx="27" cy="36" r="2" fill="#39ff14"/>
+      </svg>
+    </div>
+    <div>
+      <div class="support-name">VIBE. Soporte</div>
+      <div class="support-status">Online</div>
+    </div>
+    <button class="support-close" onclick="toggleSupportPanel()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="support-messages" id="support-messages">
+    <div class="support-msg">
+      <div class="support-msg-text">Hi! How can I help you with your ticket today? 🎟️</div>
+    </div>
+  </div>
+  <div class="support-options" id="support-options">
+    <button class="support-opt" onclick="supportSelect('I didn\'t receive my QR by email')">I didn't receive my QR by email</button>
+    <button class="support-opt" onclick="supportSelect('Payment issue')">Payment issue</button>
+    <button class="support-opt" onclick="supportSelect('I want to cancel my purchase')">I want to cancel my purchase</button>
+    <button class="support-opt" onclick="showEscalation()">Talk to someone on the team</button>
+  </div>
+  <div class="support-input-row" id="support-input-row" style="display:none">
+    <input class="support-input" id="support-input" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendSupportMsg()"/>
+    <button class="support-send" onclick="sendSupportMsg()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="support-escalate" id="support-escalate" style="display:none">
+    <div class="support-escalate-title">Contact us directly</div>
+    <a href="https://wa.me/50670198460" target="_blank" class="support-esc-btn support-esc-wa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5.009L2 22l5.109-1.325A9.966 9.966 0 0012 22c5.523 0 10-4.477 10-10S17.522 2 11.999 2z"/></svg>
+      <span>WhatsApp Business<small>+506 7019-8460 · Quick response</small></span>
+    </a>
+    <a href="tel:+50670198460" class="support-esc-btn support-esc-tel">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+      <span>Call<small>+506 7019-8460</small></span>
+    </a>
+    <a href="/cdn-cgi/l/email-protection#cebda1bea1bcbaab8eb8a7acabbaa7ada5abbabde0adbc" class="support-esc-btn support-esc-email">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span>Email<small><span class="__cf_email__" data-cfemail="ff8c908f908d8b9abf89969d9a8b969c949a8b8cd19c8d">[email&#160;protected]</span></small></span>
+    </a>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+
+// ─── FLYER CAROUSEL ───
+function initFlyerCarousel() {
+  var track = document.getElementById('flyer-track');
+  if (!track) return;
+  var slides = [
+    {evKey:'rawdeo',      name:'RAWDEO 2',      date:'JUN 6 2026',  bg:'#0a1a05', color:'#39ff14', useImg:'rawdeo'},
+    {evKey:'mansita',     name:'MANSITA',        date:'APR 4 2026',  bg:'#1a0a05', color:'#ffb800', useImg:'mansita'},
+    {evKey:'noche',       name:'BLUE NIGHT CR',  date:'JUL 12 2026', bg:'#05051a', color:'#4488ff', useImg:''},
+    {evKey:'golden',      name:'GOLDEN HOUR',    date:'AUG 2 2026',  bg:'#1a1005', color:'#ffb800', useImg:''},
+    {evKey:'underground', name:'UNDERGROUND CR', date:'SEP 19 2026', bg:'#0a0a1a', color:'#888',    useImg:''},
+    {evKey:'salsa',       name:'LATIN FEVER',    date:'OCT 4 2026',  bg:'#1a0505', color:'#ff6b35', useImg:''},
+    {evKey:'nye',         name:'NYE GALA 2026',  date:'DEC 31 2026', bg:'#0d0d0d', color:'#ffffff', useImg:''}
+  ];
+  var all = slides.concat(slides);
+  var frag = document.createDocumentFragment();
+  all.forEach(function(s) {
+    var div = document.createElement('div');
+    div.className = 'flyer-slide';
+    div.setAttribute('data-ev', s.evKey);
+    if (s.useImg === 'rawdeo' && typeof RAWDEO_B64 !== 'undefined') {
+      var img = document.createElement('img');
+      img.src = RAWDEO_B64;
+      img.alt = s.name;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      div.appendChild(img);
+    } else if (s.useImg === 'mansita' && typeof MANSITA_B64 !== 'undefined') {
+      var img2 = document.createElement('img');
+      img2.src = MANSITA_B64;
+      img2.alt = s.name;
+      img2.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      div.appendChild(img2);
+    } else {
+      div.style.background = s.bg;
+      div.style.display = 'flex';
+      div.style.flexDirection = 'column';
+      div.style.alignItems = 'center';
+      div.style.justifyContent = 'center';
+      div.style.gap = '8px';
+      var nm = document.createElement('div');
+      nm.className = 'fp-name';
+      nm.style.color = s.color;
+      nm.textContent = s.name;
+      var dt = document.createElement('div');
+      dt.className = 'fp-date';
+      dt.textContent = s.date;
+      div.appendChild(nm);
+      div.appendChild(dt);
+    }
+    frag.appendChild(div);
+  });
+  track.appendChild(frag);
+  track.addEventListener('click', function(e) {
+    var slide = e.target.closest('.flyer-slide');
+    if (slide) openCheckout(slide.getAttribute('data-ev'));
+  });
+}
+document.addEventListener('DOMContentLoaded', function(){ initFlyerCarousel(); });
+
+
+
+// ─── EVENT CARD COUNTDOWNS ───
+var eventDates = {
+  mansita:     new Date('April 4, 2026 20:00:00'),
+  rawdeo:      new Date('June 6, 2026 20:00:00'),
+  noche:       new Date('Jul 12, 2026 20:00:00'),
+  golden:      new Date('Aug 2, 2026 20:00:00'),
+  underground: new Date('Sep 19, 2026 20:00:00'),
+  salsa:       new Date('Oct 4, 2026 20:00:00'),
+  nye:         new Date('Dec 31, 2026 20:00:00'),
+};
+function updateCardCountdowns() {
+  var now = new Date().getTime();
+  Object.keys(eventDates).forEach(function(key) {
+    var diff = eventDates[key].getTime() - now;
+    var dEl = document.getElementById('ev-cd-' + key + '-d');
+    if (!dEl) return;
+    if (diff <= 0) {
+      dEl.textContent = '00';
+      document.getElementById('ev-cd-' + key + '-h').textContent = '00';
+      document.getElementById('ev-cd-' + key + '-m').textContent = '00';
+      document.getElementById('ev-cd-' + key + '-s').textContent = '00';
+      return;
+    }
+    var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var s = Math.floor((diff % (1000 * 60)) / 1000);
+    dEl.textContent = String(d).padStart(2, '0');
+    document.getElementById('ev-cd-' + key + '-h').textContent = String(h).padStart(2, '0');
+    document.getElementById('ev-cd-' + key + '-m').textContent = String(m).padStart(2, '0');
+    document.getElementById('ev-cd-' + key + '-s').textContent = String(s).padStart(2, '0');
+  });
+}
+setInterval(updateCardCountdowns, 1000);
+document.addEventListener('DOMContentLoaded', updateCardCountdowns);
+function submitOrgRequest(){
+  alert('Request sent! The VIBE. team will contact you within 24 hours.');
+}
+function filterEvents(q) {
+  var cards = document.querySelectorAll('#events-grid-wrap .ev-card');
+  var query = q.toLowerCase().trim();
+  cards.forEach(function(card) {
+    var name = card.querySelector('.ev-card-name');
+    var meta = card.querySelector('.ev-card-meta');
+    var text = ((name ? name.textContent : '') + ' ' + (meta ? meta.textContent : '')).toLowerCase();
+    card.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+  });
+}
+var DISCOUNT_CODES = { 'VIBE10': 10, 'RAWDEO20': 20, 'VIP15': 15 };
+function applyDiscount() {
+  var code = document.getElementById('discount-input').value.trim().toUpperCase();
+  var msg = document.getElementById('discount-msg');
+  msg.style.display = 'block';
+  if (!code) { msg.style.color = '#ff4444'; msg.textContent = 'Enter a discount code.'; return; }
+  if (discountApplied) { msg.style.color = '#ffb800'; msg.textContent = 'A discount is already applied.'; return; }
+  if (DISCOUNT_CODES[code]) {
+    discountPct = DISCOUNT_CODES[code];
+    discountApplied = true;
+    msg.style.color = 'var(--green)';
+    msg.textContent = '✓ ' + discountPct + '% discount applied!';
+    document.getElementById('discount-input').disabled = true;
+    updTotals();
+  } else {
+    msg.style.color = '#ff4444';
+    msg.textContent = 'Invalid code. Try again.';
+  }
+}
+function selectCurrency(type) {
+  document.querySelectorAll('.currency-opt').forEach(function(el){ el.classList.remove('on'); });
+  document.getElementById('curr-' + type).classList.add('on');
+  var detail = document.getElementById('currency-both-detail');
+  if (type === 'both') {
+    detail.classList.add('show');
+  } else {
+    detail.classList.remove('show');
+  }
+}
+
+function toggleMenu() {
+  document.getElementById('menu-drawer').classList.toggle('open');
+  document.getElementById('menu-overlay').classList.toggle('show');
+}
+function closeMenu() {
+  document.getElementById('menu-drawer').classList.remove('open');
+  document.getElementById('menu-overlay').classList.remove('show');
+}
+function openSupportChat() {
+  document.getElementById('support-panel').classList.add('show');
+}
+
+// ─── LOGIN TOGGLE ───
+var loginIsRegister = true;
+function toggleLoginMode() {
+  loginIsRegister = !loginIsRegister;
+  document.getElementById('login-register-fields').style.display = loginIsRegister ? 'block' : 'none';
+  document.getElementById('login-mode-title').textContent = loginIsRegister ? 'Create account' : 'Sign in';
+  document.getElementById('login-mode-sub').textContent = loginIsRegister ? 'JOIN THE VIBE. COMMUNITY' : 'WELCOME BACK';
+  document.getElementById('login-submit-btn').textContent = loginIsRegister ? 'CREATE ACCOUNT' : 'SIGN IN';
+  document.getElementById('login-divider-text').textContent = loginIsRegister ? 'already have an account' : 'don\'t have an account';
+  document.getElementById('login-toggle-btn').textContent = loginIsRegister ? 'Sign in' : 'Create new account';
+}
+function submitLogin() {
+  var email = document.getElementById('login-email').value;
+  if (!email) { alert('Please enter your email address'); return; }
+  if (loginIsRegister) {
+    var name = document.getElementById('reg-firstname').value;
+    if (!name) { alert('Please enter your name'); return; }
+    document.getElementById('menu-username').textContent = (name + ' ' + (document.getElementById('reg-lastname1').value||'')).trim();
+    document.getElementById('menu-useremail').textContent = email;
+    document.getElementById('menu-avatar').textContent = name.charAt(0).toUpperCase() + (document.getElementById('reg-lastname1').value||'').charAt(0).toUpperCase();
+    document.getElementById('menu-auth-btn').innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign out';
+    document.getElementById('menu-auth-btn').onclick = function(){ closeMenu(); };
+  }
+  goPage('home');
+}
+
+// ─── SUPPORT WIDGET ───
+function toggleSupportPanel() {
+  document.getElementById('support-panel').classList.toggle('show');
+}
+function supportSelect(msg) {
+  addSupportMsg(msg, true);
+  document.getElementById('support-options').style.display = 'none';
+  document.getElementById('support-input-row').style.display = 'flex';
+  setTimeout(function(){
+    var replies = {
+      'I didn\'t receive my QR by email': 'Check your spam folder first. If it\'s not there, send us your order code (e.g. VB-XXXXXX) and we\'ll resend it right away.',
+      'Payment issue': 'Was the payment deducted from your account but you didn\'t receive the ticket? Send us the transaction code and we\'ll look into it.',
+      'I want to cancel my purchase': 'All sales are final per our T&C. If the event was cancelled by the organizer, we process the refund automatically. Can you tell us more about your case?'
+    };
+    var reply = replies[msg] || 'Got it! Leave us your question and we\'ll help you.';
+    addSupportMsg(reply, false);
+  }, 800);
+}
+function addSupportMsg(text, isUser) {
+  var msgs = document.getElementById('support-messages');
+  var div = document.createElement('div');
+  div.className = isUser ? 'support-user-msg' : 'support-msg';
+    div.innerHTML = '<div class="support-msg-text">' + text + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function sendSupportMsg() {
+  var input = document.getElementById('support-input');
+  var text = input.value.trim();
+  if (!text) return;
+  addSupportMsg(text, true);
+  input.value = '';
+  setTimeout(function(){
+    addSupportMsg('Thanks for your message. A VIBE. agent will get back to you soon. You can also reach us directly on WhatsApp at +506 7019-8460.', false);
+  }, 1000);
+}
+function showEscalation() {
+  document.getElementById('support-options').style.display = 'none';
+  document.getElementById('support-escalate').style.display = 'flex';
+  document.getElementById('support-escalate').style.flexDirection = 'column';
+  document.getElementById('support-escalate').style.gap = '8px';
+}
+</script>
+</body>
+</html>

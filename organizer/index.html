@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VIBE. — Organizer Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,300&family=Unbounded:wght@900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/styles.css"/>
+</head>
+<body>
+
+<!-- ════ ORGANIZER DASHBOARD ════ -->
+<div class="org-dash-page" id="org-main" style="display:none">
+<div class="org-dash-page">
+    <!-- TOP BAR -->
+    <div class="org-dash-topbar">
+      <div>
+        <div class="org-dash-logo">VIBE<span>.</span></div>
+        <div class="org-dash-logo-sub">Organizer Panel</div>
+      </div>
+      <div class="org-dash-user">
+        <div class="org-dash-avatar" id="org-dash-avatar">JS</div>
+        <div class="org-dash-username" id="org-dash-username">Cargando...</div>
+        <div class="org-dash-status">Active</div>
+        <button class="org-act-btn gray" style="margin-left:8px;" onclick="orgLogout()">Log out</button>
+      </div>
+    </div>
+    <!-- EVENT BANNER -->
+    <div class="org-event-banner">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:3px;">
+          <div class="org-event-name">RAWDEO 2</div>
+          <div class="org-event-badge">On sale</div>
+        </div>
+        <div class="org-event-sub">Jun 6, 2026 · Pedregal Event Center · 20:00</div>
+      </div>
+      <div class="org-banner-btns">
+        <button class="org-banner-btn">View public page</button>
+        <button class="org-banner-btn primary">Edit event</button>
+      </div>
+    </div>
+    <!-- NAV -->
+    <div class="org-nav">
+      <div class="org-nav-item on" onclick="orgShowSection('resumen',this)">Overview</div>
+      <div class="org-nav-item" onclick="orgShowSection('tiers',this)">Sales by tier</div>
+      <div class="org-nav-item" onclick="orgShowSection('buyers',this)">Buyers</div>
+      <div class="org-nav-item" onclick="orgShowSection('cortesias',this)">Complimentary</div>
+    </div>
+
+    <!-- ── RESUMEN ── -->
+    <div class="org-section active" id="org-sec-resumen">
+      <!-- KPIs -->
+      <div class="org-kpi-grid">
+        <div class="org-kpi">
+          <div class="org-kpi-label">Gross revenue</div>
+          <div class="org-kpi-val green">$38,115</div>
+          <div class="org-kpi-sub"><span class="org-kpi-up">↑ $840</span> last 2h</div>
+        </div>
+        <div class="org-kpi">
+          <div class="org-kpi-label">Tickets sold</div>
+          <div class="org-kpi-val">708</div>
+          <div class="org-kpi-sub">of 1,150 capacity</div>
+          <div class="org-prog"><div class="org-prog-fill" style="width:61%;"></div></div>
+        </div>
+        <div class="org-kpi">
+          <div class="org-kpi-label">Available</div>
+          <div class="org-kpi-val">442</div>
+          <div class="org-kpi-sub" style="color:#ffb800;">⚠ Early Bird sold out</div>
+        </div>
+        <div class="org-kpi">
+          <div class="org-kpi-label">Organizer net</div>
+          <div class="org-kpi-val green">$34,575</div>
+          <div class="org-kpi-sub">Fee VIBE.: $3,540</div>
+        </div>
+      </div>
+      <!-- LIVE + CHART -->
+      <div class="org-grid2" style="margin-bottom:16px;">
+        <div class="org-card">
+          <div class="org-card-head">
+            <div class="org-card-title">Live — by ticket type</div>
+            <div class="org-live">Live</div>
+          </div>
+          <div class="org-card-body">
+            <div class="org-tier-row"><div class="org-tier-dot" style="background:#4488ff;"></div><div class="org-tier-name">Early Bird</div><div class="org-tier-bar-wrap"><div class="org-tier-bar" style="width:100%;background:#4488ff;"></div></div><div class="org-tier-count">200/200</div><span class="org-badge ob-sold" style="font-size:7px;">SOLD OUT</span></div>
+            <div class="org-tier-row"><div class="org-tier-dot" style="background:var(--green);"></div><div class="org-tier-name">Tier 1</div><div class="org-tier-bar-wrap"><div class="org-tier-bar" style="width:72%;background:var(--green);"></div></div><div class="org-tier-count">287/400</div></div>
+            <div class="org-tier-row"><div class="org-tier-dot" style="background:#ffb800;"></div><div class="org-tier-name">Tier 2</div><div class="org-tier-bar-wrap"><div class="org-tier-bar" style="width:36%;background:#ffb800;"></div></div><div class="org-tier-count">142/400</div></div>
+            <div class="org-tier-row"><div class="org-tier-dot" style="background:#ff6b35;"></div><div class="org-tier-name">VIP</div><div class="org-tier-bar-wrap"><div class="org-tier-bar" style="width:61%;background:#ff6b35;"></div></div><div class="org-tier-count">61/100</div></div>
+            <div class="org-tier-row"><div class="org-tier-dot" style="background:var(--gray2);"></div><div class="org-tier-name">Complimentary</div><div class="org-tier-bar-wrap"><div class="org-tier-bar" style="width:36%;background:var(--gray2);"></div></div><div class="org-tier-count">18/50</div></div>
+          </div>
+        </div>
+        <div class="org-card">
+          <div class="org-card-head">
+            <div class="org-card-title">Sales by hour (today)</div>
+            <div class="org-live">Live</div>
+          </div>
+          <div class="org-card-body">
+            <div class="org-mini-chart" id="org-hourly-chart"></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--gray2);margin-top:5px;"><span>08:00</span><span>Ahora</span></div>
+            <div class="org-last-sale">
+              <div class="org-last-label">Last sale</div>
+              <div class="org-last-name">Carlos Salas · Tier 1 · $40</div>
+              <div class="org-last-sub">3 min ago · SINPE Móvil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- TABLA GENERAL -->
+      <div class="org-card">
+        <div class="org-card-head">
+          <div class="org-card-title">General sales table</div>
+          <button class="org-act-btn gray" style="font-size:9px;">↓ Export CSV</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="org-table">
+            <thead><tr><th>Ticket type</th><th>Price</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Gross revenue</th><th>Fee VIBE.</th><th>Net</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><div style="display:flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:#4488ff;flex-shrink:0;"></div><span style="color:var(--white);">Early Bird</span></div></td><td>$20</td><td style="color:var(--green);">200</td><td style="color:#ff4444;">0</td><td>200</td><td style="color:var(--green);">$4,000</td><td style="color:var(--gray2);">$1,000</td><td>$3,000</td><td><span class="org-badge ob-sold">SOLD OUT</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;"></div><span style="color:var(--white);">Tier 1</span></div></td><td>$40</td><td style="color:var(--green);">287</td><td>113</td><td>400</td><td style="color:var(--green);">$11,480</td><td style="color:var(--gray2);">$1,435</td><td>$10,045</td><td><span class="org-badge ob-ok">ACTIVE</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:#ffb800;flex-shrink:0;"></div><span style="color:var(--white);">Tier 2</span></div></td><td>$50</td><td style="color:var(--green);">142</td><td>258</td><td>400</td><td style="color:var(--green);">$7,100</td><td style="color:var(--gray2);">$710</td><td>$6,390</td><td><span class="org-badge ob-ok">ACTIVE</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:#ff6b35;flex-shrink:0;"></div><span style="color:var(--white);">VIP</span></div></td><td>$75</td><td style="color:var(--green);">61</td><td>39</td><td>100</td><td style="color:var(--green);">$4,575</td><td style="color:var(--gray2);">$305</td><td>$4,270</td><td><span class="org-badge ob-ok">ACTIVE</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--gray2);flex-shrink:0;"></div><span style="color:var(--white);">Complimentary</span></div></td><td>$0</td><td style="color:var(--green);">18</td><td>32</td><td>50</td><td style="color:var(--gray2);">—</td><td style="color:var(--gray2);">—</td><td style="color:var(--gray2);">—</td><td><span class="org-badge ob-ok">ACTIVE</span></td></tr>
+            </tbody>
+            <tfoot><tr><td style="color:var(--white);font-weight:700;letter-spacing:.5px;">TOTAL</td><td></td><td style="color:var(--green);font-weight:700;">708</td><td style="color:var(--gray);">442</td><td style="color:var(--gray);">1,150</td><td style="color:var(--green);font-weight:700;">$27,155</td><td style="color:var(--gray2);">$3,450</td><td style="color:var(--green);font-weight:700;">$23,705</td><td></td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VENTAS POR TIER ── -->
+    <div class="org-section" id="org-sec-tiers">
+      <div class="org-card">
+        <div class="org-card-head">
+          <div class="org-card-title">Select a ticket type</div>
+          <div class="org-live">Live</div>
+        </div>
+        <div class="org-card-body">
+          <div class="org-tier-tabs">
+            <div class="org-tier-tab on" onclick="orgShowTier('eb',this)"><div class="org-tier-tab-dot" style="background:#4488ff;"></div>Early Bird<span class="org-so">SOLD OUT</span></div>
+            <div class="org-tier-tab" onclick="orgShowTier('t1',this)"><div class="org-tier-tab-dot" style="background:var(--green);"></div>Tier 1</div>
+            <div class="org-tier-tab" onclick="orgShowTier('t2',this)"><div class="org-tier-tab-dot" style="background:#ffb800;"></div>Tier 2</div>
+            <div class="org-tier-tab" onclick="orgShowTier('vip',this)"><div class="org-tier-tab-dot" style="background:#ff6b35;"></div>VIP</div>
+            <div class="org-tier-tab" onclick="orgShowTier('crt',this)"><div class="org-tier-tab-dot" style="background:var(--gray2);"></div>Complimentary</div>
+          </div>
+          <div id="org-tier-detail"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPRADORES ── -->
+    <div class="org-section" id="org-sec-buyers">
+      <!-- LIST -->
+      <div class="org-list-wrap" id="org-list-wrap">
+        <div class="org-card">
+          <div class="org-card-head">
+            <div class="org-card-title">Buyers · 708</div>
+            <div class="org-live">Live</div>
+          </div>
+          <div class="org-card-body">
+            <div class="org-search-row">
+              <div class="org-search-box">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--gray2)" stroke-width="1.5" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                <input type="text" placeholder="Search by name, email or code..." oninput="orgFilterBuyers(this.value)"/>
+              </div>
+              <select class="org-filter-sel"><option>All tiers</option><option>Early Bird</option><option>Tier 1</option><option>Tier 2</option><option>VIP</option><option>Complimentary</option></select>
+              <select class="org-filter-sel"><option>All</option><option>QR Valid</option><option>QR Used</option></select>
+              <button class="org-exp-btn">↓ CSV</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="org-table">
+                <thead><tr><th>Buyer</th><th>Phone</th><th>Tier</th><th>Code</th><th>Method</th><th>Date</th><th>QR</th><th></th></tr></thead>
+                <tbody id="org-buyers-tbody"></tbody>
+              </table>
+            </div>
+            <div class="org-pag">
+              <div class="org-pag-info">1–6 of 708 buyers</div>
+              <div class="org-pag-btns">
+                <button class="org-pag-btn">‹</button>
+                <button class="org-pag-btn on">1</button>
+                <button class="org-pag-btn">2</button>
+                <button class="org-pag-btn">3</button>
+                <button class="org-pag-btn">···</button>
+                <button class="org-pag-btn">118</button>
+                <button class="org-pag-btn">›</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PROFILE -->
+      <div class="org-profile-wrap" id="org-profile-wrap">
+        <button class="org-back-btn" onclick="orgBackToList()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="10" y1="3" x2="4" y2="8"/><line x1="4" y1="8" x2="10" y2="13"/></svg>
+          Back to buyers
+        </button>
+        <!-- PROFILE HEADER -->
+        <div class="org-card" style="margin-bottom:10px;">
+          <div class="org-card-body">
+            <div class="org-profile-head">
+              <div class="org-profile-avatar" id="op-avatar" style="background:var(--green-dim);color:var(--green);"></div>
+              <div style="flex:1;">
+                <div class="org-profile-name" id="op-name"></div>
+                <div class="org-profile-id" id="op-id"></div>
+                <div class="org-profile-badges">
+                  <div class="org-profile-badge opb-green" id="op-tier-badge"></div>
+                  <div class="org-profile-badge opb-gray" id="op-pay-badge"></div>
+                  <div class="org-profile-badge opb-gray" id="op-date-badge"></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;flex-shrink:0;">
+                <button class="org-act-btn">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5.009L2 22l5.109-1.325A9.966 9.966 0 0012 22c5.523 0 10-4.477 10-10S17.522 2 11.999 2z"/></svg>
+                  WhatsApp
+                </button>
+                <button class="org-act-btn gray">✉ Email</button>
+              </div>
+            </div>
+            <div class="org-stat-pills">
+              <div class="org-stat-pill"><div class="org-sp-val" id="op-spent"></div><div class="org-sp-label">Spent</div></div>
+              <div class="org-stat-pill"><div class="org-sp-val" id="op-tickets"></div><div class="org-sp-label">Tickets</div></div>
+              <div class="org-stat-pill"><div class="org-sp-val" id="op-events"></div><div class="org-sp-label">Events</div></div>
+              <div class="org-stat-pill"><div class="org-sp-val" id="op-fav-pay" style="font-size:13px;"></div><div class="org-sp-label">Fav. method</div></div>
+            </div>
+            <div class="org-info-grid">
+              <div class="org-info-box"><div class="org-info-label">Email</div><div class="org-info-val" id="op-email"></div></div>
+              <div class="org-info-box"><div class="org-info-label">Phone / WhatsApp</div><div class="org-info-val" id="op-tel"></div></div>
+              <div class="org-info-box"><div class="org-info-label">Member since</div><div class="org-info-val" id="op-since"></div></div>
+            </div>
+          </div>
+        </div>
+        <!-- QR -->
+        <div class="org-card" style="margin-bottom:10px;">
+          <div class="org-card-head">
+            <div class="org-card-title">Ticket — Custom QR</div>
+            <div id="op-qr-status-badge"></div>
+          </div>
+          <div class="org-card-body">
+            <div class="org-qr-section">
+              <div class="org-qr-box">
+                <svg class="org-qr-svg" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0" y="0" width="7" height="7" fill="#080808"/><rect x="1" y="1" width="5" height="5" fill="white"/><rect x="2" y="2" width="3" height="3" fill="#080808"/>
+                  <rect x="22" y="0" width="7" height="7" fill="#080808"/><rect x="23" y="1" width="5" height="5" fill="white"/><rect x="24" y="2" width="3" height="3" fill="#080808"/>
+                  <rect x="0" y="22" width="7" height="7" fill="#080808"/><rect x="1" y="23" width="5" height="5" fill="white"/><rect x="2" y="24" width="3" height="3" fill="#080808"/>
+                  <rect x="8" y="0" width="1" height="1" fill="#080808"/><rect x="10" y="0" width="1" height="1" fill="#080808"/><rect x="12" y="0" width="1" height="1" fill="#080808"/><rect x="16" y="0" width="1" height="1" fill="#080808"/><rect x="20" y="0" width="1" height="1" fill="#080808"/>
+                  <rect x="9" y="2" width="1" height="1" fill="#080808"/><rect x="13" y="2" width="1" height="1" fill="#080808"/><rect x="17" y="2" width="1" height="1" fill="#080808"/>
+                  <rect x="8" y="4" width="1" height="1" fill="#080808"/><rect x="11" y="4" width="1" height="1" fill="#080808"/><rect x="15" y="4" width="1" height="1" fill="#080808"/>
+                  <rect x="0" y="8" width="1" height="1" fill="#080808"/><rect x="3" y="8" width="1" height="1" fill="#080808"/><rect x="6" y="8" width="1" height="1" fill="#080808"/><rect x="9" y="8" width="1" height="1" fill="#080808"/><rect x="12" y="8" width="1" height="1" fill="#080808"/><rect x="15" y="8" width="1" height="1" fill="#080808"/><rect x="18" y="8" width="1" height="1" fill="#080808"/><rect x="21" y="8" width="1" height="1" fill="#080808"/><rect x="24" y="8" width="1" height="1" fill="#080808"/><rect x="27" y="8" width="1" height="1" fill="#080808"/>
+                  <rect x="1" y="10" width="1" height="1" fill="#080808"/><rect x="5" y="10" width="1" height="1" fill="#080808"/><rect x="8" y="10" width="1" height="1" fill="#080808"/><rect x="11" y="10" width="1" height="1" fill="#080808"/><rect x="14" y="10" width="1" height="1" fill="#080808"/><rect x="17" y="10" width="1" height="1" fill="#080808"/><rect x="20" y="10" width="1" height="1" fill="#080808"/><rect x="23" y="10" width="1" height="1" fill="#080808"/><rect x="26" y="10" width="1" height="1" fill="#080808"/>
+                  <rect x="2" y="12" width="1" height="1" fill="#080808"/><rect x="6" y="12" width="1" height="1" fill="#080808"/><rect x="10" y="12" width="1" height="1" fill="#080808"/><rect x="13" y="12" width="1" height="1" fill="#080808"/><rect x="16" y="12" width="1" height="1" fill="#080808"/><rect x="19" y="12" width="1" height="1" fill="#080808"/><rect x="22" y="12" width="1" height="1" fill="#080808"/><rect x="25" y="12" width="1" height="1" fill="#080808"/>
+                  <rect x="0" y="14" width="1" height="1" fill="#080808"/><rect x="4" y="14" width="1" height="1" fill="#080808"/><rect x="7" y="14" width="1" height="1" fill="#080808"/><rect x="11" y="14" width="1" height="1" fill="#080808"/><rect x="14" y="14" width="1" height="1" fill="#080808"/><rect x="18" y="14" width="1" height="1" fill="#080808"/><rect x="21" y="14" width="1" height="1" fill="#080808"/><rect x="25" y="14" width="1" height="1" fill="#080808"/><rect x="28" y="14" width="1" height="1" fill="#080808"/>
+                  <rect x="8" y="22" width="1" height="1" fill="#080808"/><rect x="11" y="22" width="1" height="1" fill="#080808"/><rect x="14" y="22" width="1" height="1" fill="#080808"/><rect x="17" y="22" width="1" height="1" fill="#080808"/><rect x="20" y="22" width="1" height="1" fill="#080808"/><rect x="23" y="22" width="1" height="1" fill="#080808"/><rect x="26" y="22" width="1" height="1" fill="#080808"/>
+                  <rect x="9" y="24" width="1" height="1" fill="#080808"/><rect x="12" y="24" width="1" height="1" fill="#080808"/><rect x="15" y="24" width="1" height="1" fill="#080808"/><rect x="18" y="24" width="1" height="1" fill="#080808"/><rect x="21" y="24" width="1" height="1" fill="#080808"/><rect x="24" y="24" width="1" height="1" fill="#080808"/>
+                  <rect x="8" y="26" width="1" height="1" fill="#080808"/><rect x="10" y="26" width="1" height="1" fill="#080808"/><rect x="13" y="26" width="1" height="1" fill="#080808"/><rect x="16" y="26" width="1" height="1" fill="#080808"/><rect x="19" y="26" width="1" height="1" fill="#080808"/><rect x="22" y="26" width="1" height="1" fill="#080808"/><rect x="25" y="26" width="1" height="1" fill="#080808"/>
+                </svg>
+                <div class="org-qr-code" id="op-qr-code">VB-4K9X2M</div>
+                <div class="org-qr-tier" id="op-qr-tier">Early Bird · RAWDEO 2</div>
+              </div>
+              <div>
+                <div class="org-qr-status" id="op-qr-status-text"></div>
+                <div class="org-qr-meta" id="op-qr-meta"></div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gray2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Acciones del QR</div>
+                <div class="org-act-row">
+                  <button class="org-act-btn">↓ Download QR</button>
+                  <button class="org-act-btn gray">✉ Resend by email</button>
+                  <button class="org-act-btn gray" id="op-burn-btn">🔥 Burn manually</button>
+                  <button class="org-act-btn red">✕ Void ticket</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- HISTORIAL -->
+        <div class="org-card">
+          <div class="org-card-head">
+            <div class="org-card-title">Purchase history</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gray2);" id="op-hist-count"></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="org-table">
+              <thead><tr><th>Event</th><th>Ticket type</th><th>Code</th><th>Total</th><th>Method</th><th>Date</th><th>QR</th></tr></thead>
+              <tbody id="op-hist-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPLIMENTARY ── -->
+    <div class="org-section" id="org-sec-cortesias">
+      <div class="org-card" style="margin-bottom:12px;">
+        <div class="org-card-head"><div class="org-card-title">Generate new batch of complimentary tickets</div></div>
+        <div class="org-card-body">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gray2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Select your ticket</div>
+          <div class="org-tier-tabs" style="margin-bottom:16px;">
+            <div class="org-tier-tab on"><div class="org-tier-tab-dot" style="background:var(--green);"></div>Tier 1</div>
+            <div class="org-tier-tab"><div class="org-tier-tab-dot" style="background:#ffb800;"></div>Tier 2</div>
+            <div class="org-tier-tab"><div class="org-tier-tab-dot" style="background:#ff6b35;"></div>VIP</div>
+            <div class="org-tier-tab"><div class="org-tier-tab-dot" style="background:#4488ff;"></div>Early Bird<span class="org-so">SOLD OUT</span></div>
+          </div>
+          <div class="org-cort-panel">
+            <div class="org-cort-title">New batch</div>
+            <div class="org-slider-row">
+              <div class="org-slider-label">Quantity (1–50)</div>
+              <input type="range" min="1" max="50" value="20" style="flex:1;accent-color:var(--green);" oninput="document.getElementById('org-slider-num').textContent=this.value"/>
+              <div class="org-slider-num" id="org-slider-num">20</div>
+            </div>
+            <div class="org-cort-row">
+              <input class="org-cort-input" type="text" placeholder="Label (e.g. Staff, Press, Sponsor, Artists)"/>
+              <button class="org-gen-btn">Generate PDF →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="org-card">
+        <div class="org-card-head"><div class="org-card-title">Generated complimentary tickets</div></div>
+        <div style="overflow-x:auto;">
+          <table class="org-table">
+            <thead><tr><th>Label</th><th>Tier</th><th>Qty</th><th>Generated</th><th>Used</th><th>Generated by</th><th></th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--white);">Staff RAWDEO 2026</td><td><span class="org-badge ob-t1">Tier 1</span></td><td>30</td><td>Mar 10</td><td style="color:var(--green);">12 / 30</td><td style="color:var(--gray2);">Matías E.</td><td><div class="org-icon-cell"><button class="org-act-btn gray" style="font-size:9px;padding:4px 8px;">↓ PDF</button><button class="org-act-btn red" style="font-size:9px;padding:4px 8px;">Void</button></div></td></tr>
+              <tr><td style="color:var(--white);">Press</td><td><span class="org-badge ob-vip">VIP</span></td><td>10</td><td>Mar 12</td><td style="color:var(--green);">3 / 10</td><td style="color:var(--gray2);">Alberto E.</td><td><div class="org-icon-cell"><button class="org-act-btn gray" style="font-size:9px;padding:4px 8px;">↓ PDF</button><button class="org-act-btn red" style="font-size:9px;padding:4px 8px;">Void</button></div></td></tr>
+              <tr><td style="color:var(--white);">Guest artists</td><td><span class="org-badge ob-vip">VIP</span></td><td>5</td><td>Mar 15</td><td style="color:var(--green);">0 / 5</td><td style="color:var(--gray2);">Matías E.</td><td><div class="org-icon-cell"><button class="org-act-btn gray" style="font-size:9px;padding:4px 8px;">↓ PDF</button><button class="org-act-btn red" style="font-size:9px;padding:4px 8px;">Void</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ORGANIZER LOGIN -->
+<div class="org-login-overlay show" id="org-login-overlay">
+  <div class="org-login-card">
+    <div class="org-login-icon">🎛️</div>
+    <div class="org-login-title">Organizer Panel</div>
+    <div class="org-login-sub">Enter your access code</div>
+    <input class="org-login-input" type="password" id="org-pin-input" placeholder="Access code" onkeydown="if(event.key==='Enter')checkOrgPin()"/>
+    <button class="org-login-btn" onclick="checkOrgPin()">ACCESS</button>
+    <div class="org-login-error" id="org-login-error">Incorrect code. Try again.</div>
+    <button class="org-login-cancel" onclick="closeOrgLogin()">Cancel</button>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG DATA ───
+var RAWDEO_B64 = "public/images/rawdeo.jpg";
+var QR_B64 = "public/images/qr.svg";
+
+var MANSITA_B64 = "public/images/mansita.jpg";
+var KARLO_B64 = "public/images/karlo.jpg";
+var RETANA_B64 = "public/images/retana.jpg";
+
+var EVENTS = {
+  mansita:{name:"MANSITA",sub:"Apr 4 · JW Marriott Guanacaste",date:"April 4, 2026",place:"JW Marriott Guanacaste Beach",price:10,priceCRC:5000,isMansita:true,
+    tiers:[
+      {id:"mansita-vibes",  name:"Mansita Vibes",    price:10,  priceCRC:5000,  capacity:200, sold:124, color:"#39ff14"},
+      {id:"mansita-vip",    name:"Mansita VIP",      price:20,  priceCRC:10000, capacity:50,  sold:38,  color:"#ffb800"},
+      {id:"mansita-cortesia",name:"Complimentary",        price:0,   priceCRC:0,     capacity:30,  sold:8,   color:"#ff6b35"}
+    ]
+  },
+  rawdeo:{name:"RAWDEO 2",sub:"Jun 6 · Pedregal · Karlo & Retana",date:"June 6, 2026",place:"Pedregal Event Center",price:20,priceCRC:10000,isRawdeo:true,
+    tiers:[
+      {id:"raw-earlybird",  name:"Raw Fitness Early Bird", price:20,  priceCRC:10000, capacity:200, sold:200, color:"#4488ff", soldout:true},
+      {id:"raw-tier1",      name:"Raw Fitness Tier 1",     price:40,  priceCRC:20000, capacity:400, sold:287, color:"#39ff14"},
+      {id:"raw-tier2",      name:"Raw Fitness Tier 2",     price:50,  priceCRC:25000, capacity:400, sold:142, color:"#ffb800"},
+      {id:"raw-vip",        name:"Raw Fitness VIP",        price:75,  priceCRC:37500, capacity:100, sold:61,  color:"#ff6b35"},
+      {id:"raw-cortesia",   name:"Complimentary",               price:0,   priceCRC:0,     capacity:50,  sold:18,  color:"#888"}
+    ]
+  },
+  noche:{name:"BLUE NIGHT CR",sub:"Jul 12 · San José",date:"Jul 12, 2026",place:"San José",price:35,priceCRC:17500,isRawdeo:false,
+    tiers:[
+      {id:"noche-general",  name:"General",   price:35, priceCRC:17500, capacity:300, sold:89,  color:"#39ff14"},
+      {id:"noche-vip",      name:"VIP",       price:65, priceCRC:32500, capacity:80,  sold:22,  color:"#ffb800"}
+    ]
+  },
+  golden:{name:"GOLDEN HOUR",sub:"Aug 2 · Guanacaste",date:"Aug 2, 2026",place:"Guanacaste",price:80,priceCRC:40000,isRawdeo:false,
+    tiers:[
+      {id:"golden-general", name:"General",   price:80,  priceCRC:40000, capacity:200, sold:44, color:"#39ff14"},
+      {id:"golden-vip",     name:"VIP Table", price:150, priceCRC:75000, capacity:30,  sold:12, color:"#ffb800"}
+    ]
+  },
+  underground:{name:"UNDERGROUND CR",sub:"Sep 19 · Escazú",date:"Sep 19, 2026",place:"Escazú",price:25,priceCRC:12500,isRawdeo:false,
+    tiers:[
+      {id:"ug-general",     name:"General",   price:25, priceCRC:12500, capacity:400, sold:67, color:"#39ff14"}
+    ]
+  },
+  salsa:{name:"LATIN FEVER",sub:"Oct 4 · Heredia",date:"Oct 4, 2026",place:"Heredia",price:30,priceCRC:15000,isRawdeo:false,
+    tiers:[
+      {id:"salsa-general",  name:"General",   price:30, priceCRC:15000, capacity:300, sold:38, color:"#39ff14"},
+      {id:"salsa-vip",      name:"VIP",       price:55, priceCRC:27500, capacity:50,  sold:11, color:"#ffb800"}
+    ]
+  },
+  fitness:{name:"RAW OPEN BOX",sub:"Nov 8 · San José",date:"Nov 8, 2026",place:"San José",price:20,priceCRC:10000,isRawdeo:false,
+    tiers:[
+      {id:"fit-general",    name:"General",   price:20, priceCRC:10000, capacity:200, sold:28, color:"#39ff14"}
+    ]
+  },
+  nye:{name:"NYE GALA 2026",sub:"Dec 31 · San José",date:"Dec 31, 2026",place:"San José",price:120,priceCRC:60000,isRawdeo:false,
+    tiers:[
+      {id:"nye-general",    name:"General",   price:120, priceCRC:60000, capacity:200, sold:55, color:"#39ff14"},
+      {id:"nye-vip",        name:"VIP",       price:200, priceCRC:100000, capacity:50, sold:18, color:"#ffb800"},
+      {id:"nye-table",      name:"Table x4",  price:700, priceCRC:350000, capacity:20, sold:7,  color:"#ff6b35"}
+    ]
+  },
+};
+
+// ─── ORGANIZER FUNCTIONS ───
+// ─── ORGANIZER DASHBOARD JS ───
+var ORG_PIN = "ORG2026";
+var orgLoggedIn = false;
+
+function initOrgDash() {
+  document.getElementById('org-dash-avatar').textContent = 'JS';
+  document.getElementById('org-dash-username').textContent = 'Jenny Saborio · RAW';
+  renderOrgHourlyChart();
+  orgRenderBuyers(ORG_BUYERS);
+  orgRenderTierDetail('eb');
+}
+function orgShowSection(sec, el) {
+  document.querySelectorAll('.org-section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.org-nav-item').forEach(function(n){ n.classList.remove('on'); });
+  document.getElementById('org-sec-' + sec).classList.add('active');
+  el.classList.add('on');
+  if (sec === 'tiers') orgRenderTierDetail('eb');
+  if (sec === 'buyers') orgRenderBuyers(ORG_BUYERS);
+}
+function renderOrgHourlyChart() {
+  var data = [0,0,0,0,1,3,6,10,15,20,25,30];
+  var max = 30;
+  var el = document.getElementById('org-hourly-chart');
+  if (!el) return;
+  var html = '';
+  data.forEach(function(v) {
+    var h = max > 0 ? Math.round((v/max)*100) : 3;
+    html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">';
+    html += '<div style="width:100%;border-radius:2px 2px 0 0;background:' + (v===max?'var(--green)':'var(--bg4)') + ';min-height:4px;height:'+Math.max(h,4)+'%;"></div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+var ORG_TIERS = {
+  eb:{name:'Early Bird',color:'#4488ff',sold:200,cap:200,price:20,fee:5,soldout:true,
+    daily:[8,12,18,22,30,25,20,18,15,10,8,6,4,3,1],
+    hourly:[0,0,0,0,0,2,5,8,12,18,22,28,20,15,10,8,5,4,3,2],
+    payMethods:[{n:'SINPE',p:52,c:'var(--green)'},{n:'Tarjeta',p:31,c:'#4488ff'},{n:'Apple Pay',p:17,c:'var(--gray)'}],
+    buyers:[
+      {name:'María Herrera',email:'maria.h@gmail.com',code:'VB-4K9X2M',pay:'SINPE',date:'Mar 20',used:false},
+      {name:'Luis Mora',email:'luismora@outlook.com',code:'VB-7RT2KL',pay:'Card',date:'Mar 19',used:false},
+      {name:'Andrea Vega',email:'andrea.vega@icloud.com',code:'VB-9MN4PQ',pay:'Apple Pay',date:'Mar 18',used:true}]},
+  t1:{name:'Tier 1',color:'#39ff14',sold:287,cap:400,price:40,fee:5,soldout:false,
+    daily:[5,8,12,15,20,25,28,30,32,28,24,20,18,15,12],
+    hourly:[0,0,0,1,3,6,10,15,20,25,30,28,22,18,15,12],
+    payMethods:[{n:'SINPE',p:58,c:'var(--green)'},{n:'Tarjeta',p:28,c:'#4488ff'},{n:'Google Pay',p:14,c:'#ffb800'}],
+    buyers:[
+      {name:'Diego Castro',email:'dcastro88@gmail.com',code:'VB-2XC7RS',pay:'SINPE',date:'Mar 17',used:false},
+      {name:'José Pérez',email:'jperez2026@gmail.com',code:'VB-5DF8WQ',pay:'Card',date:'Mar 15',used:true},
+      {name:'Sofía Jiménez',email:'sofi.j@gmail.com',code:'VB-3PL9QR',pay:'SINPE',date:'Mar 14',used:false}]},
+  t2:{name:'Tier 2',color:'#ffb800',sold:142,cap:400,price:50,fee:5,soldout:false,
+    daily:[2,3,5,6,8,10,12,14,12,10,9,8,7,6,5],
+    hourly:[0,0,0,0,1,3,5,8,12,15,18,16,12,10,8],
+    payMethods:[{n:'Tarjeta',p:48,c:'#4488ff'},{n:'SINPE',p:40,c:'var(--green)'},{n:'Apple Pay',p:12,c:'var(--gray)'}],
+    buyers:[
+      {name:'Roberto Arias',email:'robarias@gmail.com',code:'VB-8WX4TM',pay:'Card',date:'Mar 16',used:false},
+      {name:'Camila Torres',email:'camilat@icloud.com',code:'VB-6NB2KP',pay:'SINPE',date:'Mar 13',used:false}]},
+  vip:{name:'VIP',color:'#ff6b35',sold:61,cap:100,price:75,fee:5,soldout:false,
+    daily:[1,2,2,3,4,5,6,5,5,4,4,3,3,3,2],
+    hourly:[0,0,0,0,1,2,3,4,5,6,7,6,5,4,4],
+    payMethods:[{n:'Apple Pay',p:45,c:'var(--gray)'},{n:'Tarjeta',p:40,c:'#4488ff'},{n:'SINPE',p:15,c:'var(--green)'}],
+    buyers:[
+      {name:'Andrés Mora',email:'andres.m@gmail.com',code:'VB-1VQ7SW',pay:'Apple Pay',date:'Mar 18',used:false},
+      {name:'Valeria Soto',email:'vale.soto@outlook.com',code:'VB-4ZR8NL',pay:'Card',date:'Mar 12',used:true}]},
+  crt:{name:'Complimentary',color:'#555',sold:18,cap:50,price:0,fee:0,soldout:false,
+    daily:[0,0,0,0,0,5,0,0,8,0,0,5,0,0,0],
+    hourly:[0,0,0,0,0,0,0,5,0,0,8,0,0,5,0,0],
+    payMethods:[{n:'N/A',p:100,c:'var(--gray2)'}],
+    buyers:[{name:'Karla Salas',email:'ksalas@hotmail.com',code:'VB-CRT-017',pay:'—',date:'Mar 16',used:false}]}
+};
+function orgShowTier(key,el){
+  document.querySelectorAll('#org-sec-tiers .org-tier-tab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+  orgRenderTierDetail(key);
+}
+function orgRenderTierDetail(key){
+  var t=ORG_TIERS[key];
+  var pct=Math.round(t.sold/t.cap*100);
+  var avail=t.cap-t.sold;
+  var gross=t.sold*t.price;
+  var feeTotal=t.sold*t.fee;
+  var net=gross-feeTotal;
+  var maxD=Math.max.apply(null,t.daily)||1;
+  var maxH=Math.max.apply(null,t.hourly)||1;
+  var html='<div class="org-stat-grid">';
+  html+='<div class="org-stat"><div class="org-stat-label">Sold</div><div class="org-stat-val green">'+t.sold+'</div><div class="org-stat-sub">de '+t.cap+' capacity</div><div class="org-stat-prog"><div class="org-stat-prog-fill" style="width:'+pct+'%;background:'+t.color+'"></div></div></div>';
+  html+='<div class="org-stat"><div class="org-stat-label">Available</div><div class="org-stat-val '+(avail===0?'red':'')+'">'+avail+'</div><div class="org-stat-sub">'+(avail===0?'<span style="color:#ff4444">Sold out</span>':pct+'% sold')+'</div></div>';
+  html+='<div class="org-stat"><div class="org-stat-label">Price</div><div class="org-stat-val">'+(t.price===0?'Free':'$'+t.price)+'</div><div class="org-stat-sub">+ $'+t.fee+' fee VIBE.</div></div>';
+  html+='<div class="org-stat"><div class="org-stat-label">Gross revenue</div><div class="org-stat-val green">'+(t.price===0?'—':'$'+gross.toLocaleString())+'</div></div>';
+  html+='<div class="org-stat"><div class="org-stat-label">VIBE. fee</div><div class="org-stat-val" style="font-size:16px;color:var(--gray);">'+(t.price===0?'—':'$'+feeTotal.toLocaleString())+'</div></div>';
+  html+='<div class="org-stat"><div class="org-stat-label">Organizer net</div><div class="org-stat-val green">'+(t.price===0?'—':'$'+net.toLocaleString())+'</div></div>';
+  html+='</div>';
+  html+='<div class="org-charts-grid">';
+  // Bar chart
+  html+='<div class="org-chart-box"><div class="org-chart-title">Sales by day (first 15 days)</div><div class="org-bar-chart">';
+  t.daily.forEach(function(v){var h=Math.round((v/maxD)*100);html+='<div class="org-bc-col"><div class="org-bc-bar" style="height:'+Math.max(h,3)+'%;background:'+t.color+';opacity:'+(h>0?'0.85':'0.2')+'"></div></div>';});
+  html+='</div><div style="display:flex;justify-content:space-between;font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--gray2);margin-top:4px;"><span>Day 1</span><span>Day 15</span></div></div>';
+  // Line chart
+  var w=200,lh=55,pts=t.hourly.length;
+  var polyPts=t.hourly.map(function(v,i){return ((i/(pts-1))*w)+','+(lh-(v/maxH)*(lh-4));}).join(' ');
+  var fillArr=t.hourly.map(function(v,i){return ((i/(pts-1))*w)+','+(lh-(v/maxH)*(lh-4));});
+  fillArr.unshift('0,'+lh);fillArr.push(w+','+lh);
+  html+='<div class="org-chart-box"><div class="org-chart-title">Distribution by hour (today)</div>';
+  html+='<svg viewBox="0 0 '+w+' '+lh+'" preserveAspectRatio="none" style="width:100%;height:55px;display:block;">';
+  html+='<polygon points="'+fillArr.join(' ')+'" fill="'+t.color+'" opacity="0.1"/>';
+  html+='<polyline points="'+polyPts+'" fill="none" stroke="'+t.color+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  html+='</svg><div style="display:flex;justify-content:space-between;font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--gray2);margin-top:4px;"><span>00:00</span><span>12:00</span><span>23:59</span></div></div>';
+  // Donut
+  var r=28,cx=32,cy=32,circ=2*Math.PI*r,dash=(t.sold/t.cap)*circ;
+  html+='<div class="org-chart-box"><div class="org-chart-title">Capacity used</div><div class="org-donut-wrap">';
+  html+='<svg width="64" height="64" viewBox="0 0 64 64" style="flex-shrink:0;"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--bg4)" stroke-width="8"/><circle cx="32" cy="32" r="28" fill="none" stroke="'+t.color+'" stroke-width="8" stroke-dasharray="'+dash.toFixed(1)+' '+circ+'" stroke-dashoffset="'+(circ/4).toFixed(1)+'" stroke-linecap="round"/><text x="32" y="33" text-anchor="middle" dominant-baseline="middle" fill="'+t.color+'" font-size="11" font-family="JetBrains Mono" font-weight="700">'+pct+'%</text></svg>';
+  html+='<div><div class="org-dl-item"><div class="org-dl-dot" style="background:'+t.color+'"></div><span>Sold</span><span style="margin-left:8px;color:var(--gray);">'+t.sold+'</span></div>';
+  html+='<div class="org-dl-item"><div class="org-dl-dot" style="background:var(--bg4);border:1px solid var(--border)"></div><span>Available</span><span style="margin-left:8px;color:var(--gray);">'+avail+'</span></div>';
+  html+='<div class="org-dl-item" style="border-top:1px solid var(--border);padding-top:5px;margin-top:3px;"><span style="color:var(--gray);">Total '+t.cap+'</span></div></div></div></div>';
+  // Payments
+  html+='<div class="org-chart-box"><div class="org-chart-title">Payment methods</div>';
+  t.payMethods.forEach(function(p){html+='<div class="org-pay-bar-row"><div class="org-pay-label">'+p.n+'</div><div class="org-pay-bar-bg"><div class="org-pay-bar-fill" style="width:'+p.p+'%;background:'+p.c+'"></div></div><div class="org-pay-pct">'+p.p+'%</div></div>';});
+  html+='</div></div>';
+  // Actions
+  html+='<div class="org-act-row">';
+  if(!t.soldout) html+='<button class="org-act-btn">⬡ Generate complimentary</button>';
+  html+='<button class="org-act-btn gray">↓ CSV this tier</button>';
+  if(!t.soldout) html+='<button class="org-act-btn gray">+ Increase capacity</button>';
+  html+='</div>';
+  if(!t.soldout){
+    html+='<div class="org-cort-panel"><div class="org-cort-title">Generate complimentary — '+t.name+'</div>';
+    html+='<div class="org-slider-row"><div class="org-slider-label">Quantity (1–50)</div><input type="range" min="1" max="50" value="10" style="flex:1;accent-color:var(--green);" oninput="this.nextElementSibling.textContent=this.value"/><div class="org-slider-num">10</div></div>';
+    html+='<div class="org-cort-row"><input class="org-cort-input" type="text" placeholder="Label (e.g. Staff, Press, Sponsor)"/><button class="org-gen-btn">Generate PDF →</button></div></div>';
+  }
+  html+='<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--gray2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Buyers — '+t.name+'</div>';
+  html+='<div style="overflow-x:auto;"><table class="org-table"><thead><tr><th>Buyer</th><th>Code</th><th>Method</th><th>Date</th><th>QR</th><th></th></tr></thead><tbody>';
+  t.buyers.forEach(function(b){
+    var initials=b.name.split(' ').slice(0,2).map(function(n){return n[0];}).join('');
+    var bid=ORG_BUYERS.find(function(x){return x.email===b.email;});
+    var bid2=bid?bid.id:'';
+    html+='<tr><td><div class="org-buyer-cell"><div class="org-avatar" style="background:'+t.color+'22;color:'+t.color+';">'+initials+'</div><div><div class="org-buyer-name">'+b.name+'</div><div class="org-buyer-email">'+b.email+'</div></div></div></td>';
+    html+='<td><span class="org-mono">'+b.code+'</span></td>';
+    html+='<td>'+b.pay+'</td><td>'+b.date+'</td>';
+    html+='<td><span class="org-badge '+(b.used?'ob-used':'ob-ok')+'">'+(b.used?'Used':'Valid')+'</span></td>';
+    html+='<td><button class="org-view-btn" onclick="orgOpenFromTier(\''+bid2+'\')">View profile →</button></td></tr>';
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('org-tier-detail').innerHTML=html;
+}
+function orgOpenFromTier(id){
+  if(!id) return;
+  // switch to buyers tab
+  document.querySelectorAll('.org-nav-item').forEach(function(n){n.classList.remove('on');});
+  document.querySelectorAll('.org-section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.org-nav-item')[2].classList.add('on');
+  document.getElementById('org-sec-buyers').classList.add('active');
+  orgRenderBuyers(ORG_BUYERS);
+  orgOpenProfile(id);
+}
+var ORG_BUYERS=[
+  {id:'USR-00847',name:'María Herrera',email:'maria.h@gmail.com',tel:'+506 8844-2291',since:'Mar 1, 2026',color:'rgba(68,136,255,.15)',textColor:'#4488ff',
+   tickets:[{event:'RAWDEO 2',tier:'Early Bird',code:'VB-4K9X2M',total:'$25',method:'SINPE',date:'Mar 20',used:false,badge:'ob-eb'}],
+   totalSpent:'$25',totalTickets:1,totalEvents:1,favPay:'SINPE'},
+  {id:'USR-00291',name:'Luis Mora',email:'luismora@outlook.com',tel:'+506 6612-5503',since:'Feb 14, 2026',color:'rgba(57,255,20,.1)',textColor:'#39ff14',
+   tickets:[{event:'RAWDEO 2',tier:'Tier 1',code:'VB-7RT2KL',total:'$45',method:'Tarjeta',date:'Mar 19',used:false,badge:'ob-t1'},{event:'MANSITA',tier:'VIP',code:'VB-9PL2QR',total:'$25',method:'SINPE',date:'Feb 20',used:true,badge:'ob-vip'}],
+   totalSpent:'$70',totalTickets:2,totalEvents:2,favPay:'Card'},
+  {id:'USR-00412',name:'Andrea Vega',email:'andrea.vega@icloud.com',tel:'+506 7055-8821',since:'Mar 5, 2026',color:'rgba(255,107,53,.1)',textColor:'#ff6b35',
+   tickets:[{event:'RAWDEO 2',tier:'VIP',code:'VB-9MN4PQ',total:'$80',method:'Apple Pay',date:'Mar 18',used:true,badge:'ob-vip'}],
+   totalSpent:'$80',totalTickets:1,totalEvents:1,favPay:'Apple Pay'},
+  {id:'USR-00538',name:'Diego Castro',email:'dcastro88@gmail.com',tel:'+506 8391-4470',since:'Jan 28, 2026',color:'rgba(255,184,0,.1)',textColor:'#ffb800',
+   tickets:[{event:'RAWDEO 2',tier:'Tier 2',code:'VB-2XC7RS',total:'$55',method:'SINPE',date:'Mar 17',used:false,badge:'ob-t2'},{event:'MANSITA',tier:'Mansita Vibes',code:'VB-5KX9LP',total:'$15',method:'SINPE',date:'Feb 10',used:true,badge:'ob-t1'}],
+   totalSpent:'$70',totalTickets:2,totalEvents:2,favPay:'SINPE'},
+  {id:'USR-00177',name:'Karla Salas',email:'ksalas@hotmail.com',tel:'+506 8762-1193',since:'Mar 8, 2026',color:'rgba(136,136,136,.1)',textColor:'#888',
+   tickets:[{event:'RAWDEO 2',tier:'Complimentary',code:'VB-CRT-017',total:'Free',method:'—',date:'Mar 16',used:false,badge:'ob-crt'}],
+   totalSpent:'$0',totalTickets:1,totalEvents:1,favPay:'—'},
+  {id:'USR-00093',name:'José Pérez',email:'jperez2026@gmail.com',tel:'+506 7019-3342',since:'Dec 20, 2025',color:'rgba(57,255,20,.1)',textColor:'#39ff14',
+   tickets:[{event:'RAWDEO 2',tier:'Tier 1',code:'VB-5DF8WQ',total:'$45',method:'Tarjeta',date:'Mar 15',used:true,badge:'ob-t1'},{event:'NYE GALA',tier:'General',code:'VB-3MQ7PR',total:'$125',method:'Tarjeta',date:'Dec 22',used:true,badge:'ob-eb'}],
+   totalSpent:'$170',totalTickets:2,totalEvents:2,favPay:'Card'}
+];
+function orgRenderBuyers(list){
+  var html='';
+  list.forEach(function(b){
+    if(!b.tickets || !b.tickets.length) return;
+    var initials=b.name.split(' ').slice(0,2).map(function(n){return n[0];}).join('');
+    var t=b.tickets[0];
+    html+='<tr style="cursor:pointer;" onclick="orgOpenProfile(\''+b.id+'\')">';
+    html+='<td><div class="org-buyer-cell"><div class="org-avatar" style="background:'+b.color+';color:'+b.textColor+';">'+initials+'</div><div><div class="org-buyer-name">'+b.name+'</div><div class="org-buyer-email">'+b.email+'</div></div></div></td>';
+    html+='<td>'+b.tel.replace('+506 ','')+'</td>';
+    html+='<td><span class="org-badge '+t.badge+'">'+t.tier+'</span></td>';
+    html+='<td><span class="org-mono">'+t.code+'</span></td>';
+    html+='<td>'+t.method+'</td><td>'+t.date+'</td>';
+    html+='<td><span class="org-badge '+(t.used?'ob-used':'ob-ok')+'">'+(t.used?'Used':'Valid')+'</span></td>';
+    html+='<td><button class="org-view-btn" onclick="event.stopPropagation();orgOpenProfile(\''+b.id+'\')">View profile →</button></td>';
+    html+='</tr>';
+  });
+  var tbody=document.getElementById('org-buyers-tbody');
+  if(tbody) tbody.innerHTML=html;
+}
+function orgFilterBuyers(q){
+  if(!q){orgRenderBuyers(ORG_BUYERS);return;}
+  var f=ORG_BUYERS.filter(function(b){
+    return b.name.toLowerCase().includes(q.toLowerCase())||b.email.toLowerCase().includes(q.toLowerCase())||
+    b.tickets.some(function(t){return t.code.toLowerCase().includes(q.toLowerCase());});
+  });
+  orgRenderBuyers(f);
+}
+function orgOpenProfile(id){
+  var b=ORG_BUYERS.find(function(x){return x.id===id;});
+  if(!b || !b.tickets || !b.tickets.length) return;
+  var initials=b.name.split(' ').slice(0,2).map(function(n){return n[0];}).join('');
+  var t=b.tickets[0];
+  document.getElementById('op-avatar').textContent=initials;
+  document.getElementById('op-avatar').style.background=b.color;
+  document.getElementById('op-avatar').style.color=b.textColor;
+  document.getElementById('op-name').textContent=b.name;
+  document.getElementById('op-id').textContent=b.id+' · Member since '+b.since;
+  document.getElementById('op-tier-badge').textContent='🎫 '+t.tier;
+  document.getElementById('op-pay-badge').textContent='💳 '+b.favPay;
+  document.getElementById('op-date-badge').textContent='📅 '+t.date;
+  document.getElementById('op-spent').textContent=b.totalSpent;
+  document.getElementById('op-tickets').textContent=b.totalTickets;
+  document.getElementById('op-events').textContent=b.totalEvents;
+  document.getElementById('op-fav-pay').textContent=b.favPay;
+  document.getElementById('op-email').textContent=b.email;
+  document.getElementById('op-tel').textContent=b.tel;
+  document.getElementById('op-since').textContent=b.since;
+  document.getElementById('op-qr-code').textContent=t.code;
+  document.getElementById('op-qr-tier').textContent=t.tier+' · RAWDEO 2';
+  if(t.used){
+    document.getElementById('op-qr-status-text').innerHTML='<span style="color:#ff4444;font-weight:700;">✕ QR BURNED</span>';
+    document.getElementById('op-qr-meta').textContent='Scanned Jun 6, 2026 · 21:14 · Staff iPhone';
+    document.getElementById('op-qr-status-badge').innerHTML='<span class="org-badge ob-sold">USED</span>';
+    var bb=document.getElementById('op-burn-btn'); if(bb) bb.style.display='none';
+  } else {
+    document.getElementById('op-qr-status-text').innerHTML='<span style="color:var(--green);font-weight:700;">✓ QR VALID</span>';
+    document.getElementById('op-qr-meta').textContent='Not yet scanned · Ready to enter the event';
+    document.getElementById('op-qr-status-badge').innerHTML='<span class="org-badge ob-ok">VALID</span>';
+    var bb2=document.getElementById('op-burn-btn'); if(bb2) bb2.style.display='flex';
+  }
+  var histHtml='';
+  b.tickets.forEach(function(tk){
+    histHtml+='<tr><td style="color:var(--white);">'+tk.event+'</td>';
+    histHtml+='<td><span class="org-badge '+tk.badge+'">'+tk.tier+'</span></td>';
+    histHtml+='<td><span class="org-mono">'+tk.code+'</span></td>';
+    histHtml+='<td style="color:var(--green);">'+tk.total+'</td>';
+    histHtml+='<td>'+tk.method+'</td><td>'+tk.date+'</td>';
+    histHtml+='<td><span class="org-badge '+(tk.used?'ob-used':'ob-ok')+'">'+(tk.used?'Used':'Valid')+'</span></td></tr>';
+  });
+  document.getElementById('op-hist-tbody').innerHTML=histHtml;
+  document.getElementById('op-hist-count').textContent=b.tickets.length+' purchase'+(b.tickets.length>1?'s':'');
+  document.getElementById('org-list-wrap').classList.add('hide');
+  document.getElementById('org-profile-wrap').classList.add('show');
+}
+function orgBackToList(){
+  document.getElementById('org-list-wrap').classList.remove('hide');
+  document.getElementById('org-profile-wrap').classList.remove('show');
+}
+function submitOrgRequest(){
+  alert('Request sent! The VIBE. team will contact you within 24 hours.');
+}
+
+// ─── AUTH OVERRIDES ───
+// ─── ORGANIZER AUTH (standalone) ───
+function checkOrgPin(){
+  var val = document.getElementById('org-pin-input').value.trim();
+  if(val === ORG_PIN){
+    orgLoggedIn = true;
+    document.getElementById('org-login-overlay').classList.remove('show');
+    document.getElementById('org-main').style.display = 'block';
+    initOrgDash();
+  } else {
+    document.getElementById('org-login-error').classList.add('show');
+    document.getElementById('org-pin-input').value = '';
+    document.getElementById('org-pin-input').focus();
+  }
+}
+function closeOrgLogin(){
+  window.location.href = '../vibe-v5.html';
+}
+function orgLogout(){
+  orgLoggedIn = false;
+  document.getElementById('org-main').style.display = 'none';
+  document.getElementById('org-login-overlay').classList.add('show');
+  setTimeout(function(){ document.getElementById('org-pin-input').focus(); }, 100);
+}
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(function(){ document.getElementById('org-pin-input').focus(); }, 100);
+});
+</script>
+</body>
+</html>

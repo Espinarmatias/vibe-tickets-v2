@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VIBE. — Sales Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,300&family=Unbounded:wght@900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/styles.css"/>
+</head>
+<body>
+
+<!-- ════ CEO SALES DASHBOARD ════ -->
+<div class="dash-page" id="dash-main" style="display:none">
+<div class="dash-page">
+    <div class="dash-topbar">
+      <div class="dash-topbar-left">
+        <div class="dash-eyebrow">Organizer Panel</div>
+        <div class="dash-title">SALES DASHBOARD</div>
+        <div class="dash-subtitle">Real-time tracking · VIBE. Costa Rica</div>
+      </div>
+      <div class="dash-topbar-right">
+        <select class="dash-event-select" onchange="dashFilterEvent(this.value)" id="dash-event-filter">
+          <option value="all">All Events</option>
+          <option value="rawdeo">RAWDEO 2</option>
+          <option value="noche">BLUE NIGHT CR</option>
+          <option value="golden">GOLDEN HOUR</option>
+          <option value="underground">UNDERGROUND CR</option>
+          <option value="salsa">LATIN FEVER</option>
+          <option value="fitness">RAW OPEN BOX</option>
+          <option value="nye">NYE GALA 2026</option>
+        </select>
+        <button class="dash-export-btn" onclick="exportCSV()">↓ Export CSV</button>
+      </div>
+    </div>
+    <div class="dash-body">
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Revenue</div>
+          <div class="kpi-value green" id="kpi-revenue">$0</div>
+          <div class="kpi-change up" id="kpi-rev-change">↑ Live tracking</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tickets Sold</div>
+          <div class="kpi-value" id="kpi-tickets">0</div>
+          <div class="kpi-change neutral" id="kpi-tix-change">— of 1,200 capacity</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">VIBE. Net Revenue</div>
+          <div class="kpi-value green" id="kpi-net">$0</div>
+          <div class="kpi-change neutral">$5 service fee / ticket</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Capacity Used</div>
+          <div class="kpi-value" id="kpi-capacity">0%</div>
+          <div class="kpi-change warn" id="kpi-cap-warn">— remaining</div>
+        </div>
+      </div>
+
+      <!-- CHART + TOP EVENTS -->
+      <div class="dash-main-grid">
+        <div class="dash-chart-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">Sales Over Time</div>
+            <div class="dash-card-tabs">
+              <button class="dash-tab on" onclick="switchChart('daily',this)">Daily</button>
+              <button class="dash-tab" onclick="switchChart('weekly',this)">Weekly</button>
+              <button class="dash-tab" onclick="switchChart('cumul',this)">Cumulative</button>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-bars" id="chart-bars"></div>
+          </div>
+        </div>
+        <div class="dash-side-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">Top Events</div>
+          </div>
+          <div id="top-events-list"></div>
+        </div>
+      </div>
+
+      <!-- TABLE + BREAKDOWN -->
+      <div class="dash-bottom-grid">
+        <div class="dash-table-card">
+          <div class="dash-table-header">
+            <div class="dash-card-title">Recent Transactions</div>
+            <input class="dash-search" type="text" placeholder="Search buyer, code..." oninput="searchTable(this.value)" id="dash-search-input"/>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th class="sort" onclick="sortTable('code')">Code ↕</th>
+                  <th class="sort" onclick="sortTable('event')">Event ↕</th>
+                  <th>Buyer</th>
+                  <th class="sort" onclick="sortTable('amount')">Amount ↕</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th class="sort" onclick="sortTable('date')">Date ↕</th>
+                </tr>
+              </thead>
+              <tbody id="dash-table-body"></tbody>
+            </table>
+          </div>
+          <div class="dash-pagination">
+            <div class="dash-pag-info" id="pag-info">Showing 1–10 of 0</div>
+            <div class="dash-pag-btns" id="pag-btns"></div>
+          </div>
+        </div>
+
+        <div class="dash-breakdown-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">Payment Methods</div>
+          </div>
+          <div id="payment-breakdown"></div>
+          <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+            <div class="dash-card-title" style="margin-bottom:16px;">Avg. Order Value</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--green);" id="avg-order">$0</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:1px;margin-top:4px;">per transaction · all events</div>
+          </div>
+          <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+            <div class="dash-card-title" style="margin-bottom:16px;">Quick Stats</div>
+            <div id="quick-stats"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIER TABLES SECTION -->
+      <div style="margin-top:24px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+          <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div class="dash-card-title">Sales by Tier / Ticket Type</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="dash-tier-event-tabs">
+              <button class="dash-tab on" onclick="showTierTable('rawdeo',this)" style="font-size:10px;">RAWDEO 2</button>
+              <button class="dash-tab" onclick="showTierTable('mansita',this)" style="font-size:10px;">MANSITA</button>
+              <button class="dash-tab" onclick="showTierTable('noche',this)" style="font-size:10px;">BLUE NIGHT</button>
+              <button class="dash-tab" onclick="showTierTable('golden',this)" style="font-size:10px;">GOLDEN HOUR</button>
+            </div>
+          </div>
+          <div id="tier-tables-container" style="overflow-x:auto;">
+            <table class="dash-table" style="width:100%;">
+              <thead>
+                <tr>
+                  <th>Tier / Ticket</th>
+                  <th style="text-align:center;">Price</th>
+                  <th style="text-align:center;">Sold</th>
+                  <th style="text-align:center;">Available</th>
+                  <th style="text-align:center;">Capacity</th>
+                  <th style="text-align:right;">Revenue</th>
+                  <th style="text-align:center;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="tier-table-body"></tbody>
+              <tfoot id="tier-table-foot"></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CEO LOGIN MODAL -->
+<div class="dash-login-overlay show" id="dash-login-overlay">
+  <div class="dash-login-card">
+    <div class="dash-login-icon">🔐</div>
+    <div class="dash-login-title">VIBE. TEAM</div>
+    <div class="dash-login-sub">Enter your access code to view the sales dashboard</div>
+    <input class="dash-login-input" type="password" id="dash-pin-input" placeholder="Enter access code" onkeydown="if(event.key==='Enter')checkDashPin()"/>
+    <button class="dash-login-btn" onclick="checkDashPin()">ACCESS DASHBOARD</button>
+    <div class="dash-login-error" id="dash-login-error">Incorrect access code. Try again.</div>
+    <button class="dash-login-cancel" onclick="closeDashLogin()">Cancel</button>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG DATA ───
+var RAWDEO_B64 = "public/images/rawdeo.jpg";
+var QR_B64 = "public/images/qr.svg";
+
+var MANSITA_B64 = "public/images/mansita.jpg";
+var KARLO_B64 = "public/images/karlo.jpg";
+var RETANA_B64 = "public/images/retana.jpg";
+
+var EVENTS = {
+  mansita:{name:"MANSITA",sub:"Apr 4 · JW Marriott Guanacaste",date:"April 4, 2026",place:"JW Marriott Guanacaste Beach",price:10,priceCRC:5000,isMansita:true,
+    tiers:[
+      {id:"mansita-vibes",  name:"Mansita Vibes",    price:10,  priceCRC:5000,  capacity:200, sold:124, color:"#39ff14"},
+      {id:"mansita-vip",    name:"Mansita VIP",      price:20,  priceCRC:10000, capacity:50,  sold:38,  color:"#ffb800"},
+      {id:"mansita-cortesia",name:"Complimentary",        price:0,   priceCRC:0,     capacity:30,  sold:8,   color:"#ff6b35"}
+    ]
+  },
+  rawdeo:{name:"RAWDEO 2",sub:"Jun 6 · Pedregal · Karlo & Retana",date:"June 6, 2026",place:"Pedregal Event Center",price:20,priceCRC:10000,isRawdeo:true,
+    tiers:[
+      {id:"raw-earlybird",  name:"Raw Fitness Early Bird", price:20,  priceCRC:10000, capacity:200, sold:200, color:"#4488ff", soldout:true},
+      {id:"raw-tier1",      name:"Raw Fitness Tier 1",     price:40,  priceCRC:20000, capacity:400, sold:287, color:"#39ff14"},
+      {id:"raw-tier2",      name:"Raw Fitness Tier 2",     price:50,  priceCRC:25000, capacity:400, sold:142, color:"#ffb800"},
+      {id:"raw-vip",        name:"Raw Fitness VIP",        price:75,  priceCRC:37500, capacity:100, sold:61,  color:"#ff6b35"},
+      {id:"raw-cortesia",   name:"Complimentary",               price:0,   priceCRC:0,     capacity:50,  sold:18,  color:"#888"}
+    ]
+  },
+  noche:{name:"BLUE NIGHT CR",sub:"Jul 12 · San José",date:"Jul 12, 2026",place:"San José",price:35,priceCRC:17500,isRawdeo:false,
+    tiers:[
+      {id:"noche-general",  name:"General",   price:35, priceCRC:17500, capacity:300, sold:89,  color:"#39ff14"},
+      {id:"noche-vip",      name:"VIP",       price:65, priceCRC:32500, capacity:80,  sold:22,  color:"#ffb800"}
+    ]
+  },
+  golden:{name:"GOLDEN HOUR",sub:"Aug 2 · Guanacaste",date:"Aug 2, 2026",place:"Guanacaste",price:80,priceCRC:40000,isRawdeo:false,
+    tiers:[
+      {id:"golden-general", name:"General",   price:80,  priceCRC:40000, capacity:200, sold:44, color:"#39ff14"},
+      {id:"golden-vip",     name:"VIP Table", price:150, priceCRC:75000, capacity:30,  sold:12, color:"#ffb800"}
+    ]
+  },
+  underground:{name:"UNDERGROUND CR",sub:"Sep 19 · Escazú",date:"Sep 19, 2026",place:"Escazú",price:25,priceCRC:12500,isRawdeo:false,
+    tiers:[
+      {id:"ug-general",     name:"General",   price:25, priceCRC:12500, capacity:400, sold:67, color:"#39ff14"}
+    ]
+  },
+  salsa:{name:"LATIN FEVER",sub:"Oct 4 · Heredia",date:"Oct 4, 2026",place:"Heredia",price:30,priceCRC:15000,isRawdeo:false,
+    tiers:[
+      {id:"salsa-general",  name:"General",   price:30, priceCRC:15000, capacity:300, sold:38, color:"#39ff14"},
+      {id:"salsa-vip",      name:"VIP",       price:55, priceCRC:27500, capacity:50,  sold:11, color:"#ffb800"}
+    ]
+  },
+  fitness:{name:"RAW OPEN BOX",sub:"Nov 8 · San José",date:"Nov 8, 2026",place:"San José",price:20,priceCRC:10000,isRawdeo:false,
+    tiers:[
+      {id:"fit-general",    name:"General",   price:20, priceCRC:10000, capacity:200, sold:28, color:"#39ff14"}
+    ]
+  },
+  nye:{name:"NYE GALA 2026",sub:"Dec 31 · San José",date:"Dec 31, 2026",place:"San José",price:120,priceCRC:60000,isRawdeo:false,
+    tiers:[
+      {id:"nye-general",    name:"General",   price:120, priceCRC:60000, capacity:200, sold:55, color:"#39ff14"},
+      {id:"nye-vip",        name:"VIP",       price:200, priceCRC:100000, capacity:50, sold:18, color:"#ffb800"},
+      {id:"nye-table",      name:"Table x4",  price:700, priceCRC:350000, capacity:20, sold:7,  color:"#ff6b35"}
+    ]
+  },
+};
+
+var tickets = [];
+var currentEvent = "rawdeo";
+var payM = "card";
+
+// ─── DASHBOARD FUNCTIONS ───
+// Seed data — mix of real purchases + simulated historical data
+var SEED_BUYERS = ["Carlos M.","Ana G.","Diego R.","Sofia L.","Pablo V.","Maria J.","Luis C.","Valeria P.","Andres T.","Camila F.","Roberto S.","Isabella N.","Fernando K.","Daniela W.","Miguel A.","Laura E.","Juan B.","Gabriela O.","Ricardo H.","Natalia Q.","Eduardo Z.","Monica Y.","Alejandro X.","Patricia U."];
+var SEED_EVENTS = ["rawdeo","rawdeo","rawdeo","mansita","rawdeo","rawdeo","noche","golden","underground","salsa","fitness","nye","rawdeo","mansita","noche"];
+var METHODS = ["card","card","sinpe","sinpe","apple"];
+
+function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function randEl(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function fmtDate(d){var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return months[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
+
+// Generate seed transactions
+var allTransactions = [];
+var now = new Date();
+for(var i=0;i<87;i++){
+  var evKey = randEl(SEED_EVENTS);
+  var ev = EVENTS[evKey];
+  var q = randInt(1,4);
+  var m = randEl(METHODS);
+  var d = new Date(now - randInt(0,30)*86400000 - randInt(0,86400000));
+  var amt = m==="sinpe" ? "₡"+((q*ev.priceCRC)).toLocaleString() : "$"+(q*ev.price);
+  allTransactions.push({
+    code:"VB-"+Math.random().toString(36).substring(2,8).toUpperCase(),
+    event:evKey,
+    eventName:ev.name,
+    buyer:randEl(SEED_BUYERS),
+    qty:q,
+    amount:q*ev.price,
+    amountStr:amt,
+    method:m,
+    status:"paid",
+    date:d,
+    dateStr:fmtDate(d)
+  });
+}
+
+var dashFilter = "all";
+var dashPage = 1;
+var dashPerPage = 10;
+var dashSort = {col:"date",dir:-1};
+var dashSearch = "";
+var chartMode = "daily";
+
+function getDashData(){
+  var txs = allTransactions.concat(tickets.map(function(t,i){
+    return {
+      code:t.code,
+      event: currentEvent,
+      eventName:t.ev,
+      buyer:"You",
+      qty:typeof t.qty==="string"?parseInt(t.qty):t.qty,
+      amount:typeof t.total==="string"?parseFloat(t.total.replace(/[^0-9.]/g,""))||0:t.total,
+      amountStr:t.total,
+      method:payM||"card",
+      status:"paid",
+      date:new Date(),
+      dateStr:fmtDate(new Date())
+    };
+  }));
+  if(dashFilter!=="all") txs=txs.filter(function(t){return t.event===dashFilter;});
+  if(dashSearch){
+    var s=dashSearch.toLowerCase();
+    txs=txs.filter(function(t){return t.code.toLowerCase().includes(s)||t.eventName.toLowerCase().includes(s)||t.buyer.toLowerCase().includes(s);});
+  }
+  return txs;
+}
+
+function updateKPIs(){
+  var txs=getDashData();
+  var totalRev=txs.reduce(function(s,t){return s+(t.amount||0);},0);
+  var totalTix=txs.reduce(function(s,t){return s+(t.qty||0);},0);
+  var vibeNet=txs.reduce(function(s,t){return s+(t.qty||0)*5;},0);
+  var cap=Math.round(totalTix/1200*100);
+  document.getElementById("kpi-revenue").textContent="$"+totalRev.toLocaleString();
+  document.getElementById("kpi-tickets").textContent=totalTix.toLocaleString();
+  document.getElementById("kpi-net").textContent="$"+vibeNet.toLocaleString();
+  document.getElementById("kpi-capacity").textContent=cap+"%";
+  document.getElementById("kpi-cap-warn").textContent=(1200-totalTix)+" remaining";
+  document.getElementById("kpi-tix-change").textContent="— of 1,200 capacity";
+  var avg=txs.length?Math.round(totalRev/txs.length):0;
+  document.getElementById("avg-order").textContent="$"+avg;
+  updateQuickStats(txs);
+}
+
+function updateQuickStats(txs){
+  var today=new Date(); today.setHours(0,0,0,0);
+  var todayTix=txs.filter(function(t){var d=new Date(t.date);d.setHours(0,0,0,0);return d.getTime()===today.getTime();});
+  var todayRev=todayTix.reduce(function(s,t){return s+t.amount;},0);
+  var el=document.getElementById("quick-stats");
+  el.innerHTML=[
+    {label:"Today\'s Sales",val:"$"+todayRev.toLocaleString()},
+    {label:"Today\'s Tickets",val:todayTix.reduce(function(s,t){return s+t.qty;},0)},
+    {label:"Total Transactions",val:txs.length},
+    {label:"Paid",val:txs.filter(function(t){return t.status==="paid";}).length},
+  ].map(function(r){
+    return "<div style=\"display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);\">"
+      +"<span style=\"font-size:12px;color:var(--gray);\">" + r.label + "</span>"
+      +"<span style=\"font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:700;\">" + r.val + "</span>"
+      +"</div>";
+  }).join("");
+}
+
+function updateChart(){
+  var txs=getDashData();
+  var bars=document.getElementById("chart-bars");
+  if(!bars)return;
+  var labels,values;
+  if(chartMode==="daily"){
+    var days=[];
+    for(var i=13;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
+    labels=days.map(function(d){var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return m[d.getMonth()]+d.getDate();});
+    values=days.map(function(d){
+      var ds=d.toDateString();
+      return txs.filter(function(t){return new Date(t.date).toDateString()===ds;}).reduce(function(s,t){return s+t.amount;},0);
+    });
+  } else if(chartMode==="weekly"){
+    var weeks=["6w ago","5w ago","4w ago","3w ago","2w ago","Last wk","This wk"];
+    labels=weeks;
+    values=weeks.map(function(_,i){
+      var start=new Date();start.setDate(start.getDate()-(6-i)*7);
+      var end=new Date(start);end.setDate(end.getDate()+7);
+      return txs.filter(function(t){var d=new Date(t.date);return d>=start&&d<end;}).reduce(function(s,t){return s+t.amount;},0);
+    });
+  } else {
+    var sorted=txs.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+    var cum=0;labels=[];values=[];
+    sorted.forEach(function(t,i){cum+=t.amount;if(i%8===0||i===sorted.length-1){labels.push("#"+(i+1));values.push(cum);}});
+    if(!labels.length){labels=["—"];values=[0];}
+  }
+  var maxV=Math.max.apply(null,values)||1;
+  bars.innerHTML=labels.map(function(lbl,i){
+    var pct=Math.round(values[i]/maxV*100);
+    var isActive=i===labels.length-1;
+    return "<div class=\"chart-bar-group\">"
+      +"<div class=\"chart-bar"+(isActive?" active":"")+"\" style=\"height:"+Math.max(pct,2)+"%;\"><div class=\"chart-bar-tooltip\">$"+values[i].toLocaleString()+"</div></div>"
+      +"<span class=\"chart-bar-lbl\">" + lbl + "</span>"
+      +"</div>";
+  }).join("");
+}
+
+function updateTopEvents(){
+  var txs=allTransactions.concat(tickets.map(function(t){return{event:currentEvent,qty:parseInt(t.qty)||1,amount:parseFloat((t.total||"0").replace(/[^0-9.]/g,""))||0};}));
+  var evMap={};
+  txs.forEach(function(t){
+    if(!evMap[t.event])evMap[t.event]={sold:0,rev:0};
+    evMap[t.event].sold+=t.qty||0;
+    evMap[t.event].rev+=t.amount||0;
+  });
+  var sorted=Object.keys(evMap).map(function(k){return{key:k,name:EVENTS[k]?EVENTS[k].name:k,sold:evMap[k].sold,rev:evMap[k].rev};}).sort(function(a,b){return b.sold-a.sold;});
+  var maxSold=sorted[0]?sorted[0].sold:1;
+  var el=document.getElementById("top-events-list");
+  el.innerHTML=sorted.slice(0,6).map(function(e,i){
+    var pct=Math.round(e.sold/maxSold*100);
+    return "<div class=\"dash-top-event\">"
+      +"<div class=\"dte-rank"+(i<3?" top":"")+"\">"+(i+1)+"</div>"
+      +"<div class=\"dte-info\"><div class=\"dte-name\">"+e.name+"</div><div class=\"dte-sold\">"+e.sold+" tickets · $"+e.rev.toLocaleString()+"</div></div>"
+      +"<div class=\"dte-bar-wrap\"><div class=\"dte-bar-bg\"><div class=\"dte-bar-fill\" style=\"width:"+pct+"%\"></div></div></div>"
+      +"</div>";
+  }).join("");
+}
+
+function updatePaymentBreakdown(){
+  var txs=getDashData();
+  var methods={card:{label:"Card",icon:"💳",color:"#39ff14",count:0},sinpe:{label:"SINPE",icon:"📱",color:"rgba(57,255,20,.6)",count:0},apple:{label:"Apple Pay",icon:"🍎",color:"rgba(255,255,255,.4)",count:0}};
+  txs.forEach(function(t){if(methods[t.method])methods[t.method].count++;});
+  var total=txs.length||1;
+  var el=document.getElementById("payment-breakdown");
+  el.innerHTML=Object.keys(methods).map(function(k){
+    var m=methods[k];
+    var pct=Math.round(m.count/total*100);
+    return "<div class=\"breakdown-row\">"
+      +"<div class=\"breakdown-icon\" style=\"background:rgba(255,255,255,.04);\">" + m.icon + "</div>"
+      +"<div class=\"breakdown-label\"><div class=\"breakdown-name\">" + m.label + "</div><div class=\"breakdown-count\">" + m.count + " transactions</div></div>"
+      +"<div class=\"breakdown-bar-wrap\"><div class=\"breakdown-bar-bg\"><div class=\"breakdown-bar-fill\" style=\"width:"+pct+"%;background:" + m.color + "\"></div></div></div>"
+      +"<div class=\"breakdown-pct\">" + pct + "%</div>"
+      +"</div>";
+  }).join("");
+}
+
+function updateTable(){
+  var txs=getDashData();
+  txs.sort(function(a,b){
+    var av=dashSort.col==="date"?new Date(a.date).getTime():dashSort.col==="amount"?a.amount:a[dashSort.col]||"";
+    var bv=dashSort.col==="date"?new Date(b.date).getTime():dashSort.col==="amount"?b.amount:b[dashSort.col]||"";
+    return dashSort.dir*(av>bv?1:av<bv?-1:0);
+  });
+  var total=txs.length;
+  var start=(dashPage-1)*dashPerPage;
+  var page=txs.slice(start,start+dashPerPage);
+  var tbody=document.getElementById("dash-table-body");
+  tbody.innerHTML=page.map(function(t){
+    var methodBadge=t.method==="sinpe"?"<span class=\"td-badge sinpe\">SINPE</span>":"<span class=\"td-badge card\">"+(t.method==="apple"?"🍎 Apple":"💳 Card")+"</span>";
+    var statusBadge="<span class=\"td-badge paid\">● Paid</span>";
+    return "<tr>"
+      +"<td><span class=\"td-code\">" + t.code + "</span></td>"
+      +"<td><span class=\"td-event\">" + t.eventName + "</span></td>"
+      +"<td style=\"color:var(--gray);font-size:12px;\">" + t.buyer + "</td>"
+      +"<td><span class=\"td-amount\">" + t.amountStr + "</span></td>"
+      +"<td>" + methodBadge + "</td>"
+      +"<td>" + statusBadge + "</td>"
+      +"<td style=\"color:var(--gray);font-size:11px;font-family:\'JetBrains Mono\',monospace;\">" + t.dateStr + "</td>"
+      +"</tr>";
+  }).join("");
+  document.getElementById("pag-info").textContent="Showing "+(total?start+1:0)+"–"+Math.min(start+dashPerPage,total)+" of "+total;
+  var totalPages=Math.ceil(total/dashPerPage)||1;
+  var pags="";
+  for(var p=1;p<=Math.min(totalPages,6);p++){
+    pags+="<button class=\"dash-pag-btn"+(p===dashPage?" on":"")+"\" onclick=\"dashSetPage("+p+")\">" + p + "</button>";
+  }
+  document.getElementById("pag-btns").innerHTML=pags;
+}
+
+function dashSetPage(p){dashPage=p;updateTable();}
+function dashFilterEvent(v){dashFilter=v;dashPage=1;updateKPIs();updateChart();updateTable();updatePaymentBreakdown();}
+function switchChart(mode,el){chartMode=mode;document.querySelectorAll(".dash-tab").forEach(function(t){t.classList.remove("on");});el.classList.add("on");updateChart();}
+function searchTable(v){dashSearch=v;dashPage=1;updateTable();}
+function sortTable(col){if(dashSort.col===col)dashSort.dir*=-1;else{dashSort.col=col;dashSort.dir=-1;}updateTable();}
+
+function exportCSV(){
+  var txs=getDashData();
+  var rows=["Code,Event,Buyer,Amount,Method,Status,Date"];
+  txs.forEach(function(t){rows.push([t.code,t.eventName,t.buyer,t.amountStr,t.method,t.status,t.dateStr].join(","));});
+  var blob=new Blob([rows.join("\n")],{type:"text/csv"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="vibe-sales-"+new Date().toISOString().slice(0,10)+".csv";
+  a.click();
+}
+
+function refreshDashboard(){
+  updateKPIs();
+  updateChart();
+  updateTopEvents();
+  updatePaymentBreakdown();
+  updateTable();
+  renderTierTable();
+}
+
+// ─── TIER TABLE ───
+// ─── TIER TABLE FOR DASHBOARD ───
+var currentTierEvent = "rawdeo";
+function showTierTable(evKey, btn) {
+  currentTierEvent = evKey;
+  document.querySelectorAll("#dash-tier-event-tabs .dash-tab").forEach(function(b){ b.classList.remove("on"); });
+  if (btn) btn.classList.add("on");
+  renderTierTable();
+}
+function renderTierTable() {
+  var ev = EVENTS[currentTierEvent];
+  if (!ev || !ev.tiers) return;
+  var tbody = document.getElementById("tier-table-body");
+  var tfoot = document.getElementById("tier-table-foot");
+  if (!tbody) return;
+  var totalSold = 0, totalRev = 0, totalCap = 0;
+  tbody.innerHTML = ev.tiers.map(function(t){
+    var avail = t.capacity - t.sold;
+    var pct = Math.round(t.sold / t.capacity * 100);
+    var rev = t.price * t.sold;
+    totalSold += t.sold; totalRev += rev; totalCap += t.capacity;
+    var statusBadge = (t.soldout || avail <= 0)
+      ? '<span style="background:rgba(255,68,68,.12);color:#ff4444;border:1px solid rgba(255,68,68,.2);font-size:8px;padding:2px 8px;border-radius:20px;font-family:\'JetBrains Mono\',monospace;">SOLD OUT</span>'
+      : (avail <= 20
+        ? '<span style="background:rgba(255,184,0,.1);color:#ffb800;border:1px solid rgba(255,184,0,.2);font-size:8px;padding:2px 8px;border-radius:20px;font-family:\'JetBrains Mono\',monospace;">FEW LEFT</span>'
+        : '<span style="background:rgba(57,255,20,.1);color:var(--green);border:1px solid rgba(57,255,20,.2);font-size:8px;padding:2px 8px;border-radius:20px;font-family:\'JetBrains Mono\',monospace;">ACTIVE</span>');
+    return "<tr>"
+      +"<td style='display:flex;align-items:center;gap:8px;padding:12px 16px;'>"
+        +"<div style='width:8px;height:8px;border-radius:50%;background:"+t.color+";flex-shrink:0'></div>"
+        +"<span style='font-family:\"Barlow Condensed\",sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;'>"+t.name+"</span>"
+      +"</td>"
+      +"<td style='text-align:center;color:var(--gray);font-family:\"JetBrains Mono\",monospace;font-size:11px;'>"+(t.price===0?"Free":"$"+t.price)+"</td>"
+      +"<td style='text-align:center;color:var(--green);font-family:\"Barlow Condensed\",sans-serif;font-size:16px;font-weight:900;'>"+t.sold+"</td>"
+      +"<td style='text-align:center;color:"+(avail<=0?"#ff4444":avail<=20?"#ffb800":"var(--gray)")+";font-family:\"JetBrains Mono\",monospace;font-size:11px;'>"+avail+"</td>"
+      +"<td style='text-align:center;padding:12px 16px;'>"
+        +"<div style='display:flex;align-items:center;gap:6px;justify-content:center;'>"
+          +"<div style='height:4px;width:60px;background:var(--bg4);border-radius:2px;overflow:hidden;'>"
+            +"<div style='height:4px;width:"+pct+"%;background:"+t.color+";border-radius:2px;'></div>"
+          +"</div>"
+          +"<span style='font-family:\"JetBrains Mono\",monospace;font-size:10px;color:var(--gray);min-width:28px;'>"+pct+"%</span>"
+        +"</div>"
+      +"</td>"
+      +"<td style='text-align:right;font-family:\"Barlow Condensed\",sans-serif;font-size:14px;font-weight:700;'>"+(t.price===0?"<span style='color:var(--gray)'>—</span>":"$"+rev.toLocaleString())+"</td>"
+      +"<td style='text-align:center;'>"+statusBadge+"</td>"
+      +"</tr>";
+  }).join("");
+  if (tfoot) {
+    tfoot.innerHTML = "<tr style='background:var(--bg3);border-top:1px solid var(--border);'>"
+      +"<td style='padding:10px 16px;font-family:\"Barlow Condensed\",sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;color:var(--white);'>TOTAL</td>"
+      +"<td></td>"
+      +"<td style='text-align:center;color:var(--green);font-family:\"Barlow Condensed\",sans-serif;font-size:16px;font-weight:900;'>"+totalSold+"</td>"
+      +"<td style='text-align:center;color:var(--gray);font-family:\"JetBrains Mono\",monospace;font-size:11px;'>"+(totalCap-totalSold)+"</td>"
+      +"<td style='text-align:center;font-family:\"JetBrains Mono\",monospace;font-size:10px;color:var(--gray);'>"+(Math.round(totalSold/totalCap*100))+"%</td>"
+      +"<td style='text-align:right;color:var(--green);font-family:\"Barlow Condensed\",sans-serif;font-size:16px;font-weight:900;'>$"+totalRev.toLocaleString()+"</td>"
+      +"<td></td>"
+      +"</tr>";
+  }
+}
+// Initialize tier table when dashboard opens
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){ if(document.getElementById("tier-table-body")) renderTierTable(); }, 100);
+});
+
+// ─── AUTH ───
+// ─── CEO DASHBOARD AUTH ───
+var DASH_PIN = "VIBE2026";
+var DASH_UNLOCKED = false;
+
+function openDashLogin(){
+  document.getElementById('dash-login-overlay').classList.add('show');
+  setTimeout(function(){ document.getElementById('dash-pin-input').focus(); }, 200);
+}
+function closeDashLogin(){
+  window.location.href = '../vibe-v5.html';
+}
+function checkDashPin(){
+  var val = document.getElementById('dash-pin-input').value.trim();
+  if(val === DASH_PIN){
+    DASH_UNLOCKED = true;
+    document.getElementById('dash-login-overlay').classList.remove('show');
+    document.getElementById('dash-main').style.display = 'block';
+    refreshDashboard();
+  } else {
+    document.getElementById('dash-login-error').classList.add('show');
+    document.getElementById('dash-pin-input').value = '';
+    document.getElementById('dash-pin-input').focus();
+    var card = document.querySelector('.dash-login-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'shake .3s ease';
+  }
+}
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(function(){ document.getElementById('dash-pin-input').focus(); }, 100);
+});
+</script>
+</body>
+</html>
