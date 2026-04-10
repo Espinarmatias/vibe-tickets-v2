@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#080808"/>
+<meta name="description" content="VIBE. — The #1 ticket platform in Costa Rica. Parties, concerts and unique events. Instant secure payments via card, SINPE Móvil, or Apple Pay."/>
 <title>VIBE. — Tickets Costa Rica</title>
+<!-- Preload Bulkside (splash + logo — used immediately) -->
+<link rel="preload" href="public/fonts/bulkside.otf" as="font" type="font/otf" crossorigin/>
+<!-- Preconnect Google Fonts to reduce latency -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,300&family=Unbounded:wght@900&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="css/styles.css"/>
 <script src="js/config.js"></script>
@@ -196,7 +202,7 @@
     <div class="events-grid fade-in fade-in-delay-1" id="events-grid-wrap">
       <!-- MANSITA SUNSET SESSIONS -->
       <div class="ev-card" onclick="openCheckout('mansita')" style="aspect-ratio:9/16;grid-row:span 2;">
-        <img class="ev-card-img" src="public/images/mansita.jpg" alt="Mansita Sunset Sessions" style="object-position:center top;"/>
+        <img class="ev-card-img" src="public/images/mansita.jpg" alt="Mansita Sunset Sessions" style="object-position:center top;" loading="lazy" decoding="async"/>
         <div class="ev-card-overlay"></div>
         <div class="ev-card-content">
           <div class="ev-card-tags">
@@ -216,7 +222,7 @@
       </div>
       <!-- RAWDEO 2 - Featured (spans 2 cols) -->
       <div class="ev-card" onclick="goPage('event-detail')">
-        <img class="ev-card-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2"/>
+        <img class="ev-card-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2" loading="lazy" decoding="async"/>
         <div class="ev-card-overlay"></div>
         <div class="ev-card-content">
           <div class="ev-card-tags">
@@ -394,7 +400,7 @@
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="public/images/logo.jpg" alt="VIBE."/>
+        <img src="public/images/logo.jpg" alt="VIBE." loading="lazy" decoding="async"/>
         <p class="footer-brand-sub">The #1 ticket platform in Costa Rica. Parties, concerts, and unique experiences — instant secure payments.</p>
       </div>
       <div>
@@ -445,7 +451,7 @@
 <!-- EVENT DETAIL PAGE -->
 <div class="page" id="pg-event-detail">
   <div class="ed-hero">
-    <img class="ed-hero-img" id="ed-hero-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2"/>
+    <img class="ed-hero-img" id="ed-hero-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2" loading="lazy" decoding="async"/>
     <div class="ed-hero-overlay"></div>
     <div class="ed-hero-content">
       <div class="ed-tags">
@@ -461,7 +467,7 @@
       <div id="ed-lineup-section">
       <div class="section-eyebrow">Confirmed artists</div>
       <div class="ed-dj-card fade-in">
-        <img class="ed-dj-img" src="public/images/karlo.jpg" alt="Karlo"/>
+        <img class="ed-dj-img" src="public/images/karlo.jpg" alt="Karlo" loading="lazy" decoding="async"/>
         <div>
           <div class="ed-dj-role">DJ · Main Set</div>
           <div class="ed-dj-name">KARLO</div>
@@ -469,7 +475,7 @@
         </div>
       </div>
       <div class="ed-dj-card fade-in fade-in-delay-1">
-        <img class="ed-dj-img" src="public/images/retana.jpg" alt="Retana"/>
+        <img class="ed-dj-img" src="public/images/retana.jpg" alt="Retana" loading="lazy" decoding="async"/>
         <div>
           <div class="ed-dj-role">DJ · Special Set</div>
           <div class="ed-dj-name">RETANA</div>
@@ -651,7 +657,7 @@
         <div class="suc-ticket-meta"><span id="suc-date">June 6, 2026</span> · <span id="suc-place">Pedregal Event Center</span></div>
       </div>
       <div class="suc-ticket-mid">
-        <div class="suc-qr"><img src="public/images/qr.svg" alt="QR" id="suc-qr"/></div>
+        <div class="suc-qr"><img src="public/images/qr.svg" alt="QR" id="suc-qr" loading="lazy" decoding="async"/></div>
         <div class="suc-info">
           <div class="suc-row"><span class="suc-k">Tickets</span><span class="suc-v" id="suc-qty">1</span></div>
           <div class="suc-row"><span class="suc-k">Total</span><span class="suc-v" id="suc-total">$45</span></div>

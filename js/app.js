@@ -42,6 +42,7 @@ function initFadeIns() {
 // ─── NAV SCROLL ──────────────────────────────────────────────────
 window.addEventListener("scroll", function() {
   var nav = document.getElementById("main-nav");
+  if (!nav) return;
   if (window.scrollY > 20) { nav.classList.add("scrolled"); }
   else { nav.classList.remove("scrolled"); }
 });
@@ -211,7 +212,8 @@ function updateLineup(ev) {
 // ─── QUANTITY ─────────────────────────────────────────────────────
 function chQ(d) {
   qty = Math.max(1, Math.min(10, qty + d));
-  document.getElementById("ed-q").textContent = qty;
+  var qEl = document.getElementById("ed-q");
+  if (qEl) qEl.textContent = qty;
   updTotals();
 }
 
@@ -230,6 +232,7 @@ function selPay(m, el) {
 // ─── PAY ──────────────────────────────────────────────────────────
 function doPay() {
   var btn = document.getElementById("ed-buy-btn");
+  if (!btn) return;
   btn.textContent = "⏳ Processing...";
   btn.disabled = true;
   setTimeout(function() {
@@ -341,8 +344,10 @@ function applyDiscount() {
 // ─── CURRENCY SELECTOR (organizer form) ───────────────────────────
 function selectCurrency(type) {
   document.querySelectorAll('.currency-opt').forEach(function(el){ el.classList.remove('on'); });
-  document.getElementById('curr-' + type).classList.add('on');
+  var curr = document.getElementById('curr-' + type);
+  if (curr) curr.classList.add('on');
   var detail = document.getElementById('currency-both-detail');
+  if (!detail) return;
   if (type === 'both') { detail.classList.add('show'); }
   else { detail.classList.remove('show'); }
 }
@@ -350,13 +355,17 @@ function selectCurrency(type) {
 
 // ─── MENU ─────────────────────────────────────────────────────────
 function toggleMenu() {
-  document.getElementById('menu-drawer').classList.toggle('open');
-  document.getElementById('menu-overlay').classList.toggle('show');
+  var d = document.getElementById('menu-drawer');
+  var o = document.getElementById('menu-overlay');
+  if (d) d.classList.toggle('open');
+  if (o) o.classList.toggle('show');
 }
 
 function closeMenu() {
-  document.getElementById('menu-drawer').classList.remove('open');
-  document.getElementById('menu-overlay').classList.remove('show');
+  var d = document.getElementById('menu-drawer');
+  var o = document.getElementById('menu-overlay');
+  if (d) d.classList.remove('open');
+  if (o) o.classList.remove('show');
 }
 
 
@@ -389,11 +398,13 @@ function submitLogin() {
 
 // ─── SUPPORT WIDGET ───────────────────────────────────────────────
 function openSupportChat() {
-  document.getElementById('support-panel').classList.add('show');
+  var p = document.getElementById('support-panel');
+  if (p) p.classList.add('show');
 }
 
 function toggleSupportPanel() {
-  document.getElementById('support-panel').classList.toggle('show');
+  var p = document.getElementById('support-panel');
+  if (p) p.classList.toggle('show');
 }
 
 function supportSelect(msg) {
@@ -514,12 +525,13 @@ function updateCardCountdowns() {
   Object.keys(eventDates).forEach(function(key) {
     var diff = eventDates[key].getTime() - now;
     var dEl  = document.getElementById('ev-cd-' + key + '-d');
-    if (!dEl) return;
+    var hEl  = document.getElementById('ev-cd-' + key + '-h');
+    var mEl  = document.getElementById('ev-cd-' + key + '-m');
+    var sEl  = document.getElementById('ev-cd-' + key + '-s');
+    if (!dEl || !hEl || !mEl || !sEl) return;
     if (diff <= 0) {
-      dEl.textContent = '00';
-      document.getElementById('ev-cd-' + key + '-h').textContent = '00';
-      document.getElementById('ev-cd-' + key + '-m').textContent = '00';
-      document.getElementById('ev-cd-' + key + '-s').textContent = '00';
+      dEl.textContent = '00'; hEl.textContent = '00';
+      mEl.textContent = '00'; sEl.textContent = '00';
       return;
     }
     var d = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -527,9 +539,9 @@ function updateCardCountdowns() {
     var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     var s = Math.floor((diff % (1000 * 60)) / 1000);
     dEl.textContent = String(d).padStart(2, '0');
-    document.getElementById('ev-cd-' + key + '-h').textContent = String(h).padStart(2, '0');
-    document.getElementById('ev-cd-' + key + '-m').textContent = String(m).padStart(2, '0');
-    document.getElementById('ev-cd-' + key + '-s').textContent = String(s).padStart(2, '0');
+    hEl.textContent = String(h).padStart(2, '0');
+    mEl.textContent = String(m).padStart(2, '0');
+    sEl.textContent = String(s).padStart(2, '0');
   });
 }
 setInterval(updateCardCountdowns, 1000);
