@@ -82,24 +82,6 @@ var QR_B64      = IMAGES.qr;
 
 var EVENTS = {
 
-  // ── MANSITA SUNSET SESSIONS ──────────────────────────────────
-  mansita: {
-    name:      "MANSITA",
-    sub:       "Apr 4 · JW Marriott Guanacaste",
-    date:      "April 4, 2026",
-    place:     "JW Marriott Guanacaste Beach",
-    price:     10,
-    priceCRC:  5000,
-    active:    true,
-    isMansita: true,
-    isRawdeo:  false,
-    tiers: [
-      { id:"mansita-vibes",    name:"Mansita Vibes",  price:10,  priceCRC:5000,  capacity:200, sold:124, color:"#39ff14", fee:3 },
-      { id:"mansita-vip",      name:"Mansita VIP",    price:20,  priceCRC:10000, capacity:50,  sold:38,  color:"#ffb800", fee:4 },
-      { id:"mansita-cortesia", name:"Complimentary",  price:0,   priceCRC:0,     capacity:30,  sold:8,   color:"#ff6b35", fee:0 },
-    ]
-  },
-
   // ── RAWDEO 2 — RAW FITNESS ───────────────────────────────────
   rawdeo: {
     name:      "RAWDEO 2",
@@ -117,107 +99,6 @@ var EVENTS = {
       { id:"raw-tier2",     name:"Raw Fitness Tier 2",     price:50,  priceCRC:25000, capacity:400, sold:142, color:"#ffb800",              fee:5 },
       { id:"raw-vip",       name:"Raw Fitness VIP",        price:75,  priceCRC:37500, capacity:100, sold:61,  color:"#ff6b35",              fee:5 },
       { id:"raw-cortesia",  name:"Complimentary",          price:0,   priceCRC:0,     capacity:50,  sold:18,  color:"#888",                 fee:0 },
-    ]
-  },
-
-  // ── BLUE NIGHT CR ────────────────────────────────────────────
-  noche: {
-    name:      "BLUE NIGHT CR",
-    sub:       "Jul 12 · San José",
-    date:      "Jul 12, 2026",
-    place:     "San José",
-    price:     35,
-    priceCRC:  17500,
-    active:    true,
-    isMansita: false,
-    isRawdeo:  false,
-    tiers: [
-      { id:"noche-general", name:"General", price:35, priceCRC:17500, capacity:300, sold:89,  color:"#39ff14", fee:5 },
-      { id:"noche-vip",     name:"VIP",     price:65, priceCRC:32500, capacity:80,  sold:22,  color:"#ffb800", fee:5 },
-    ]
-  },
-
-  // ── GOLDEN HOUR ──────────────────────────────────────────────
-  golden: {
-    name:      "GOLDEN HOUR",
-    sub:       "Aug 2 · Guanacaste",
-    date:      "Aug 2, 2026",
-    place:     "Guanacaste",
-    price:     80,
-    priceCRC:  40000,
-    active:    true,
-    isMansita: false,
-    isRawdeo:  false,
-    tiers: [
-      { id:"golden-general", name:"General",   price:80,  priceCRC:40000,  capacity:200, sold:44, color:"#39ff14", fee:5 },
-      { id:"golden-vip",     name:"VIP Table", price:150, priceCRC:75000,  capacity:30,  sold:12, color:"#ffb800", fee:5 },
-    ]
-  },
-
-  // ── UNDERGROUND CR ───────────────────────────────────────────
-  underground: {
-    name:      "UNDERGROUND CR",
-    sub:       "Sep 19 · Escazú",
-    date:      "Sep 19, 2026",
-    place:     "Escazú",
-    price:     25,
-    priceCRC:  12500,
-    active:    true,
-    isMansita: false,
-    isRawdeo:  false,
-    tiers: [
-      { id:"ug-general", name:"General", price:25, priceCRC:12500, capacity:400, sold:67, color:"#39ff14", fee:5 },
-    ]
-  },
-
-  // ── LATIN FEVER ──────────────────────────────────────────────
-  salsa: {
-    name:      "LATIN FEVER",
-    sub:       "Oct 4 · Heredia",
-    date:      "Oct 4, 2026",
-    place:     "Heredia",
-    price:     30,
-    priceCRC:  15000,
-    active:    true,
-    isMansita: false,
-    isRawdeo:  false,
-    tiers: [
-      { id:"salsa-general", name:"General", price:30, priceCRC:15000, capacity:300, sold:38,  color:"#39ff14", fee:5 },
-      { id:"salsa-vip",     name:"VIP",     price:55, priceCRC:27500, capacity:50,  sold:11,  color:"#ffb800", fee:5 },
-    ]
-  },
-
-  // ── RAW OPEN BOX ─────────────────────────────────────────────
-  fitness: {
-    name:      "RAW OPEN BOX",
-    sub:       "Nov 8 · San José",
-    date:      "Nov 8, 2026",
-    place:     "San José",
-    price:     20,
-    priceCRC:  10000,
-    active:    true,
-    isMansita: false,
-    isRawdeo:  false,
-    tiers: [
-      { id:"fit-general", name:"General", price:20, priceCRC:10000, capacity:200, sold:28, color:"#39ff14", fee:5 },
-    ]
-  },
-
-  // ── NYE GALA 2026 ─────────────────────────────────────────────
-  nye: {
-    name:      "NYE GALA 2026",
-    sub:       "Dec 31 · San José",
-    date:      "Dec 31, 2026",
-    place:     "San José",
-    price:     120,
-    priceCRC:  60000,
-    active:    true,
-    isMansita: false,
-    isRawdeo:  false,
-    tiers: [
-      { id:"nye-general", name:"General",  price:120, priceCRC:60000,  capacity:200, sold:55, color:"#39ff14", fee:5 },
-      { id:"nye-vip",     name:"VIP",      price:200, priceCRC:100000, capacity:50,  sold:18, color:"#ffb800", fee:5 },
-      { id:"nye-table",   name:"Table x4", price:700, priceCRC:350000, capacity:20,  sold:7,  color:"#ff6b35", fee:5 },
     ]
   },
 

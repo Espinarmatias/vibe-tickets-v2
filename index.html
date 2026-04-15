@@ -200,24 +200,11 @@
       <button class="cat" onclick="filterCat(this)">Electronic</button>
     </div>
     <div class="events-grid fade-in fade-in-delay-1" id="events-grid-wrap">
-      <!-- MANSITA SUNSET SESSIONS -->
-      <div class="ev-card" onclick="openCheckout('mansita')" style="aspect-ratio:9/16;grid-row:span 2;">
-        <img class="ev-card-img" src="public/images/mansita.jpg" alt="Mansita Sunset Sessions" style="object-position:center top;" loading="lazy" decoding="async"/>
-        <div class="ev-card-overlay"></div>
-        <div class="ev-card-content">
-          <div class="ev-card-tags">
-            <span class="ev-tag ev-tag-green">NEW</span>
-            <span class="ev-tag ev-tag-outline">SUNSET · ROOFTOP</span>
-          </div>
-          <div class="ev-card-name">MANSITA</div>
-          <div class="ev-card-meta" style="font-size:11px;opacity:.6;">SUNSET SESSIONS</div>
-          <div class="ev-card-meta">APR 4, 2026 · JW MARRIOTT GUANACASTE</div>
-          
-          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-mansita-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
-          <div class="ev-card-footer">
-            <div class="ev-card-price">$10</div>
-            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('mansita')">Buy now</button>
-          </div>
+      <!-- COMING SOON -->
+      <div class="ev-card" style="aspect-ratio:9/16;grid-row:span 2;cursor:default;">
+        <div class="ev-card-overlay" style="background:#0d0d0d;"></div>
+        <div class="ev-card-content" style="justify-content:center;align-items:center;">
+          <div style="color:#39ff14;font-size:11px;letter-spacing:.25em;font-weight:700;text-transform:uppercase;">Coming Soon</div>
         </div>
       </div>
       <!-- RAWDEO 2 - Featured (spans 2 cols) -->
@@ -240,86 +227,12 @@
           </div>
         </div>
       </div>
-      <!-- BLUE NIGHT CR -->
-      <div class="ev-card">
-        <div class="ev-card-placeholder"><span class="ev-placeholder-num">02</span></div>
-        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(0,30,80,.4) 100%);"></div>
-        <div class="ev-card-content">
-          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">ELECTRONIC · TECHNO</span></div>
-          <div class="ev-card-name">BLUE NIGHT CR</div>
-          <div class="ev-card-meta">JUL 12, 2026 · SAN JOSÉ</div>
-          
-          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-noche-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
-          <div class="ev-card-footer">
-            <div class="ev-card-price">$35</div>
-            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('noche')">Buy now</button>
-          </div>
-        </div>
-      </div>
-      <!-- GOLDEN HOUR -->
-      <div class="ev-card">
-        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#1a0a00,#3d1f00);"><span class="ev-placeholder-num">03</span></div>
-        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(80,40,0,.4) 100%);"></div>
-        <div class="ev-card-content">
-          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">FESTIVAL · HOUSE</span></div>
-          <div class="ev-card-name">GOLDEN HOUR</div>
-          <div class="ev-card-meta">AUG 2–3, 2026 · GUANACASTE</div>
-          
-          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-golden-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
-          <div class="ev-card-footer">
-            <div class="ev-card-price">$80</div>
-            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('golden')">Buy now</button>
-          </div>
-        </div>
-      </div>
-      <!-- UNDERGROUND CR -->
-      <div class="ev-card">
-        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#000,#0a0a1a);"><span class="ev-placeholder-num">04</span></div>
-        <div class="ev-card-overlay"></div>
-        <div class="ev-card-content">
-          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">ELECTRONIC</span></div>
-          <div class="ev-card-name">UNDERGROUND CR</div>
-          <div class="ev-card-meta">SEP 19, 2026 · ESCAZÚ</div>
-          
-          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-underground-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
-          <div class="ev-card-footer">
-            <div class="ev-card-price">$25</div>
-            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('underground')">Buy now</button>
-          </div>
-        </div>
-      </div>
-      <!-- LATIN FEVER -->
-      <div class="ev-card">
-        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#1a0000,#400010);"><span class="ev-placeholder-num">05</span></div>
-        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(80,0,20,.4) 100%);"></div>
-        <div class="ev-card-content">
-          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">SALSA · LATIN</span></div>
-          <div class="ev-card-name">LATIN FEVER</div>
-          <div class="ev-card-meta">OCT 4, 2026 · HEREDIA</div>
-          
-          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-salsa-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
-          <div class="ev-card-footer">
-            <div class="ev-card-price">$30</div>
-            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('salsa')">Buy now</button>
-          </div>
-        </div>
-      </div>
-      <!-- NYE GALA -->
-      <div class="ev-card">
-        <div class="ev-card-placeholder" style="background:linear-gradient(135deg,#0a0800,#2a2000);"><span class="ev-placeholder-num">06</span></div>
-        <div class="ev-card-overlay" style="background:linear-gradient(to top,rgba(8,8,8,.97) 0%,rgba(60,50,0,.4) 100%);"></div>
-        <div class="ev-card-content">
-          <div class="ev-card-tags"><span class="ev-tag ev-tag-outline">GALA · NEW YEAR</span></div>
-          <div class="ev-card-name">NYE GALA 2026</div>
-          <div class="ev-card-meta">DEC 31, 2026 · SAN JOSÉ</div>
-          
-          <div class="ev-card-cd"><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-d">--</span><span class="ev-cd-lbl">Days</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-h">--</span><span class="ev-cd-lbl">Hrs</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-m">--</span><span class="ev-cd-lbl">Min</span></div><span class="ev-cd-sep">:</span><div class="ev-cd-item"><span class="ev-cd-num" id="ev-cd-nye-s">--</span><span class="ev-cd-lbl">Sec</span></div></div>
-          <div class="ev-card-footer">
-            <div class="ev-card-price">$120</div>
-            <button class="ev-card-buy" onclick="event.stopPropagation();openCheckout('nye')">Buy now</button>
-          </div>
-        </div>
-      </div>
+      <!-- COMING SOON x5 -->
+      <div class="ev-card" style="cursor:default;"><div class="ev-card-overlay" style="background:#0d0d0d;"></div><div class="ev-card-content" style="justify-content:center;align-items:center;"><div style="color:#39ff14;font-size:11px;letter-spacing:.25em;font-weight:700;text-transform:uppercase;">Coming Soon</div></div></div>
+      <div class="ev-card" style="cursor:default;"><div class="ev-card-overlay" style="background:#0d0d0d;"></div><div class="ev-card-content" style="justify-content:center;align-items:center;"><div style="color:#39ff14;font-size:11px;letter-spacing:.25em;font-weight:700;text-transform:uppercase;">Coming Soon</div></div></div>
+      <div class="ev-card" style="cursor:default;"><div class="ev-card-overlay" style="background:#0d0d0d;"></div><div class="ev-card-content" style="justify-content:center;align-items:center;"><div style="color:#39ff14;font-size:11px;letter-spacing:.25em;font-weight:700;text-transform:uppercase;">Coming Soon</div></div></div>
+      <div class="ev-card" style="cursor:default;"><div class="ev-card-overlay" style="background:#0d0d0d;"></div><div class="ev-card-content" style="justify-content:center;align-items:center;"><div style="color:#39ff14;font-size:11px;letter-spacing:.25em;font-weight:700;text-transform:uppercase;">Coming Soon</div></div></div>
+      <div class="ev-card" style="cursor:default;"><div class="ev-card-overlay" style="background:#0d0d0d;"></div><div class="ev-card-content" style="justify-content:center;align-items:center;"><div style="color:#39ff14;font-size:11px;letter-spacing:.25em;font-weight:700;text-transform:uppercase;">Coming Soon</div></div></div>
     </div>
   </section>
 

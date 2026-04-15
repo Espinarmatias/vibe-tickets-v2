@@ -460,31 +460,22 @@ function submitOrgRequest() {
 function initFlyerCarousel() {
   var track = document.getElementById('flyer-track');
   if (!track) return;
+  var cs = { name:'COMING SOON', date:'', bg:'#0d0d0d', color:'#39ff14', useImg:'', comingSoon:true };
   var slides = [
-    { evKey:'rawdeo',      name:'RAWDEO 2',      date:'JUN 6 2026',  bg:'#0a1a05', color:'#39ff14', useImg:'rawdeo'  },
-    { evKey:'mansita',     name:'MANSITA',        date:'APR 4 2026',  bg:'#1a0a05', color:'#ffb800', useImg:'mansita' },
-    { evKey:'noche',       name:'BLUE NIGHT CR',  date:'JUL 12 2026', bg:'#05051a', color:'#4488ff', useImg:''        },
-    { evKey:'golden',      name:'GOLDEN HOUR',    date:'AUG 2 2026',  bg:'#1a1005', color:'#ffb800', useImg:''        },
-    { evKey:'underground', name:'UNDERGROUND CR', date:'SEP 19 2026', bg:'#0a0a1a', color:'#888',    useImg:''        },
-    { evKey:'salsa',       name:'LATIN FEVER',    date:'OCT 4 2026',  bg:'#1a0505', color:'#ff6b35', useImg:''        },
-    { evKey:'nye',         name:'NYE GALA 2026',  date:'DEC 31 2026', bg:'#0d0d0d', color:'#ffffff', useImg:''        }
+    { evKey:'rawdeo', name:'RAWDEO 2', date:'JUN 6 2026', bg:'#0a1a05', color:'#39ff14', useImg:'rawdeo' },
+    cs, cs, cs, cs, cs, cs
   ];
   var all  = slides.concat(slides);
   var frag = document.createDocumentFragment();
   all.forEach(function(s) {
     var div = document.createElement('div');
     div.className = 'flyer-slide';
-    div.setAttribute('data-ev', s.evKey);
+    if (s.evKey) div.setAttribute('data-ev', s.evKey);
     if (s.useImg === 'rawdeo' && typeof RAWDEO_B64 !== 'undefined') {
       var img = document.createElement('img');
       img.src = RAWDEO_B64; img.alt = s.name;
       img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
       div.appendChild(img);
-    } else if (s.useImg === 'mansita' && typeof MANSITA_B64 !== 'undefined') {
-      var img2 = document.createElement('img');
-      img2.src = MANSITA_B64; img2.alt = s.name;
-      img2.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-      div.appendChild(img2);
     } else {
       div.style.background     = s.bg;
       div.style.display        = 'flex';
@@ -494,30 +485,27 @@ function initFlyerCarousel() {
       div.style.gap            = '8px';
       var nm = document.createElement('div');
       nm.className = 'fp-name'; nm.style.color = s.color; nm.textContent = s.name;
-      var dt = document.createElement('div');
-      dt.className = 'fp-date'; dt.textContent = s.date;
       div.appendChild(nm);
-      div.appendChild(dt);
+      if (s.date) {
+        var dt = document.createElement('div');
+        dt.className = 'fp-date'; dt.textContent = s.date;
+        div.appendChild(dt);
+      }
     }
     frag.appendChild(div);
   });
   track.appendChild(frag);
   track.addEventListener('click', function(e) {
     var slide = e.target.closest('.flyer-slide');
-    if (slide) openCheckout(slide.getAttribute('data-ev'));
+    var evKey = slide && slide.getAttribute('data-ev');
+    if (evKey) openCheckout(evKey);
   });
 }
 
 
 // ─── EVENT CARD COUNTDOWNS ────────────────────────────────────────
 var eventDates = {
-  mansita:     new Date('April 4, 2026 20:00:00'),
   rawdeo:      new Date('June 6, 2026 20:00:00'),
-  noche:       new Date('Jul 12, 2026 20:00:00'),
-  golden:      new Date('Aug 2, 2026 20:00:00'),
-  underground: new Date('Sep 19, 2026 20:00:00'),
-  salsa:       new Date('Oct 4, 2026 20:00:00'),
-  nye:         new Date('Dec 31, 2026 20:00:00'),
 };
 
 function updateCardCountdowns() {
