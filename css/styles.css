@@ -477,7 +477,7 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
   nav{padding:0 20px;}
-  .hero-content{padding:140px 24px 60px;}
+  .hero-content{padding:116px 24px 60px;}
   .hero-globe-deco{width:240px;height:240px;right:-60px;opacity:.08;}
   .hero-stats-bar{display:none;}
   .hero-countdown{top:68px;right:16px;}
@@ -1039,12 +1039,18 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
   .nav-btn-primary{padding:7px 12px;font-size:12px;letter-spacing:.5px;}
 
   /* ── HERO ────────────────────────────────────────────────────── */
-  .hero-content{padding:120px 20px 48px;}
-  .hero-title{font-size:48px;letter-spacing:-2px;}
-  .hero-sub{font-size:13px;margin-bottom:28px;}
-  .hero-ctas{flex-direction:column;align-items:stretch;}
+  /* Use svh so iOS Safari chrome doesn't cut content */
+  .hero{min-height:100svh;}
+  /* Clear nav(60px) + ticker(~39px) = 99px at top, comfortable padding at bottom */
+  .hero-content{padding:116px 20px 52px;}
+  .hero-event-label{font-size:9px;letter-spacing:2px;margin-bottom:12px;}
+  .hero-title{font-size:52px;letter-spacing:-2px;margin-bottom:10px;}
+  .hero-ticket-cta{font-size:17px;margin-bottom:18px;}
+  .hero-sub{font-size:13px;margin-bottom:24px;max-width:100%;}
+  .hero-ctas{flex-direction:column;align-items:stretch;gap:10px;}
   .hero-ctas .btn-primary,
-  .hero-ctas .btn-ghost{width:100%;text-align:center;}
+  .hero-ctas .btn-ghost{width:100%;text-align:center;padding:13px 24px;}
+  .hero-globe-deco{display:none;}
   /* Hero countdown — clear conflicting left+right from 900px rule */
   .hero-countdown{left:0;right:0;top:72px;transform:none;padding:0 16px;width:100%;}
   .cd-save{font-size:13px;letter-spacing:3px;}
