@@ -21,7 +21,7 @@
   --radius:12px;
   --radius2:20px;
 }
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{background:var(--bg);color:var(--white);font-family:'Josefin Sans',sans-serif;overflow-x:hidden;}
 body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.018;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.03) 2px,rgba(255,255,255,.03) 4px);}
 
@@ -67,6 +67,9 @@ nav.scrolled{background:rgba(6,6,6,0.95);backdrop-filter:blur(20px);-webkit-back
 /* Hide center links on small screens */
 @media(max-width:768px){.nav-center{display:none;}.nav-btn:not(.nav-btn-primary):not(.nav-hamburger){display:none;}}
 
+
+/* Carousel scroll keyframe — used by #flyer-track inline animation */
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ─── HERO ─── */
 .hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#060606;}
