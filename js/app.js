@@ -535,18 +535,6 @@ function updateCardCountdowns() {
 setInterval(updateCardCountdowns, 1000);
 
 
-// ─── SPLASH ───────────────────────────────────────────────────────
-function enterSite() {
-  var splash = document.getElementById("splash");
-  if (!splash) return;
-  splash.classList.add("hide");
-  setTimeout(function(){ splash.style.display = "none"; }, 900);
-}
-// Auto-dismiss after 5 s if user doesn't click
-setTimeout(function() {
-  var splash = document.getElementById("splash");
-  if (splash && !splash.classList.contains("hide")) enterSite();
-}, 5000);
 
 
 // ─── INIT ─────────────────────────────────────────────────────────
