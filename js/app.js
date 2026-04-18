@@ -261,6 +261,14 @@ function doPay() {
       isRawdeo: ev.isRawdeo, isMansita: ev.isMansita
     });
 
+    // Update My Tickets list and nav badge immediately
+    renderTickets();
+    var badge = document.getElementById("menu-ticket-badge");
+    if (badge) {
+      badge.textContent = tickets.length;
+      badge.style.display = "inline-flex";
+    }
+
     var walletSection = document.getElementById("apple-wallet-section");
     if (walletSection) walletSection.style.display = "block";
 
