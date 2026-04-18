@@ -33,7 +33,7 @@
   </div>
   <div class="nav-right">
     <button class="nav-btn-primary" style="background:transparent;border:2px solid var(--green);color:var(--green);" onclick="goPage('organizer')">LIST YOUR EVENT</button>
-    <button class="nav-btn-primary" id="nav-buy-tickets-btn" onclick="goPage('home');setTimeout(function(){var s=document.getElementById('events-section');if(s)s.scrollIntoView({behavior:'smooth'});},50)">BUY TICKETS</button>
+    <button class="nav-btn-primary" id="nav-buy-tickets-btn" onclick="goPage('home');setTimeout(function(){var s=document.querySelector('#events-section, .events-section, #all-events');if(s)s.scrollIntoView({behavior:'smooth'});},100)">BUY TICKETS</button>
     <button class="nav-hamburger" onclick="toggleMenu()" id="nav-hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>

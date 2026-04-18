@@ -65,7 +65,7 @@ nav.scrolled{background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);-webkit-b
 .nav-btn-primary{background:var(--green);border:none;color:#080808;padding:9px 20px;border-radius:40px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s;text-transform:uppercase;}
 .nav-btn-primary:hover{background:#5a9940;transform:translateY(-1px);box-shadow:0 4px 20px var(--green-glow);}
 /* Hide center links on small screens */
-@media(max-width:768px){.nav-center{display:none;}.nav-btn:not(.nav-btn-primary):not(.nav-hamburger){display:none;}}
+@media(max-width:768px){nav{border-radius:0 !important;margin:0 !important;width:100% !important;}.nav-center{display:none;}.nav-btn:not(.nav-btn-primary):not(.nav-hamburger){display:none;}}
 @media(max-width:430px){
   .hero-title{font-size:62px;letter-spacing:-3.5px;}
   .hero-content{padding:80px 24px 56px;}
@@ -1085,6 +1085,7 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 @media(max-width:430px){
 
   /* ── NAV ─────────────────────────────────────────────────────── */
+  nav{border-radius:0 !important;margin:0 !important;width:100% !important;}
   .nav-btn-primary{padding:7px 12px;font-size:12px;letter-spacing:.5px;}
 
   /* ── HERO ────────────────────────────────────────────────────── */
