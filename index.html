@@ -339,112 +339,210 @@
 
 <!-- EVENT DETAIL PAGE -->
 <div class="page" id="pg-event-detail">
-  <div class="ed-hero">
-    <img class="ed-hero-img" id="ed-hero-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2" loading="lazy" decoding="async"/>
-    <div class="ed-hero-overlay"></div>
-    <div class="ed-hero-content">
-      <div class="ed-tags">
-        <span class="ev-tag ev-tag-green">SELLING OUT</span>
-        <span class="ev-tag ev-tag-outline">PARTY · ELECTRONIC</span>
-      </div>
-      <h1 class="ed-title" id="ed-hero-title">RAWDEO 2</h1>
-      <p class="ed-sub" id="ed-hero-sub">14th Anniversary · RAW FITNESS</p>
-    </div>
-  </div>
-  <div class="ed-body">
-    <div class="ed-left">
-      <div id="ed-lineup-section">
-      <div class="section-eyebrow">Confirmed artists</div>
-      <div class="ed-dj-card fade-in">
-        <img class="ed-dj-img" src="public/images/karlo.jpg" alt="Karlo" loading="lazy" decoding="async"/>
-        <div>
-          <div class="ed-dj-role">DJ · Main Set</div>
-          <div class="ed-dj-name">KARLO</div>
-          <div class="ed-dj-desc">One of the most recognized DJs in the Costa Rican electronic scene, known for his high-energy sets blending tech house and minimal.</div>
-        </div>
-      </div>
-      <div class="ed-dj-card fade-in fade-in-delay-1">
-        <img class="ed-dj-img" src="public/images/retana.jpg" alt="Retana" loading="lazy" decoding="async"/>
-        <div>
-          <div class="ed-dj-role">DJ · Special Set</div>
-          <div class="ed-dj-name">RETANA</div>
-          <div class="ed-dj-desc">With a unique style mixing deep grooves and hypnotic melodies, RETANA has conquered dance floors across Costa Rica.</div>
-        </div>
-      </div>
-      </div><!-- end lineup-section -->
-    </div>
-    <div class="ed-right">
-      <div class="ed-widget">
-        <div class="ed-widget-event" id="ed-widget-event-name">RAWDEO 2</div>
-        <div class="ed-widget-sub" id="ed-widget-sub-text">14TH ANNIVERSARY · RAW FITNESS</div>
-        <div class="ed-info-row"><span class="ed-info-k">Date</span><span class="ed-info-v" id="ed-info-date">June 6, 2026</span></div>
-        <div class="ed-info-row"><span class="ed-info-k">Venue</span><span class="ed-info-v" id="ed-info-place">Pedregal Event Center</span></div>
-        <div class="ed-info-row"><span class="ed-info-k">Time</span><span class="ed-info-v">8:00 PM</span></div>
+  <!-- Hidden JS hooks (updWidget populates these) -->
+  <span id="ed-widget-event-name" style="display:none">RAWDEO 2</span>
+  <span id="ed-widget-sub-text" style="display:none">14TH ANNIVERSARY · RAW FITNESS</span>
 
-        <!-- TIER SELECTOR -->
-        <div style="margin:20px 0 0;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:10px;">Select your ticket</div>
-          <div id="tier-selector" style="display:flex;flex-direction:column;gap:7px;"></div>
-        </div>
+  <div class="edv2-layout">
+    <!-- ── LEFT COLUMN ── -->
+    <div class="edv2-left">
+      <!-- Flyer image -->
+      <div class="edv2-img-wrap">
+        <img class="edv2-img" id="ed-hero-img" src="public/images/rawdeo.jpg" alt="RAWDEO 2" loading="lazy" decoding="async"/>
+      </div>
 
-        <div class="ed-price-row">
-          <div class="ed-price-val" id="ed-price">$20</div>
-          <div class="ed-price-note" id="ed-price-note">per ticket · incl. service fee</div>
-        </div>
-        <div class="ed-qty">
-          <span class="ed-qty-label">Tickets</span>
-          <div class="ed-qty-controls">
-            <button class="ed-qty-btn" onclick="chQ(-1)">−</button>
-            <span class="ed-qty-num" id="ed-q">1</span>
-            <button class="ed-qty-btn" onclick="chQ(1)">+</button>
+      <!-- Badges -->
+      <div class="edv2-badges">
+        <span class="edv2-badge-sell">Selling Out</span>
+        <span class="edv2-badge-tag">Party</span>
+        <span class="edv2-badge-tag">Electronic</span>
+      </div>
+
+      <!-- Title & subtitle -->
+      <h1 class="edv2-title" id="ed-hero-title">RAWDEO 2</h1>
+      <p class="edv2-subtitle" id="ed-hero-sub">14th Anniversary · RAW FITNESS</p>
+
+      <!-- Info grid -->
+      <div class="edv2-info-grid">
+        <div class="edv2-info-row"><span class="edv2-info-k">Date</span><span class="edv2-info-v" id="ed-info-date">June 6, 2026</span></div>
+        <div class="edv2-info-row"><span class="edv2-info-k">Time</span><span class="edv2-info-v">8:00 PM</span></div>
+        <div class="edv2-info-row edv2-info-row-last"><span class="edv2-info-k">Venue</span><span class="edv2-info-v" id="ed-info-place">Pedregal Event Center</span></div>
+      </div>
+
+      <!-- Countdown -->
+      <div class="edv2-cd-row">
+        <div class="edv2-cd-box"><span class="edv2-cd-num" id="ev-cd-rawdeo-d">--</span><span class="edv2-cd-lbl">Days</span></div>
+        <div class="edv2-cd-box"><span class="edv2-cd-num" id="ev-cd-rawdeo-h">--</span><span class="edv2-cd-lbl">Hrs</span></div>
+        <div class="edv2-cd-box"><span class="edv2-cd-num" id="ev-cd-rawdeo-m">--</span><span class="edv2-cd-lbl">Min</span></div>
+        <div class="edv2-cd-box"><span class="edv2-cd-num" id="ev-cd-rawdeo-s">--</span><span class="edv2-cd-lbl">Sec</span></div>
+      </div>
+
+      <!-- DJ Lineup (JS replaces innerHTML via updateLineup) -->
+      <div id="ed-lineup-section" class="edv2-lineup">
+        <div class="section-eyebrow">Confirmed artists</div>
+        <div class="ed-dj-card fade-in">
+          <img class="ed-dj-img" src="public/images/karlo.jpg" alt="Karlo" loading="lazy" decoding="async"/>
+          <div>
+            <div class="ed-dj-role">DJ · Main Set</div>
+            <div class="ed-dj-name">KARLO</div>
+            <div class="ed-dj-desc">One of the most recognized DJs in the Costa Rican electronic scene, known for his high-energy sets blending tech house and minimal.</div>
           </div>
         </div>
-        <div class="pay-methods">
-          <div class="pay-opt on" onclick="selPay('card',this)"><span class="pay-opt-icon">💳</span><span class="pay-opt-label">Card</span></div>
-          <div class="pay-opt" onclick="selPay('sinpe',this)"><span class="pay-opt-icon">📱</span><span class="pay-opt-label">SINPE</span></div>
-          <div class="pay-opt" onclick="selPay('apple',this)"><span class="pay-opt-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></span><span class="pay-opt-label">Apple Pay</span></div>
-          <div class="pay-opt" onclick="selPay('google',this)"><span class="pay-opt-icon">🔵</span><span class="pay-opt-label">Google Pay</span></div>
-        </div>
-        <div class="pay-panel show" id="pp-card">
-          <input class="pay-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19"/>
-          <div class="pay-row">
-            <input class="pay-input" type="text" placeholder="MM / YY" maxlength="5"/>
-            <input class="pay-input" type="text" placeholder="CVV" maxlength="4"/>
+        <div class="ed-dj-card fade-in fade-in-delay-1">
+          <img class="ed-dj-img" src="public/images/retana.jpg" alt="Retana" loading="lazy" decoding="async"/>
+          <div>
+            <div class="ed-dj-role">DJ · Special Set</div>
+            <div class="ed-dj-name">RETANA</div>
+            <div class="ed-dj-desc">With a unique style mixing deep grooves and hypnotic melodies, RETANA has conquered dance floors across Costa Rica.</div>
           </div>
-          <input class="pay-input" type="text" placeholder="Name on card"/>
-          <input class="pay-input" type="email" placeholder="your@email.com"/>
         </div>
-        <div class="pay-panel" id="pp-sinpe">
-          <input class="pay-input" type="tel" placeholder="Your SINPE number"/>
-          <input class="pay-input" type="email" placeholder="your@email.com"/>
-          <div class="pay-sinpe-info" id="sinpe-amt">📲 ₡10,000 → 7019-8460</div>
-        </div>
-        <div class="pay-panel" id="pp-apple">
-          <div class="pay-apple-inner"><div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div><div class="title">Apple Pay</div><div class="sub">Confirm with Face ID or Touch ID on your Apple device.</div></div>
-        </div>
-        <div class="pay-panel" id="pp-google">
-          <div class="pay-apple-inner"><div class="icon">🔵</div><div class="title">Google Pay</div><div class="sub">Confirm with your fingerprint or PIN on your Android device.</div></div>
-        </div>
-        <div id="discount-wrap" style="margin-bottom:12px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;">Discount code</div>
-          <div style="display:flex;gap:8px;">
-            <input class="pay-input" id="discount-input" type="text" placeholder="Enter code" style="flex:1;margin-bottom:0;text-transform:uppercase;letter-spacing:1px;"/>
-            <button onclick="applyDiscount()" style="background:var(--green);border:none;color:#080808;padding:0 16px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px;white-space:nowrap;">Apply</button>
-          </div>
-          <div id="discount-msg" style="font-size:10px;margin-top:4px;font-family:'JetBrains Mono',monospace;display:none;"></div>
-        </div>
-        <div class="ed-total-row">
-          <span class="ed-total-label" id="ed-qty-label">1 ticket</span>
-          <span class="ed-total-val" id="ed-total">$20</span>
-        </div>
-        <button class="ed-buy-btn" id="ed-buy-btn" onclick="doPay()">🔒 Complete purchase</button>
-
-        
-
-        <div class="ed-secure">🔐 Seguro · OnvoPay · PCI DSS</div>
       </div>
     </div>
-  </div>
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div class="edv2-right">
+
+      <!-- Section: Select your ticket -->
+      <div class="edv2-section-hdr"><span class="edv2-section-lbl">Select your ticket</span></div>
+
+      <!-- Tier selector (JS renders .tier-option elements here) -->
+      <div id="tier-selector" style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px;"></div>
+
+      <!-- Ticket card: price + qty -->
+      <div class="edv2-ticket-card">
+        <div class="edv2-ticket-top">
+          <div>
+            <div class="edv2-ticket-name">General Admission</div>
+            <div class="edv2-ticket-desc">Includes service fee · Non-refundable</div>
+          </div>
+          <div class="edv2-ticket-price-block">
+            <span class="edv2-price-val" id="ed-price">$45</span><span class="edv2-price-sub" id="ed-price-note"> / ticket</span>
+          </div>
+        </div>
+        <div class="edv2-qty-row">
+          <span class="edv2-qty-label">Quantity</span>
+          <div class="edv2-qty-controls">
+            <button class="edv2-qty-btn" onclick="chQ(-1)">−</button>
+            <span class="edv2-qty-num" id="ed-q">1</span>
+            <button class="edv2-qty-btn" onclick="chQ(1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Payment method -->
+      <div class="edv2-section-hdr"><span class="edv2-section-lbl">Payment method</span></div>
+
+      <div class="edv2-pay-grid">
+        <!-- Card 1: Credit/Debit — pay-opt class required for JS -->
+        <div class="edv2-pay-card pay-opt on" onclick="selPay('card',this)">
+          <svg width="38" height="24" viewBox="0 0 38 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <circle cx="14" cy="12" r="11" fill="#EB001B"/>
+            <circle cx="24" cy="12" r="11" fill="#F79E1B" opacity=".9"/>
+            <path d="M19 4.5a11 11 0 0 1 0 15A11 11 0 0 1 19 4.5z" fill="#FF5F00"/>
+          </svg>
+          <div>
+            <div class="edv2-pay-name">Credit / Debit Card</div>
+            <div class="edv2-pay-desc">Visa · Mastercard</div>
+          </div>
+        </div>
+        <!-- Card 2: Apple Pay -->
+        <div class="edv2-pay-card pay-opt" onclick="selPay('apple',this)">
+          <svg width="20" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          <div>
+            <div class="edv2-pay-name">Apple Pay</div>
+            <div class="edv2-pay-desc">Face ID · Touch ID</div>
+          </div>
+        </div>
+        <!-- Card 3: Google Pay -->
+        <div class="edv2-pay-card pay-opt" onclick="selPay('google',this)">
+          <svg width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <div>
+            <div class="edv2-pay-name">Google Pay</div>
+            <div class="edv2-pay-desc">Fingerprint · PIN</div>
+          </div>
+        </div>
+        <!-- Card 4: SINPE Móvil -->
+        <div class="edv2-pay-card pay-opt" onclick="selPay('sinpe',this)">
+          <svg width="48" height="22" viewBox="0 0 48 22" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <rect width="48" height="22" rx="3" fill="#002D62"/>
+            <text x="5" y="13" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="white">SINPE</text>
+            <text x="5" y="20" font-family="Arial,sans-serif" font-size="6" fill="#F5A623">Móvil</text>
+          </svg>
+          <div>
+            <div class="edv2-pay-name">SINPE Móvil</div>
+            <div class="edv2-pay-desc">Instant transfer · CR</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment panels (JS toggles .show) -->
+      <div class="pay-panel show" id="pp-card">
+        <input class="pay-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19"/>
+        <div class="pay-row">
+          <input class="pay-input" type="text" placeholder="MM / YY" maxlength="5"/>
+          <input class="pay-input" type="text" placeholder="CVV" maxlength="4"/>
+        </div>
+        <input class="pay-input" type="text" placeholder="Name on card"/>
+        <input class="pay-input" type="email" placeholder="your@email.com"/>
+      </div>
+      <div class="pay-panel" id="pp-sinpe">
+        <input class="pay-input" type="tel" placeholder="Your SINPE number"/>
+        <input class="pay-input" type="email" placeholder="your@email.com"/>
+        <div class="pay-sinpe-info" id="sinpe-amt">📲 ₡10,000 → 7019-8460</div>
+      </div>
+      <div class="pay-panel" id="pp-apple">
+        <div class="pay-apple-inner">
+          <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div>
+          <div class="title">Apple Pay</div>
+          <div class="sub">Confirm with Face ID or Touch ID on your Apple device.</div>
+        </div>
+      </div>
+      <div class="pay-panel" id="pp-google">
+        <div class="pay-apple-inner">
+          <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+          <div class="title">Google Pay</div>
+          <div class="sub">Confirm with your fingerprint or PIN on your Android device.</div>
+        </div>
+      </div>
+
+      <!-- Section: Discount code -->
+      <div class="edv2-section-hdr"><span class="edv2-section-lbl">Discount code</span></div>
+      <div id="discount-wrap" class="edv2-discount-row">
+        <input class="edv2-discount-input" id="discount-input" type="text" placeholder="Discount code"/>
+        <button onclick="applyDiscount()" class="edv2-apply-btn">Apply</button>
+      </div>
+      <div id="discount-msg" style="font-size:10px;margin-top:-8px;margin-bottom:12px;font-family:-apple-system,'Inter',sans-serif;display:none;"></div>
+
+      <!-- Section: Order summary -->
+      <div class="edv2-section-hdr"><span class="edv2-section-lbl">Order summary</span></div>
+      <div class="edv2-summary">
+        <div class="edv2-summary-row">
+          <span id="ed-qty-label">1 ticket</span>
+          <span id="ed-total">$45.00</span>
+        </div>
+        <div class="edv2-summary-row">
+          <span>Service fee</span>
+          <span>$0.00</span>
+        </div>
+        <div class="edv2-summary-total">
+          <span>Total</span>
+          <span>$45.00</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="edv2-buy-btn" id="ed-buy-btn" onclick="doPay()">Complete purchase</button>
+      <div class="edv2-secure">🔐 Secure · OnvoPay · PCI DSS</div>
+
+    </div><!-- end edv2-right -->
+  </div><!-- end edv2-layout -->
 </div>
 
 <!-- ORGANIZER PAGE -->
