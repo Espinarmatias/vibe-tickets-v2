@@ -66,12 +66,18 @@ nav.scrolled{background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);-webkit-b
 .nav-btn-primary{background:var(--green);border:none;color:#080808;padding:9px 20px;border-radius:40px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s;text-transform:uppercase;}
 .nav-btn-primary:hover{background:#5a9940;transform:translateY(-1px);box-shadow:0 4px 20px var(--green-glow);}
 /* Hide center links on small screens */
-@media(max-width:768px){nav{border-radius:0 !important;margin:0 !important;width:100% !important;}.nav-center{display:none;}.nav-btn:not(.nav-btn-primary):not(.nav-hamburger){display:none;}}
+@media(max-width:768px){nav{border-radius:0 !important;margin:0 !important;width:100% !important;}.nav-center{display:none;}.nav-btn:not(.nav-btn-primary):not(.nav-hamburger){display:none;}.nav-btn-primary:not(#nav-buy-tickets-btn){display:none;}}
 @media(max-width:430px){
   .hero-title{font-size:62px;letter-spacing:-3.5px;}
   .hero-content{padding:80px 24px 56px;}
   .hero-ctas{flex-direction:column;align-items:stretch;}
   .btn-primary{text-align:center;}
+}
+@media(max-width:480px){
+  .events-grid{grid-template-columns:1fr;}
+  .ev-card:first-child{grid-column:span 1;}
+  .how-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;gap:24px;}
 }
 
 
@@ -337,7 +343,7 @@ section{padding:100px 64px;}
 
 /* ─── SOCIAL PROOF ─── */
 .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px;}
-.proof-card{background:var(--bg2);padding:36px;border-radius:0;transition:background .3s;}
+.proof-card{background:var(--bg2);padding:36px;border-radius:12px;border:1px solid var(--border);transition:background .3s;}
 .proof-card:hover{background:var(--bg3);}
 .proof-stars{color:var(--green);font-size:14px;margin-bottom:16px;letter-spacing:4px;}
 .proof-text{font-size:15px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;margin-bottom:20px;font-style:italic;}
