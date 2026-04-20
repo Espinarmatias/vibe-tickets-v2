@@ -224,14 +224,6 @@ function doPay() {
     var totalStr = price === 0 ? "Complimentary" : (payM === "sinpe" ? "₡" + tc.toLocaleString() : "$" + t);
     var tierName = tier.name || "General";
 
-    document.getElementById("suc-event-name").textContent = ev.name;
-    document.getElementById("suc-ev-name").textContent    = ev.name;
-    document.getElementById("suc-date").textContent       = ev.date;
-    document.getElementById("suc-place").textContent      = ev.place;
-    document.getElementById("suc-qty").textContent        = qty + " ticket" + (qty > 1 ? "s" : "") + " · " + tierName;
-    document.getElementById("suc-total").textContent      = totalStr;
-    document.getElementById("suc-code").textContent       = code;
-
     tickets.push({
       ev: ev.name, date: ev.date, place: ev.place,
       qty: qty + " ticket" + (qty > 1 ? "s" : ""),
@@ -247,22 +239,109 @@ function doPay() {
       badge.style.display = "inline-flex";
     }
 
-    var walletSection = document.getElementById("apple-wallet-section");
-    if (walletSection) walletSection.style.display = "block";
-
     btn.textContent = "🔒 Complete purchase";
     btn.disabled = false;
-    document.getElementById("success-overlay").classList.add("show");
+
+    showConfirmation({
+      id: currentEvent,
+      name: ev.name,
+      date: ev.date,
+      venue: ev.place,
+      image: ev.isMansita ? MANSITA_B64 : RAWDEO_B64,
+      tier: tierName,
+      qty: qty,
+      total: qty * priceCRC,
+      ticketId: code
+    });
   }, 1800);
 }
 
-function closeSuccess() {
-  var ov = document.getElementById("success-overlay");
-  if (ov) ov.classList.remove("show");
+function closeConfirm() {
+  var screen = document.getElementById('confirm-screen');
+  if (screen) screen.classList.remove('open');
+  goPage('home');
 }
 
-function addToAppleWallet() {
-  alert("Apple Wallet\n\nIn the production version with Onvo Tix, your ticket downloads as a .pkpass file that is automatically added to your Apple Wallet.\n\nFor now, your ticket arrives by email with the QR code.");
+function addToWallet() {
+  alert('Wallet integration available after backend setup. For now, save a screenshot of your QR code.');
+}
+
+function showConfirmation(data) {
+  var screen = document.getElementById('confirm-screen');
+  if (!screen) return;
+
+  document.getElementById('confirm-event-name').textContent = data.name;
+  document.getElementById('confirm-event-date').textContent = data.date;
+  document.getElementById('confirm-event-venue').textContent = data.venue;
+  document.getElementById('confirm-subtitle-event').textContent = data.name;
+
+  var imgEl = document.getElementById('confirm-event-img');
+  if (imgEl && data.image) {
+    imgEl.src = data.image;
+    imgEl.alt = data.name;
+  }
+
+  document.getElementById('confirm-details').textContent =
+    data.qty + ' ticket' + (data.qty > 1 ? 's' : '') +
+    ' · ' + data.tier +
+    ' · ' + formatCRC(data.total);
+
+  var qrData = JSON.stringify({
+    ticketId: data.ticketId,
+    event: data.id,
+    tier: data.tier,
+    qty: data.qty,
+    ts: Date.now()
+  });
+  generateQR(qrData);
+
+  setWalletButton();
+
+  screen.classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+function generateQR(data) {
+  var container = document.getElementById('confirm-qr');
+  if (!container) return;
+  container.innerHTML = '';
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(container, {
+      text: data,
+      width: 160,
+      height: 160,
+      colorDark: '#0a0a0a',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  } else {
+    container.innerHTML = '<div style="color:#666;padding:12px;text-align:center;font-family:monospace;font-size:9px;word-break:break-all;">' + data + '</div>';
+  }
+}
+
+function setWalletButton() {
+  var btn = document.getElementById('confirm-wallet-btn');
+  var text = document.getElementById('confirm-wallet-text');
+  if (!btn || !text) return;
+  var ua = navigator.userAgent;
+  var iconSVG;
+
+  if (/iPhone|iPad|iPod|Mac/.test(ua)) {
+    btn.className = 'wallet-btn-apple';
+    text.textContent = 'Add to Apple Wallet';
+    iconSVG = '<svg class="wallet-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5,12.5c0-2.5,2-3.7,2.1-3.8c-1.1-1.7-2.9-1.9-3.5-1.9c-1.5-0.2-2.9,0.9-3.6,0.9c-0.7,0-1.9-0.9-3.1-0.8c-1.6,0-3.1,0.9-3.9,2.4c-1.7,2.9-0.4,7.2,1.2,9.5c0.8,1.1,1.7,2.4,2.9,2.4c1.2,0,1.6-0.8,3.1-0.8c1.4,0,1.8,0.8,3.1,0.7c1.3,0,2.1-1.2,2.9-2.3c0.9-1.3,1.3-2.6,1.3-2.6C19.9,16.1,17.5,15.2,17.5,12.5z M15.2,5.1c0.6-0.8,1.1-1.9,1-2.9c-0.9,0-2,0.6-2.7,1.4c-0.6,0.7-1.1,1.8-1,2.8C13.5,6.5,14.6,5.9,15.2,5.1z"/></svg>';
+  } else if (/Android/.test(ua)) {
+    btn.className = 'wallet-btn-google';
+    text.textContent = 'Add to Google Wallet';
+    iconSVG = '<svg class="wallet-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#fff" stroke-width="1.5"/><path d="M3 10h18" stroke="#fff" stroke-width="1.5"/></svg>';
+  } else {
+    btn.className = 'wallet-btn-download';
+    text.textContent = 'DOWNLOAD TICKET';
+    iconSVG = '<svg class="wallet-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v13m0 0l-5-5m5 5l5-5M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  var currentIcon = btn.querySelector('.wallet-icon');
+  if (currentIcon) currentIcon.outerHTML = iconSVG;
+  else btn.insertAdjacentHTML('afterbegin', iconSVG);
 }
 
 
