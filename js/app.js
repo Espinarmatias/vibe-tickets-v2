@@ -418,7 +418,7 @@ function generateQR(data) {
       correctLevel: QRCode.CorrectLevel.H
     });
   } else {
-    container.innerHTML = '<div style="color:#666;padding:12px;text-align:center;font-family:monospace;font-size:9px;word-break:break-all;">' + data + '</div>';
+    container.innerHTML = '<div style="color:#666;padding:12px;text-align:center;font-family:\'Barlow\',sans-serif;font-size:9px;word-break:break-all;">' + data + '</div>';
   }
 }
 
