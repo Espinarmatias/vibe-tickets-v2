@@ -406,21 +406,39 @@
       <!-- Section: Select your ticket -->
       <div class="edv2-section-hdr"><span class="edv2-section-lbl">Select your ticket</span></div>
 
-      <!-- Tier selector (JS renders .tier-option elements here) -->
-      <div id="tier-selector" class="tier-list"></div>
-
-      <!-- Ticket card: price + qty -->
-      <div class="edv2-ticket-card">
+      <!-- VIP tier card -->
+      <div class="edv2-ticket-card tier-selectable selected" data-tier-id="vip" onclick="selectTier('vip')">
         <div class="edv2-ticket-top">
           <div>
-            <div class="edv2-ticket-name">General Admission</div>
-            <div class="edv2-ticket-desc">Includes service fee · Non-refundable</div>
+            <div class="edv2-ticket-name">VIP</div>
+            <div class="edv2-ticket-desc">Premium experience · Non-refundable</div>
           </div>
           <div class="edv2-ticket-price-block">
-            <span class="edv2-price-val" id="ed-price">$45</span><span class="edv2-price-sub" id="ed-price-note"> / ticket</span>
+            <div class="edv2-price-val">₡35 000</div>
+            <div class="edv2-price-sub">~$65 USD</div>
+            <div class="edv2-price-sub">per ticket · incl. service fee</div>
           </div>
         </div>
-        <div class="edv2-qty-row">
+      </div>
+
+      <!-- EARLY BIRD tier card -->
+      <div class="edv2-ticket-card tier-selectable" data-tier-id="early-bird" onclick="selectTier('early-bird')">
+        <div class="edv2-ticket-top">
+          <div>
+            <div class="edv2-ticket-name">EARLY BIRD</div>
+            <div class="edv2-ticket-desc">Limited release · Non-refundable</div>
+          </div>
+          <div class="edv2-ticket-price-block">
+            <div class="edv2-price-val">₡15 000</div>
+            <div class="edv2-price-sub">~$28 USD</div>
+            <div class="edv2-price-sub">per ticket · incl. service fee</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quantity card -->
+      <div class="edv2-ticket-card">
+        <div class="edv2-summary-qty">
           <span class="edv2-qty-label">Quantity</span>
           <div class="edv2-qty-controls">
             <button class="edv2-qty-btn" onclick="chQ(-1)">−</button>

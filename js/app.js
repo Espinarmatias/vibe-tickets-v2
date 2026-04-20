@@ -87,8 +87,9 @@ function openCheckout(evKey) {
   payM = "card";
   currentTier = null;
   goPage("event-detail");
-  renderTiers();
   updWidget();
+  var firstAvail = EVENTS[currentEvent].tiers.find(function(t){ return !t.soldout && (t.capacity - t.sold) > 0; });
+  if (firstAvail) selectTier(firstAvail.id);
   document.querySelectorAll(".pay-panel").forEach(function(p){ p.classList.remove("show"); });
   document.getElementById("pp-card").classList.add("show");
   document.querySelectorAll(".pay-opt").forEach(function(o){ o.classList.remove("on"); });
@@ -100,28 +101,9 @@ function selectTier(tierId) {
   var tier = ev.tiers.find(function(t){ return t.id === tierId; });
   if (!tier || tier.soldout) return;
   currentTier = tier;
-  document.querySelectorAll(".tier-card").forEach(function(el){
-    var isSel = el.dataset.tierId === tierId;
-    el.classList.toggle("selected", isSel);
-    var badge = el.querySelector('.tier-badge');
-    if (badge) {
-      if (isSel) {
-        badge.textContent = 'SELECTED ✓';
-        badge.className = 'tier-badge tier-badge--selected';
-      } else if (!el.classList.contains('tier-card--next')) {
-        badge.textContent = 'ON SALE NOW';
-        badge.className = 'tier-badge tier-badge--on-sale';
-      }
-    }
+  document.querySelectorAll('.tier-selectable').forEach(function(el){
+    el.classList.toggle('selected', el.dataset.tierId === tierId);
   });
-  var priceEl = document.getElementById("ed-price");
-  var noteEl  = document.getElementById("ed-price-note");
-  if (priceEl) {
-    priceEl.innerHTML = tier.priceCRC === 0
-      ? "Free"
-      : formatCRC(tier.priceCRC) + '<span class="price-usd-secondary">' + formatUSD(tier.priceCRC) + ' USD</span>';
-  }
-  if (noteEl) noteEl.textContent = tier.priceCRC === 0 ? "Complimentary" : "per ticket · incl. service fee";
   updTotals();
 }
 
@@ -145,34 +127,6 @@ function updTotals() {
   if (totalEl) totalEl.innerHTML = disp;
   var lblEl = document.getElementById("ed-qty-label");
   if (lblEl) lblEl.textContent = lbl;
-}
-
-function renderTiers() {
-  var ev = EVENTS[currentEvent];
-  var container = document.getElementById("tier-selector");
-  if (!container) return;
-  if (!ev.tiers || ev.tiers.length === 0) { container.innerHTML = ""; return; }
-  container.innerHTML = ev.tiers
-    .filter(function(t){ return !(t.priceCRC === 0 && t.id && t.id.indexOf('cortesia') !== -1); })
-    .map(function(t) {
-      var avail   = t.capacity - t.sold;
-      var soldout = t.soldout || avail <= 0;
-      var cardCls  = 'tier-card' + (soldout ? ' tier-card--next' : '');
-      var badgeCls = soldout ? 'tier-badge tier-badge--next' : 'tier-badge tier-badge--on-sale';
-      var badgeTxt = soldout ? 'SOLD OUT' : 'ON SALE NOW';
-      var onclick  = soldout ? '' : ' onclick="selectTier(\'' + t.id + '\')"';
-      return '<div class="' + cardCls + '" data-tier-id="' + t.id + '"' + onclick + '>'
-        + '<div class="tier-top">'
-        + '<span class="tier-name">' + t.name + '</span>'
-        + '<span class="' + badgeCls + '">' + badgeTxt + '</span>'
-        + '</div>'
-        + '<div class="tier-price">' + (t.priceCRC === 0 ? 'Gratis' : formatCRC(t.priceCRC)) + '</div>'
-        + '<div class="tier-price-usd">' + (t.priceCRC === 0 ? '' : formatUSD(t.priceCRC) + ' USD') + '</div>'
-        + '<div class="tier-cta">SELECT <span class="tier-arrow">→</span></div>'
-        + '</div>';
-    }).join("");
-  var firstAvail = ev.tiers.find(function(t){ return !t.soldout && (t.capacity - t.sold) > 0; });
-  if (firstAvail) selectTier(firstAvail.id);
 }
 
 
