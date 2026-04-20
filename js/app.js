@@ -5,6 +5,8 @@
 
 // ─── STATE ───────────────────────────────────────────────────────
 var tickets        = [];
+var userTickets = [];
+var myTicketsTab = 'upcoming';
 var currentEvent   = "rawdeo";
 var qty            = 1;
 var payM           = "card";
@@ -29,6 +31,7 @@ function goPage(p) {
   document.getElementById("pg-" + p).classList.add("active");
   window.scrollTo(0, 0);
   initFadeIns();
+  if (p === 'my-tickets') renderMyTickets();
 }
 
 
@@ -242,6 +245,7 @@ function doPay() {
     btn.textContent = "🔒 Complete purchase";
     btn.disabled = false;
 
+    addPurchaseToUserTickets();
     showConfirmation({
       id: currentEvent,
       name: ev.name,
@@ -260,6 +264,105 @@ function closeConfirm() {
   var screen = document.getElementById('confirm-screen');
   if (screen) screen.classList.remove('open');
   goPage('home');
+}
+
+function addPurchaseToUserTickets() {
+  var ev = EVENTS[currentEvent];
+  var eventImage = ev.isMansita ? MANSITA_B64 : RAWDEO_B64;
+  for (var i = 0; i < qty; i++) {
+    userTickets.push({
+      ticketId: 'TKT-' + Date.now() + '-' + i,
+      eventId: currentEvent,
+      eventName: ev.name,
+      eventDate: ev.date,
+      eventDateISO: ev.dateISO || '2026-06-06T20:00:00-06:00',
+      eventVenue: ev.place,
+      eventImage: eventImage,
+      tierId: currentTier ? currentTier.id : 'general',
+      tierName: currentTier ? currentTier.name : 'GENERAL',
+      attendeeName: 'Guest',
+      priceCRC: currentTier ? currentTier.priceCRC : 0,
+      purchasedAt: new Date().toISOString()
+    });
+  }
+}
+
+function renderMyTickets() {
+  var container = document.getElementById('my-tickets-list');
+  if (!container) return;
+
+  var now = new Date();
+  var upcomingCount = 0, pastCount = 0;
+  userTickets.forEach(function(t) {
+    var d = new Date(t.eventDateISO);
+    if (d >= now) upcomingCount++; else pastCount++;
+  });
+  var upEl = document.getElementById('mt-tab-upcoming-count');
+  var pastEl = document.getElementById('mt-tab-past-count');
+  if (upEl) upEl.textContent = upcomingCount;
+  if (pastEl) pastEl.textContent = pastCount;
+
+  var filtered = userTickets.filter(function(t) {
+    var d = new Date(t.eventDateISO);
+    return myTicketsTab === 'upcoming' ? d >= now : d < now;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML =
+      '<div class="mt-empty">' +
+        '<div class="mt-empty-icon">' +
+          '<svg width="22" height="22" viewBox="0 0 24 24" fill="none">' +
+            '<path d="M9 11l3 3 7-7M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>' +
+          '</svg>' +
+        '</div>' +
+        '<div class="mt-empty-title">No tickets yet</div>' +
+        '<div class="mt-empty-desc">Your purchased tickets will show up here.</div>' +
+        '<button class="mt-empty-btn" onclick="goPage(\'home\')">BROWSE EVENTS →</button>' +
+      '</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(function(t) {
+    var pastCls = myTicketsTab === 'past' ? ' mt-card--past' : '';
+    var btnLabel = myTicketsTab === 'past' ? 'VIEW TICKET →' : 'VIEW QR →';
+    var attendee = (t.attendeeName || 'Guest').toUpperCase();
+    return '<div class="mt-card' + pastCls + '" data-ticket-id="' + t.ticketId + '">' +
+      '<div class="mt-card-img"><img src="' + (t.eventImage || '') + '" alt="' + t.eventName + '" loading="lazy"/></div>' +
+      '<div class="mt-card-info">' +
+        '<div class="mt-card-date">' + t.eventDate.toUpperCase() + '</div>' +
+        '<div class="mt-card-name">' + t.eventName + '</div>' +
+        '<div class="mt-card-venue">' + t.eventVenue + '</div>' +
+        '<div class="mt-card-bottom">' +
+          '<span class="mt-card-meta">' + t.tierName + ' · ' + attendee + '</span>' +
+          '<button class="mt-card-qr-btn" onclick="viewTicketQR(\'' + t.ticketId + '\')">' + btnLabel + '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function switchMyTicketsTab(tab) {
+  myTicketsTab = tab;
+  document.querySelectorAll('.mt-tab').forEach(function(el) {
+    el.classList.toggle('mt-tab--active', el.dataset.tab === tab);
+  });
+  renderMyTickets();
+}
+
+function viewTicketQR(ticketId) {
+  var t = userTickets.find(function(x) { return x.ticketId === ticketId; });
+  if (!t) return;
+  showConfirmation({
+    id: t.eventId,
+    name: t.eventName,
+    date: t.eventDate,
+    venue: t.eventVenue,
+    image: t.eventImage,
+    tier: t.tierName,
+    qty: 1,
+    total: t.priceCRC,
+    ticketId: t.ticketId
+  });
 }
 
 function addToWallet() {
@@ -348,6 +451,7 @@ function setWalletButton() {
 // ─── MY TICKETS ───────────────────────────────────────────────────
 function renderTickets() {
   var c = document.getElementById("mt-content");
+  if (!c) return;
   if (!tickets.length) {
     c.innerHTML = '<div class="mt-empty"><div class="mt-empty-icon">🎟</div><div class="mt-empty-title">No tickets yet</div><div class="mt-empty-sub">Buy your first ticket and it will show up here</div></div>';
     var btn = document.createElement("button");
@@ -377,7 +481,7 @@ function renderTickets() {
     html += '<div class="mt-info-row"><span class="mt-info-k">Tickets</span><span class="mt-info-v">' + t.qty + '</span></div>';
     html += '<div class="mt-info-row"><span class="mt-info-k">Total</span><span class="mt-info-v">' + t.total + '</span></div>';
     html += '<div class="mt-code">' + t.code + '</div>';
-    html += '<button onclick="addToAppleWallet()" style="margin-top:12px;width:100%;background:#000;border:none;border-radius:10px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><span style="color:white;font-family:\'Barlow\',sans-serif;font-size:13px;font-weight:500;">Add to Apple Wallet</span></button>';
+    html += '<button onclick="addToWallet()" style="margin-top:12px;width:100%;background:#000;border:none;border-radius:10px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><span style="color:white;font-family:\'Barlow\',sans-serif;font-size:13px;font-weight:500;">Add to Apple Wallet</span></button>';
     html += '</div></div></div></div>';
   });
   html += '</div>';

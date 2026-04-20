@@ -388,29 +388,34 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 .footer-powered span{color:var(--green);}
 
 /* ─── MY TICKETS PAGE ─── */
-.mt-page{padding:100px 64px 64px;}
-.mt-header{margin-bottom:48px;}
-.mt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
-.mt-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .3s;}
-.mt-card:hover{border-color:var(--border2);}
-.mt-card-banner{height:120px;overflow:hidden;}
-.mt-card-banner img{width:100%;height:100%;object-fit:cover;}
-.mt-card-body{padding:20px;}
-.mt-card-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.mt-card-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:1px;margin-bottom:16px;}
-.mt-card-divider{height:1px;background:repeating-linear-gradient(90deg,var(--border) 0,var(--border) 6px,transparent 6px,transparent 12px);margin-bottom:16px;}
-.mt-card-qr-row{display:flex;gap:16px;align-items:center;}
-.mt-card-qr{background:#fff;padding:6px;border-radius:8px;width:72px;height:72px;flex-shrink:0;}
-.mt-card-qr img{width:100%;height:100%;}
-.mt-card-info{flex:1;}
-.mt-info-row{display:flex;justify-content:space-between;margin-bottom:8px;}
-.mt-info-k{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;font-family:'JetBrains Mono',monospace;}
-.mt-info-v{font-size:12px;font-weight:600;}
-.mt-code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:1px;margin-top:8px;}
-.mt-empty{text-align:center;padding:120px 40px;}
-.mt-empty-icon{font-size:48px;margin-bottom:16px;opacity:.3;}
-.mt-empty-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.mt-empty-sub{font-size:14px;color:var(--gray);margin-bottom:32px;}
+.mt-container{max-width:760px;margin:0 auto;padding:96px 24px 96px;}
+.mt-header{margin-bottom:28px;}
+.mt-chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:8px;}
+.mt-title{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-style:italic;font-size:44px;line-height:1;letter-spacing:-0.02em;color:#f0f0f0;margin:0;}
+.mt-tabs{display:flex;gap:24px;border-bottom:1px solid #1a1a1a;margin-bottom:24px;}
+.mt-tab{background:none;border:none;padding:0 0 12px 0;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#666;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;}
+.mt-tab--active{color:#f0f0f0;border-bottom-color:var(--green);}
+.mt-tab:hover{color:#f0f0f0;}
+.mt-list{display:flex;flex-direction:column;gap:10px;}
+.mt-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:16px;display:flex;gap:14px;transition:border-color .2s;cursor:default;}
+.mt-card:hover{border-color:#2a2a2a;}
+.mt-card--past{opacity:.5;}
+.mt-card-img{width:80px;height:80px;border-radius:6px;overflow:hidden;flex-shrink:0;background:#1a1a1a;}
+.mt-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.mt-card-info{flex:1;min-width:0;display:flex;flex-direction:column;}
+.mt-card-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--green);margin-bottom:4px;}
+.mt-card-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;color:#f0f0f0;line-height:1;margin-bottom:4px;}
+.mt-card-venue{font-size:11px;color:#999;margin-bottom:10px;}
+.mt-card-bottom{display:flex;align-items:center;gap:12px;margin-top:auto;flex-wrap:wrap;}
+.mt-card-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:#666;letter-spacing:.05em;}
+.mt-card-qr-btn{margin-left:auto;background:transparent;color:var(--green);border:1px solid var(--green);padding:6px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s;}
+.mt-card-qr-btn:hover{background:var(--green);color:#0a0a0a;}
+.mt-empty{padding:48px 16px;text-align:center;}
+.mt-empty-icon{width:48px;height:48px;border:1.5px solid #2a2a2a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.mt-empty-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;color:#f0f0f0;line-height:1;margin-bottom:8px;text-transform:uppercase;letter-spacing:.02em;}
+.mt-empty-desc{font-size:12px;color:#999;margin-bottom:20px;line-height:1.5;}
+.mt-empty-btn{background:#f0f0f0;color:#0a0a0a;border:none;padding:11px 20px;border-radius:8px;font-family:'Barlow',sans-serif;font-weight:700;font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+.mt-empty-btn:hover{background:#fff;}
 
 /* ─── EVENT DETAIL PAGE v2 ─── */
 
@@ -545,7 +550,6 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 .confirm-event{margin-bottom:24px;}
 .confirm-event-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:44px;line-height:1;color:#f0f0f0;margin:0 0 10px 0;letter-spacing:-0.01em;}
 .confirm-event-meta{font-family:'Barlow',sans-serif;font-size:13px;color:#999;line-height:1.4;margin-bottom:3px;}
-.confirm-divider{border:none;border-top:1px solid #1a1a1a;margin:0 0 22px 0;}
 .confirm-status{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--green);margin-bottom:18px;}
 .confirm-status-dot{margin-right:6px;}
 .confirm-check{margin-bottom:18px;}
@@ -566,6 +570,14 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 .wallet-icon{display:block;flex-shrink:0;}
 .confirm-btn-secondary{background:transparent;color:#f0f0f0;border:1px solid #2a2a2a;padding:14px 16px;font-family:'Barlow',sans-serif;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;border-radius:10px;cursor:pointer;transition:border-color .2s,color .2s;width:100%;}
 .confirm-btn-secondary:hover{border-color:var(--green);color:var(--green);}
+.confirm-grid{display:flex;flex-direction:column;gap:24px;}
+.confirm-col-left,.confirm-col-right{display:flex;flex-direction:column;}
+@media(min-width:1024px){
+  .confirm-container{max-width:980px;padding:48px 40px 96px;}
+  .confirm-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+  .confirm-event-image{margin-bottom:24px;}
+  .confirm-event-name{font-size:40px;}
+}
 
 /* ─── ANIMATIONS ─── */
 .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;will-change:transform,opacity;}
@@ -594,7 +606,7 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
   .edv2-left{border-right:none;border-bottom:1px solid #161616;}
   .edv2-left,.edv2-right{padding:24px;}
   .proof-grid{grid-template-columns:1fr;}
-  .mt-page{padding:80px 24px 40px;}
+  .mt-container{padding:80px 16px 60px;}
   .flyer-carousel-wrap{margin-left:-24px;margin-right:-24px;}
 }
 
@@ -1148,8 +1160,10 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
   .hero-phone-wrap{display:none;}
 
   /* ── MY TICKETS ──────────────────────────────────────────────── */
-  .mt-page{padding:80px 16px 40px;}
-  .mt-grid{grid-template-columns:1fr;}
+  .mt-card-qr-btn{margin-left:0;width:100%;padding:8px;}
+  .mt-card-bottom{flex-direction:column;align-items:flex-start;gap:8px;}
+  .mt-card-img{width:72px;height:72px;}
+  .mt-card-name{font-size:18px;}
 
   /* ── SUPPORT PANEL ───────────────────────────────────────────── */
   .support-panel{
