@@ -54,8 +54,8 @@ nav.scrolled{background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);-webkit-b
   background:transparent;border:none;
   color:#f0f0f0;
   padding:8px 0;
-  font-family:'Barlow',sans-serif;font-size:15px;font-weight:600;
-  cursor:pointer;transition:color .2s;letter-spacing:.02em;text-transform:none;
+  font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;transition:color .2s;letter-spacing:.14em;text-transform:uppercase;
 }
 .nav-center{display:flex;align-items:center;gap:28px;}
 .nav-center-link:hover{color:var(--green);}
@@ -469,7 +469,16 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 
 /* Ticket card */
 .edv2-ticket-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:20px;margin-bottom:24px;}
-.edv2-ticket-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.edv2-ticket-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;}
+.edv2-tier-info{flex:1;min-width:0;}
+.edv2-tier-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;line-height:1;}
+.edv2-tier-desc{font-family:'Barlow',sans-serif;font-size:11px;font-weight:500;color:#444;letter-spacing:.05em;margin-top:4px;}
+.edv2-tier-pricing{text-align:right;white-space:nowrap;}
+.edv2-price-row{display:flex;align-items:baseline;gap:8px;justify-content:flex-end;}
+.edv2-price-crc{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:.01em;}
+.edv2-price-usd{font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;color:#555;}
+.edv2-price-note{font-family:'Barlow',sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-top:4px;text-align:right;}
+/* Legacy compat — keep old selectors for non-tier cards */
 .edv2-ticket-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
 .edv2-ticket-desc{font-size:11px;color:#444;}
 .edv2-ticket-price-block{text-align:right;white-space:nowrap;}
@@ -741,6 +750,9 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 .menu-item-green:hover{color:var(--green) !important;}
 .menu-sep{height:1px;background:var(--border);margin:8px 0;}
 .menu-badge{background:rgba(57,255,20,0.15);color:var(--green);font-size:9px;font-weight:700;padding:1px 7px;border-radius:20px;margin-left:auto;font-family:'Barlow',sans-serif;letter-spacing:.5px;}
+.drawer-footer{padding:16px;border-top:1px solid var(--border);}
+.drawer-cta{display:block;width:100%;background:var(--green);border:none;color:#080808;padding:12px 20px;border-radius:40px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:background .2s;text-align:center;}
+.drawer-cta:hover{background:#7ec85a;}
 
 /* ─── LOGIN PAGE ─── */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 24px 40px;}

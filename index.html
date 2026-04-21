@@ -29,8 +29,8 @@
     <span class="nav-logo-text">VIBE<span class="nav-logo-dot">.</span></span>
   </div>
   <div class="nav-center">
-    <button class="nav-center-link" onclick="closeMenu();goPage('login')">Account</button>
-    <button class="nav-center-link" onclick="goPage('my-tickets')">Your Events</button>
+    <button class="nav-center-link" onclick="closeMenu();goPage('login')">LOG IN</button>
+    <button class="nav-center-link" onclick="goPage('my-tickets')">YOUR EVENTS</button>
   </div>
   <div class="nav-right">
     <button class="nav-btn-primary" style="background:transparent;border:2px solid var(--green);color:var(--green);" onclick="goPage('organizer')">LIST YOUR EVENT</button>
@@ -82,10 +82,17 @@
       Data Privacy
     </div>
     <div class="menu-sep"></div>
+    <div class="menu-item" onclick="closeMenu();goPage('organizer')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      List Your Event
+    </div>
     <div class="menu-item menu-item-green" id="menu-auth-btn" onclick="closeMenu();goPage('login')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      Sign In
+      Log In
     </div>
+  </div>
+  <div class="drawer-footer">
+    <button class="drawer-cta" onclick="closeMenu();goPage('home');setTimeout(function(){var s=document.querySelector('#events-section,.events-section,#all-events');if(s)s.scrollIntoView({behavior:'smooth'});},150)">BUY TICKETS</button>
   </div>
 </div>
 
@@ -422,14 +429,16 @@
       <!-- VIP tier card -->
       <div class="edv2-ticket-card tier-selectable selected" data-tier-id="vip" onclick="selectTier('vip')">
         <div class="edv2-ticket-top">
-          <div>
-            <div class="edv2-ticket-name">VIP</div>
-            <div class="edv2-ticket-desc">Premium experience · Non-refundable</div>
+          <div class="edv2-tier-info">
+            <div class="edv2-tier-name">VIP</div>
+            <div class="edv2-tier-desc">Premium experience</div>
           </div>
-          <div class="edv2-ticket-price-block">
-            <div class="edv2-price-val">₡35 000</div>
-            <div class="edv2-price-sub">~$65 USD</div>
-            <div class="edv2-price-sub">per ticket · incl. service fee</div>
+          <div class="edv2-tier-pricing">
+            <div class="edv2-price-row">
+              <span class="edv2-price-crc">₡35,000</span>
+              <span class="edv2-price-usd">~$65</span>
+            </div>
+            <div class="edv2-price-note">FEES INCLUDED</div>
           </div>
         </div>
       </div>
@@ -437,14 +446,16 @@
       <!-- EARLY BIRD tier card -->
       <div class="edv2-ticket-card tier-selectable" data-tier-id="early-bird" onclick="selectTier('early-bird')">
         <div class="edv2-ticket-top">
-          <div>
-            <div class="edv2-ticket-name">EARLY BIRD</div>
-            <div class="edv2-ticket-desc">Limited release · Non-refundable</div>
+          <div class="edv2-tier-info">
+            <div class="edv2-tier-name">EARLY BIRD</div>
+            <div class="edv2-tier-desc">Limited release</div>
           </div>
-          <div class="edv2-ticket-price-block">
-            <div class="edv2-price-val">₡15 000</div>
-            <div class="edv2-price-sub">~$28 USD</div>
-            <div class="edv2-price-sub">per ticket · incl. service fee</div>
+          <div class="edv2-tier-pricing">
+            <div class="edv2-price-row">
+              <span class="edv2-price-crc">₡15,000</span>
+              <span class="edv2-price-usd">~$28</span>
+            </div>
+            <div class="edv2-price-note">FEES INCLUDED</div>
           </div>
         </div>
       </div>

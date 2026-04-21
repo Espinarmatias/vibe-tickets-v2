@@ -18,7 +18,7 @@ var loginIsRegister = true;
 var USD_RATE = 540; // colones per dollar — update when rate changes
 
 function formatCRC(amount) {
-  return '₡' + amount.toLocaleString('es-CR');
+  return '₡' + amount.toLocaleString('en-US');
 }
 function formatUSD(amountCRC) {
   return '~$' + Math.round(amountCRC / USD_RATE);
