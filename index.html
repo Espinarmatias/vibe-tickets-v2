@@ -336,6 +336,22 @@
 <div class="page" id="pg-my-tickets">
   <div class="mt-container">
 
+    <!-- Email verification banner -->
+    <div class="verify-banner" id="verify-banner" style="display:none">
+      <svg class="verify-banner-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <div class="verify-banner-text">
+        <div class="verify-banner-title" id="verify-banner-title">Verify your email to unlock full access</div>
+        <div class="verify-banner-desc" id="verify-banner-desc">We sent a confirmation link to <span id="verify-banner-email">your email</span></div>
+      </div>
+      <div class="verify-banner-actions" id="verify-banner-actions">
+        <button class="verify-banner-btn verify-banner-btn-primary" onclick="handleResendVerification()" type="button">RESEND</button>
+        <button class="verify-banner-btn verify-banner-btn-secondary" onclick="handleMarkVerified()" type="button">I VERIFIED</button>
+      </div>
+    </div>
+
     <div class="mt-header">
       <div class="mt-chip">✦ YOUR TICKETS</div>
       <h1 class="mt-title">My Tickets</h1>

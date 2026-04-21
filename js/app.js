@@ -101,6 +101,14 @@ function authGoogleLogin() {
   return { success: true, user: user };
 }
 
+function authVerifyEmail() {
+  var user = authCurrentUser();
+  if (!user) return { success: false };
+  user.emailVerified = true;
+  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+  return { success: true };
+}
+
 function authLogout() {
   localStorage.removeItem(AUTH_STORAGE_KEY);
   userTickets = [];
@@ -602,7 +610,63 @@ function addPurchaseToUserTickets() {
   attendeeData = [];
 }
 
+// ─── EMAIL VERIFICATION BANNER ───────────────────────────────────
+function renderVerifyBanner() {
+  var banner = document.getElementById('verify-banner');
+  if (!banner) return;
+  var user = authCurrentUser();
+  if (!user || user.emailVerified) {
+    banner.classList.remove('verify-banner--visible');
+    return;
+  }
+  // Unverified — show yellow banner
+  var emailSpan = document.getElementById('verify-banner-email');
+  if (emailSpan) emailSpan.textContent = user.email;
+  var title   = document.getElementById('verify-banner-title');
+  var desc    = document.getElementById('verify-banner-desc');
+  var actions = document.getElementById('verify-banner-actions');
+  if (title)   title.textContent = 'Verify your email to unlock full access';
+  if (desc)    desc.innerHTML    = 'We sent a confirmation link to <span id="verify-banner-email">' + escapeHtml(user.email) + '</span>';
+  if (actions) actions.style.display = 'flex';
+  banner.classList.remove('verify-banner--success', 'verify-banner--fading');
+  banner.classList.add('verify-banner--visible');
+}
+
+function handleResendVerification() {
+  alert('[Simulated] Verification email resent. FASE 7 will integrate real email flow via Resend.');
+}
+
+function handleMarkVerified() {
+  var result = authVerifyEmail();
+  if (!result.success) return;
+  var banner = document.getElementById('verify-banner');
+  if (!banner) return;
+  // Swap icon to checkmark
+  var icon = banner.querySelector('.verify-banner-icon');
+  if (icon) {
+    icon.innerHTML = '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 12l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
+  }
+  // Change to success state
+  banner.classList.add('verify-banner--success');
+  var title   = document.getElementById('verify-banner-title');
+  var desc    = document.getElementById('verify-banner-desc');
+  var actions = document.getElementById('verify-banner-actions');
+  if (title)   title.textContent = 'Email verified';
+  if (desc)    desc.textContent  = 'You now have full access to My Tickets and future purchases';
+  if (actions) actions.style.display = 'none';
+  // Fade out after 3s
+  setTimeout(function() {
+    banner.classList.add('verify-banner--fading');
+    setTimeout(function() {
+      banner.classList.remove('verify-banner--visible', 'verify-banner--success', 'verify-banner--fading');
+    }, 300);
+  }, 3000);
+  renderAuthState();
+}
+
+
 function renderMyTickets() {
+  renderVerifyBanner();
   var container = document.getElementById('my-tickets-list');
   if (!container) return;
 
