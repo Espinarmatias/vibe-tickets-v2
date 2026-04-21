@@ -17,6 +17,130 @@ var loginIsRegister = true;
 var attendeeData   = []; // [{ name:'', email:'' }, …] — one entry per ticket
 var attendeeValidationTriggered = false; // warning only shows after first pay attempt or blur
 
+
+// ════════════════════════════════════════════════════════════════
+// AUTH SERVICE (fake / localStorage)
+// TODO: FASE 7 — replace with Supabase Auth
+// ════════════════════════════════════════════════════════════════
+
+var AUTH_STORAGE_KEY = 'vibe_auth_user';
+
+function authCurrentUser() {
+  try {
+    var raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function authIsLoggedIn() {
+  return authCurrentUser() !== null;
+}
+
+function authSignup(data) {
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!data.email || !emailRegex.test(data.email)) {
+    return { success: false, error: 'Please enter a valid email.' };
+  }
+  if (!data.password || data.password.length < 8) {
+    return { success: false, error: 'Password must be at least 8 characters.' };
+  }
+  var user = {
+    id: 'u_' + Date.now(),
+    email: data.email,
+    firstName: data.firstName || '',
+    lastName: data.lastName || '',
+    secondLastName: data.secondLastName || '',
+    phone: data.phone || '',
+    fullName: ((data.firstName || '') + ' ' + (data.lastName || '')).trim(),
+    emailVerified: false,
+    provider: 'email',
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+  return { success: true, user: user };
+}
+
+function authLogin(email, password) {
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email) || !password || password.length < 8) {
+    return { success: false, error: 'Invalid email or password.' };
+  }
+  var user = {
+    id: 'u_' + Date.now(),
+    email: email,
+    firstName: email.split('@')[0],
+    lastName: '',
+    fullName: email.split('@')[0],
+    emailVerified: true,
+    provider: 'email',
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+  return { success: true, user: user };
+}
+
+function authGoogleLogin() {
+  // FAKE: simulates Google OAuth with prompts
+  // TODO: FASE 7 — replace with real Google OAuth via Supabase
+  var simEmail = prompt('[Simulated Google OAuth]\n\nEnter email to simulate Google login:');
+  if (!simEmail) return { success: false, error: 'Cancelled' };
+  var simName = prompt('[Simulated Google OAuth]\n\nEnter full name:');
+  if (!simName) return { success: false, error: 'Cancelled' };
+  var parts = simName.trim().split(' ');
+  var user = {
+    id: 'u_' + Date.now(),
+    email: simEmail,
+    firstName: parts[0] || '',
+    lastName: parts.slice(1).join(' ') || '',
+    fullName: simName.trim(),
+    emailVerified: true,
+    provider: 'google',
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+  return { success: true, user: user };
+}
+
+function authLogout() {
+  localStorage.removeItem(AUTH_STORAGE_KEY);
+  userTickets = [];
+  renderAuthState();
+  goPage('home');
+}
+
+function renderAuthState() {
+  var user = authCurrentUser();
+  // Nav desktop LOG IN link
+  var navLoginBtn = document.querySelector('.nav-center-link[onclick*="login"]');
+  if (navLoginBtn) {
+    navLoginBtn.textContent = user ? (user.firstName || user.email.split('@')[0]).toUpperCase() : 'LOG IN';
+  }
+  // Drawer auth button
+  var menuAuthBtn = document.getElementById('menu-auth-btn');
+  if (menuAuthBtn) {
+    if (user) {
+      menuAuthBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out';
+      menuAuthBtn.onclick = function() { closeMenu(); authLogout(); };
+    } else {
+      menuAuthBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Log In';
+      menuAuthBtn.onclick = function() { closeMenu(); goPage('login'); };
+    }
+  }
+  // Drawer user info
+  var menuName   = document.getElementById('menu-username');
+  var menuEmail  = document.getElementById('menu-useremail');
+  var menuAvatar = document.getElementById('menu-avatar');
+  if (user) {
+    if (menuName)   menuName.textContent  = user.fullName || user.email;
+    if (menuEmail)  menuEmail.textContent = user.email;
+    if (menuAvatar) menuAvatar.textContent = (user.firstName.charAt(0) + (user.lastName.charAt(0) || '')).toUpperCase() || 'ME';
+  } else {
+    if (menuName)   menuName.textContent  = 'Guest';
+    if (menuEmail)  menuEmail.textContent = 'Sign in to view your tickets';
+    if (menuAvatar) menuAvatar.textContent = 'ME';
+  }
+}
+
 var USD_RATE = 540; // colones per dollar — update when rate changes
 
 function formatCRC(amount) {
@@ -387,6 +511,13 @@ function handleExpiryInput(input) {
 
 // ─── PAY ──────────────────────────────────────────────────────────
 function doPay() {
+  if (!authIsLoggedIn()) {
+    loginIsRegister = true;
+    goPage('login');
+    var regFields = document.getElementById('login-register-fields');
+    if (regFields) regFields.style.display = 'block';
+    return;
+  }
   attendeeValidationTriggered = true;
   if (!validateAttendees()) {
     var warning = document.getElementById('attendee-warning');
@@ -722,31 +853,62 @@ function closeMenu() {
 }
 
 
-// ─── LOGIN ────────────────────────────────────────────────────────
+// ─── LOGIN / AUTH HANDLERS ────────────────────────────────────────
 function toggleLoginMode() {
   loginIsRegister = !loginIsRegister;
-  document.getElementById('login-register-fields').style.display = loginIsRegister ? 'block' : 'none';
-  document.getElementById('login-mode-title').textContent  = loginIsRegister ? 'Create account' : 'Sign in';
-  document.getElementById('login-mode-sub').textContent    = loginIsRegister ? 'JOIN THE VIBE. COMMUNITY' : 'WELCOME BACK';
-  document.getElementById('login-submit-btn').textContent  = loginIsRegister ? 'CREATE ACCOUNT' : 'SIGN IN';
-  document.getElementById('login-divider-text').textContent = loginIsRegister ? 'already have an account' : 'don\'t have an account';
-  document.getElementById('login-toggle-btn').textContent  = loginIsRegister ? 'Sign in' : 'Create new account';
+  var regFields = document.getElementById('login-register-fields');
+  if (regFields) regFields.style.display = loginIsRegister ? 'block' : 'none';
+  var el = function(id) { return document.getElementById(id); };
+  if (el('login-mode-title'))   el('login-mode-title').textContent   = loginIsRegister ? 'Create account' : 'Sign in';
+  if (el('login-mode-sub'))     el('login-mode-sub').textContent     = loginIsRegister ? 'JOIN THE VIBE. COMMUNITY' : 'WELCOME BACK';
+  if (el('login-submit-btn'))   el('login-submit-btn').textContent   = loginIsRegister ? 'CREATE ACCOUNT' : 'SIGN IN';
+  if (el('login-divider-text')) el('login-divider-text').textContent = loginIsRegister ? 'already have an account' : 'don\'t have an account';
+  if (el('login-toggle-btn'))   el('login-toggle-btn').textContent   = loginIsRegister ? 'Sign in' : 'Create new account';
+  var errDiv = el('login-error-msg');
+  if (errDiv) { errDiv.textContent = ''; errDiv.style.display = 'none'; }
+  var forgot = el('login-forgot-wrap');
+  if (forgot) forgot.style.display = loginIsRegister ? 'none' : 'block';
 }
 
 function submitLogin() {
-  var email = document.getElementById('login-email').value;
-  if (!email) { alert('Please enter your email address'); return; }
-  if (loginIsRegister) {
-    var name = document.getElementById('reg-firstname').value;
-    if (!name) { alert('Please enter your name'); return; }
-    document.getElementById('menu-username').textContent  = (name + ' ' + (document.getElementById('reg-lastname1').value || '')).trim();
-    document.getElementById('menu-useremail').textContent = email;
-    document.getElementById('menu-avatar').textContent    = name.charAt(0).toUpperCase() + (document.getElementById('reg-lastname1').value || '').charAt(0).toUpperCase();
-    document.getElementById('menu-auth-btn').innerHTML    = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign out';
-    document.getElementById('menu-auth-btn').onclick      = function(){ closeMenu(); };
+  var email = (document.getElementById('login-email').value || '').trim();
+  var password = document.getElementById('login-password').value || '';
+  var errDiv = document.getElementById('login-error-msg');
+  function showErr(msg) {
+    if (errDiv) { errDiv.textContent = msg; errDiv.style.display = 'block'; }
+    else { alert(msg); }
   }
+  if (errDiv) errDiv.style.display = 'none';
+
+  if (loginIsRegister) {
+    var result = authSignup({
+      email: email,
+      password: password,
+      firstName: (document.getElementById('reg-firstname').value || '').trim(),
+      lastName:  (document.getElementById('reg-lastname1').value || '').trim(),
+      secondLastName: (document.getElementById('reg-lastname2').value || '').trim(),
+      phone:     (document.getElementById('reg-phone').value || '').trim()
+    });
+    if (!result.success) { showErr(result.error); return; }
+  } else {
+    var result = authLogin(email, password);
+    if (!result.success) { showErr(result.error); return; }
+  }
+  renderAuthState();
   goPage('home');
 }
+
+function handleGoogleAuth() {
+  var result = authGoogleLogin();
+  if (result.success) { renderAuthState(); goPage('home'); }
+}
+
+function handleForgotPassword(event) {
+  event.preventDefault();
+  alert('[Simulated] Password reset flow — FASE 7 integrates real email reset via Supabase.');
+}
+
+document.addEventListener('DOMContentLoaded', renderAuthState);
 
 
 // ─── SUPPORT WIDGET ───────────────────────────────────────────────
