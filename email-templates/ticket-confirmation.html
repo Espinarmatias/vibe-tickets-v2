@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════
+  VIBE. — Ticket Confirmation Email
+  Template: ticket-confirmation.html
+  FASE 7 integration: Replace {{variables}} with Resend/Handlebars data
+
+  TEMPLATE VARIABLES:
+    {{attendee_name}}       Full name, e.g. "Matías Espinar"
+    {{attendee_first_name}} First name, e.g. "Matías"
+    {{event_name}}          e.g. "RAWDEO 2"
+    {{event_date}}          e.g. "Jun 6, 2026 · 8:00 PM"
+    {{event_date_short}}    e.g. "Jun 6"
+    {{event_venue}}         e.g. "Pedregal Event Center"
+    {{event_image_url}}     Absolute URL to event flyer (square recommended)
+    {{tier_name}}           e.g. "VIP"
+    {{qr_code_url}}         Absolute URL to QR image (160×160 px PNG)
+    {{ticket_id}}           e.g. "TKT-240420-001"
+    {{view_tickets_url}}    e.g. "https://vibeticketscr.com/my-tickets"
+    {{apple_wallet_url}}    URL to .pkpass file (generated in FASE 7)
+    {{help_url}}            e.g. "https://vibeticketscr.com/help"
+
+  PREVIEW (dummy values — replace with {{variables}} when integrating):
+    attendee_name        = Matías Espinar
+    attendee_first_name  = Matías
+    event_name           = RAWDEO 2
+    event_date           = Jun 6, 2026 · 8:00 PM
+    event_date_short     = Jun 6
+    event_venue          = Pedregal Event Center
+    event_image_url      = https://vibeticketscr.com/public/images/rawdeo.jpg
+    tier_name            = VIP
+    qr_code_url          = https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=TKT-240420-001
+    ticket_id            = TKT-240420-001
+    view_tickets_url     = https://vibeticketscr.com/my-tickets
+    apple_wallet_url     = https://vibeticketscr.com/wallet/TKT-240420-001.pkpass
+    help_url             = https://vibeticketscr.com/help
+
+  EMAIL CLIENT NOTES:
+    - Tables-only layout (no flex/grid — Outlook Word engine compatibility)
+    - Inline styles as primary, <style> block as enhancement
+    - No JavaScript (blocked by Gmail, Yahoo)
+    - No external fonts at runtime (Barlow loaded via <link> for browser preview;
+      email clients ignore it — font-family fallback chain handles rendering)
+    - Max width: 600px (industry standard)
+    - Images have explicit width/height attributes
+  ════════════════════════════════════════════════════════════════
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="color-scheme" content="dark light"/>
+<meta name="supported-color-schemes" content="dark light"/>
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no"/>
+<title>Your VIBE ticket is confirmed — RAWDEO 2</title>
+
+<!-- Browser preview only: Google Fonts (email clients ignore <link>) -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<!--[if mso]>
+<noscript>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+</noscript>
+<![endif]-->
+
+<style type="text/css">
+  /* Reset */
+  body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+  img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+  a { color: inherit; }
+
+  /* Dark mode overrides */
+  @media (prefers-color-scheme: dark) {
+    .email-body { background-color: #0a0a0a !important; }
+    .email-wrapper { background-color: #0a0a0a !important; }
+  }
+
+  /* Mobile responsive */
+  @media only screen and (max-width: 480px) {
+    .email-container { width: 100% !important; max-width: 100% !important; }
+    .hero-text-you { font-size: 32px !important; line-height: 1 !important; }
+    .hero-text-name { font-size: 32px !important; line-height: 1 !important; }
+    .section-pad { padding-left: 16px !important; padding-right: 16px !important; }
+    .hero-pad { padding: 24px 16px 18px !important; }
+    .header-pad { padding: 14px 16px !important; }
+    .qr-img { width: 120px !important; height: 120px !important; }
+    .btn-cell { display: block !important; width: 100% !important; }
+    .btn-spacer { display: none !important; }
+    .event-img { width: 100% !important; height: auto !important; }
+    .detail-label { font-size: 9px !important; }
+    .detail-value { font-size: 12px !important; }
+  }
+</style>
+</head>
+
+<body class="email-body" style="margin: 0; padding: 0; background-color: #0a0a0a; -webkit-font-smoothing: antialiased;">
+
+<!-- Outer wrapper -->
+<table class="email-wrapper" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0a0a0a;">
+  <tr>
+    <td align="center" style="padding: 24px 8px;">
+
+      <!-- Email container (600px max) -->
+      <table class="email-container" role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; width: 100%; background-color: #111111; border-radius: 12px; overflow: hidden; border: 1px solid #1a1a1a;">
+
+        <!-- ══════════════════════════════════════════
+             HEADER — Logo + Chip
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="header-pad" style="padding: 18px 28px; border-bottom: 1px solid #1a1a1a;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <!-- Logo left -->
+                <td valign="middle" style="width: auto;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <!-- Globe circle -->
+                      <td valign="middle" style="padding-right: 8px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="22" height="22">
+                          <tr>
+                            <td align="center" valign="middle" style="width: 22px; height: 22px; border-radius: 50%; background-color: #6ab04c; font-size: 0; line-height: 0;">
+                              <!-- Globe SVG as image fallback: empty circle -->
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <!-- Wordmark -->
+                      <td valign="middle">
+                        <span style="font-family: 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif; font-size: 18px; font-weight: 800; color: #f0f0f0; letter-spacing: -0.5px; line-height: 1;">VIBE<span style="color: #6ab04c;">.</span></span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <!-- Chip right -->
+                <td align="right" valign="middle">
+                  <span style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; color: #6ab04c; letter-spacing: 0.14em; text-transform: uppercase;">&#10022; TICKET CONFIRMED</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             HERO — You're in, NAME.
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="hero-pad" align="center" style="padding: 36px 28px 28px; text-align: center;">
+            <div class="hero-text-you" style="font-family: 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif; font-size: 48px; font-weight: 800; color: #f0f0f0; line-height: 0.9; letter-spacing: -1px; text-transform: uppercase; mso-line-height-rule: exactly;">YOU'RE</div>
+            <div class="hero-text-name" style="font-family: 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif; font-size: 48px; font-weight: 800; color: #6ab04c; line-height: 0.9; letter-spacing: -1px; text-transform: uppercase; margin-top: 2px; mso-line-height-rule: exactly;">IN, MATÍAS.</div>
+            <div style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; color: #999999; line-height: 1.6; margin-top: 14px;">
+              Your ticket for <strong style="color: #f0f0f0; font-weight: 600;">RAWDEO 2</strong> is confirmed.<br/>
+              See you on <strong style="color: #f0f0f0; font-weight: 600;">Jun 6</strong>.
+            </div>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             EVENT FLYER — Square image
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="section-pad" style="padding: 0 28px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td style="border-radius: 8px; overflow: hidden; font-size: 0; line-height: 0;">
+                  <!-- Event flyer: 544px wide (600 - 2×28 padding) -->
+                  <img
+                    class="event-img"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=544x544&data=RAWDEO2-PREVIEW&bgcolor=111111&color=6ab04c&qzone=1"
+                    alt="RAWDEO 2 — Jun 6, 2026 · Pedregal Event Center"
+                    width="544"
+                    height="544"
+                    style="display: block; width: 100%; height: auto; border-radius: 8px; max-width: 544px;"
+                  />
+                  <!--
+                    FASE 7: Replace src with {{event_image_url}}
+                    <img src="{{event_image_url}}" alt="{{event_name}}" width="544" height="544" .../>
+                  -->
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             TICKET DETAILS TABLE
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="section-pad" style="padding: 0 28px 20px;">
+            <!-- Detail card -->
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 8px;">
+
+              <!-- Row 1: EVENT -->
+              <tr>
+                <td style="padding: 14px 18px 13px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td class="detail-label" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 500; color: #999999; letter-spacing: 0.1em; text-transform: uppercase; width: 90px; vertical-align: top; padding-top: 1px;">EVENT</td>
+                      <td class="detail-value" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; color: #f0f0f0; text-align: right;">RAWDEO 2</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td style="font-size: 0; line-height: 0; padding: 0 18px;"><div style="height: 1px; background-color: #1a1a1a; font-size: 0; line-height: 0;">&nbsp;</div></td></tr>
+
+              <!-- Row 2: DATE -->
+              <tr>
+                <td style="padding: 14px 18px 13px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td class="detail-label" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 500; color: #999999; letter-spacing: 0.1em; text-transform: uppercase; width: 90px; vertical-align: top; padding-top: 1px;">DATE</td>
+                      <td class="detail-value" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; color: #f0f0f0; text-align: right;">Jun 6, 2026 &middot; 8:00 PM</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td style="font-size: 0; line-height: 0; padding: 0 18px;"><div style="height: 1px; background-color: #1a1a1a; font-size: 0; line-height: 0;">&nbsp;</div></td></tr>
+
+              <!-- Row 3: VENUE -->
+              <tr>
+                <td style="padding: 14px 18px 13px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td class="detail-label" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 500; color: #999999; letter-spacing: 0.1em; text-transform: uppercase; width: 90px; vertical-align: top; padding-top: 1px;">VENUE</td>
+                      <td class="detail-value" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; color: #f0f0f0; text-align: right;">Pedregal Event Center</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td style="font-size: 0; line-height: 0; padding: 0 18px;"><div style="height: 1px; background-color: #1a1a1a; font-size: 0; line-height: 0;">&nbsp;</div></td></tr>
+
+              <!-- Row 4: TIER -->
+              <tr>
+                <td style="padding: 14px 18px 13px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td class="detail-label" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 500; color: #999999; letter-spacing: 0.1em; text-transform: uppercase; width: 90px; vertical-align: top; padding-top: 1px;">TIER</td>
+                      <td style="text-align: right;">
+                        <span style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 700; color: #6ab04c; letter-spacing: 0.1em; text-transform: uppercase; background-color: rgba(106, 176, 76, 0.12); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(106, 176, 76, 0.25);">VIP</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td style="font-size: 0; line-height: 0; padding: 0 18px;"><div style="height: 1px; background-color: #1a1a1a; font-size: 0; line-height: 0;">&nbsp;</div></td></tr>
+
+              <!-- Row 5: ATTENDEE -->
+              <tr>
+                <td style="padding: 14px 18px 14px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td class="detail-label" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 500; color: #999999; letter-spacing: 0.1em; text-transform: uppercase; width: 90px; vertical-align: top; padding-top: 1px;">ATTENDEE</td>
+                      <td class="detail-value" style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; color: #f0f0f0; text-align: right;">Matías Espinar</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             QR CODE
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="section-pad" style="padding: 0 28px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #ffffff; border-radius: 8px;">
+              <tr>
+                <td align="center" style="padding: 24px 20px 20px;">
+                  <!-- QR Code image -->
+                  <img
+                    class="qr-img"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=TKT-240420-001&margin=10"
+                    alt="Ticket QR code"
+                    width="160"
+                    height="160"
+                    style="display: block; margin: 0 auto; border-radius: 4px;"
+                  />
+                  <!--
+                    FASE 7: Replace src with {{qr_code_url}}
+                    <img src="{{qr_code_url}}" alt="Ticket QR code" width="160" height="160" .../>
+                  -->
+                  <!-- Ticket ID -->
+                  <div style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 500; color: #666666; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 12px; text-align: center;">TICKET ID &middot; TKT-240420-001</div>
+                  <!-- Scan instruction -->
+                  <div style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 400; color: #999999; margin-top: 6px; text-align: center;">Show this QR at the door</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             CTA BUTTONS — Apple Wallet + View Tickets
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="section-pad" style="padding: 0 28px 24px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <!-- Apple Wallet button -->
+                <td class="btn-cell" valign="top" style="width: 50%; padding-right: 6px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td align="center" style="background-color: #000000; border-radius: 8px; padding: 0;">
+                        <a href="https://vibeticketscr.com/wallet/TKT-240420-001.pkpass"
+                           target="_blank"
+                           style="display: block; padding: 13px 16px; text-decoration: none; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.01em; text-align: center; white-space: nowrap;">
+                          <!-- Apple logo inline (SVG not supported in some clients → use unicode fallback) -->
+                          &#63743; Add to Apple Wallet
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+
+                <td class="btn-spacer" style="width: 8px; font-size: 0; line-height: 0;">&nbsp;</td>
+
+                <!-- View My Tickets button -->
+                <td class="btn-cell" valign="top" style="width: 50%; padding-left: 6px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td align="center" style="background-color: transparent; border: 1px solid #2a2a2a; border-radius: 8px; padding: 0;">
+                        <a href="https://vibeticketscr.com/my-tickets"
+                           target="_blank"
+                           style="display: block; padding: 13px 16px; text-decoration: none; color: #f0f0f0; font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; white-space: nowrap;">
+                          VIEW MY TICKETS
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             BEFORE YOU GO — Tips
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="section-pad" style="padding: 20px 28px; background-color: #050505; border-top: 1px solid #1a1a1a;">
+            <!-- Section chip -->
+            <div style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; color: #6ab04c; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px;">BEFORE YOU GO</div>
+            <!-- Tips -->
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; color: #999999; line-height: 1.7; padding-bottom: 4px;">
+                  &#8594; Arrive 30 min early to avoid lines
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; color: #999999; line-height: 1.7; padding-bottom: 4px;">
+                  &#8594; Bring a valid ID matching the attendee name
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; color: #999999; line-height: 1.7;">
+                  &#8594; Show this QR at the door
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ══════════════════════════════════════════
+             FOOTER
+             ══════════════════════════════════════════ -->
+        <tr>
+          <td class="section-pad" align="center" style="padding: 18px 28px 20px; border-top: 1px solid #1a1a1a; text-align: center;">
+            <div style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 400; color: #666666; line-height: 1.6;">
+              Questions? Reply to this email or visit
+              <a href="https://vibeticketscr.com/help" target="_blank" style="color: #6ab04c; text-decoration: none;">vibeticketscr.com/help</a>
+            </div>
+            <div style="font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 9px; font-weight: 400; color: #555555; letter-spacing: 0.05em; margin-top: 10px;">
+              &copy; VIBE 2026 &middot; Costa Rica &middot; #1 ticketing platform
+            </div>
+          </td>
+        </tr>
+
+      </table>
+      <!-- /email-container -->
+
+    </td>
+  </tr>
+</table>
+<!-- /outer wrapper -->
+
+</body>
+</html>
