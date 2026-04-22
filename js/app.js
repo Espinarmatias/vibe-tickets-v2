@@ -309,13 +309,34 @@ function initFadeIns() {
 }
 
 
-// ─── NAV SCROLL ──────────────────────────────────────────────────
-window.addEventListener("scroll", function() {
+// ─── NAV SCROLL (hide on down, show on up) ───────────────────────
+(function() {
   var nav = document.getElementById("main-nav");
   if (!nav) return;
-  if (window.scrollY > 20) { nav.classList.add("scrolled"); }
-  else { nav.classList.remove("scrolled"); }
-});
+  // Prevent browser scroll-restoration from triggering hide on reload
+  if (history.scrollRestoration) history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+  var lastScrollY = 0;
+  var ticking = false;
+  var THRESHOLD = 10;
+
+  window.addEventListener("scroll", function() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function() {
+      var current = window.scrollY;
+      if (current < 50) {
+        nav.classList.remove("nav-hidden");
+      } else if (current > lastScrollY + THRESHOLD) {
+        nav.classList.add("nav-hidden");
+      } else if (current < lastScrollY - THRESHOLD) {
+        nav.classList.remove("nav-hidden");
+      }
+      lastScrollY = current;
+      ticking = false;
+    });
+  }, { passive: true });
+})();
 
 
 // ─── EVENT FILTER (home search bar) ──────────────────────────────

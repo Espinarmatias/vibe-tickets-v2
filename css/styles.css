@@ -23,7 +23,7 @@
   --red-error:#c94545;
 }
 html{scroll-behavior:smooth;overflow-x:hidden;background-color:#141414;}
-body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+body{background:#141414;color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;overscroll-behavior-y:none;}
 body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.018;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.03) 2px,rgba(255,255,255,.03) 4px);}
 
 /* ─── SCROLLBAR ─── */
@@ -36,8 +36,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .page.active{display:block;}
 
 /* ─── NAV ─── */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:env(safe-area-inset-top) clamp(16px,4vw,40px) 0;height:calc(60px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid rgba(255,255,255,0.06);background:#141414;margin:0;border-radius:0;}
-nav.scrolled{background:#141414;border-bottom-color:rgba(255,255,255,0.06);}
+nav{position:fixed;top:0;left:0;right:0;width:100%;z-index:1000;padding:env(safe-area-inset-top) clamp(16px,4vw,40px) 0;height:calc(60px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid rgba(255,255,255,0.06);background:#141414;margin:0;border-radius:0;transform:translateY(0);transition:transform .3s cubic-bezier(.16,1,.3,1);will-change:transform;}
+nav.nav-hidden{transform:translateY(-100%);}
 .nav-logo{cursor:pointer;display:flex;align-items:center;gap:8px;}
 .nav-logo-globe{
   width:32px;height:32px;border-radius:50%;
@@ -67,8 +67,7 @@ nav.scrolled{background:#141414;border-bottom-color:rgba(255,255,255,0.06);}
 .nav-btn-primary:hover{background:#5a9940;transform:translateY(-1px);box-shadow:0 4px 20px var(--green-glow);}
 /* Hide center links on small screens */
 @media(max-width:768px){
-  nav{width:100vw;left:0;right:0;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;}
-  nav.scrolled{background:#141414;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:rgba(255,255,255,0.06);}
+  nav{-webkit-backface-visibility:hidden;backface-visibility:hidden;}
   .nav-center{display:none;}
   .nav-btn:not(.nav-btn-primary):not(.nav-hamburger){display:none;}
   .nav-btn-primary:not(#nav-buy-tickets-btn){display:none;}
@@ -145,8 +144,8 @@ nav.scrolled{background:#141414;border-bottom-color:rgba(255,255,255,0.06);}
 .btn-pill:hover{transform:scale(1.03);}
 .btn-pill-primary{background:var(--green);color:#0a0a0a;}
 .btn-pill-primary:hover{box-shadow:0 6px 28px rgba(106,176,76,.35);}
-.btn-pill-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);}
-.btn-pill-ghost:hover{border-color:rgba(255,255,255,.45);color:#fff;}
+.btn-pill-ghost{background:#242424;border:0.5px solid rgba(255,255,255,.12);color:#fff;}
+.btn-pill-ghost:hover{background:#2e2e2e;}
 /* Legacy buttons — keep for other sections */
 .btn-primary{background:var(--green);border:none;color:#0a0a0a;padding:14px 32px;border-radius:8px;font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:background .25s,transform .25s,box-shadow .25s;text-transform:uppercase;}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--green-glow);background:#5a9940;}
