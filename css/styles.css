@@ -25,8 +25,8 @@
   --section-pad-mobile:40px;
   --section-pad-compact:24px;
 }
-html{scroll-behavior:smooth;background-color:#141414;}
-body{background:#141414;color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;overscroll-behavior-y:none;}
+html{scroll-behavior:smooth;background-color:#0a0a0a;}
+body{background:#0a0a0a;color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;overscroll-behavior-y:none;}
 body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.018;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.03) 2px,rgba(255,255,255,.03) 4px);}
 
 /* ─── SCROLLBAR ─── */
@@ -355,14 +355,37 @@ section{padding-block:var(--section-pad-desktop);padding-inline:64px;}
 .buy-in-2min-icon svg{width:30px;height:30px;}
 .buy-in-2min-step-title{color:#fff;font-family:'Barlow',sans-serif;font-size:19px;font-weight:500;margin:0 0 10px;letter-spacing:-.2px;}
 .buy-in-2min-step-desc{color:rgba(255,255,255,.55);font-family:'Barlow',sans-serif;font-size:14px;line-height:1.6;margin:0;font-weight:400;}
-.buy-in-2min-header,.buy-in-2min-step{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);}
+.buy-in-2min-header{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);}
 .buy-in-2min.in-view .buy-in-2min-header{opacity:1;transform:translateY(0);}
-.buy-in-2min.in-view .buy-in-2min-step{opacity:1;transform:translateY(0);}
-.buy-in-2min.in-view .buy-in-2min-step:nth-child(1){transition-delay:.15s;}
-.buy-in-2min.in-view .buy-in-2min-step:nth-child(2){transition-delay:.25s;}
-.buy-in-2min.in-view .buy-in-2min-step:nth-child(3){transition-delay:.35s;}
+.buy-in-2min-step{opacity:0;transform:scale(.9);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
+.buy-in-2min.in-view .buy-in-2min-step{opacity:1;transform:scale(1);}
+.buy-in-2min.in-view .buy-in-2min-step:nth-child(1){transition-delay:0s;}
+.buy-in-2min.in-view .buy-in-2min-step:nth-child(2){transition-delay:.15s;}
+.buy-in-2min.in-view .buy-in-2min-step:nth-child(3){transition-delay:.3s;}
 @media(prefers-reduced-motion:reduce){
   .buy-in-2min-header,.buy-in-2min-step{opacity:1;transform:none;transition:none;}
+}
+
+/* ─── HOME PARALLAX REVEAL ─── */
+@supports (animation-timeline: view()){
+  .home-section{
+    animation:parallaxReveal linear both;
+    animation-timeline:view();
+    animation-range:entry 0% entry 100%;
+  }
+  @keyframes parallaxReveal{
+    from{transform:translateY(30px);opacity:.85;}
+    to{transform:translateY(0);opacity:1;}
+  }
+  @media(max-width:900px){
+    @keyframes parallaxReveal{
+      from{transform:translateY(15px);opacity:.9;}
+      to{transform:translateY(0);opacity:1;}
+    }
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .home-section{animation:none !important;transform:none !important;opacity:1 !important;}
 }
 @media(max-width:900px){
   .buy-in-2min{padding-block:clamp(60px,10vh,100px);}
@@ -428,7 +451,7 @@ section{padding-block:var(--section-pad-desktop);padding-inline:64px;}
 .proof-location{font-family:'Barlow',sans-serif;font-size:10px;color:var(--gray);letter-spacing:1px;margin-top:2px;}
 
 /* ─── NEWSLETTER ─── */
-.nl-section{background:var(--bg);border-top:1px solid var(--border);}
+.nl-section{background:transparent;border-top:1px solid var(--border);}
 .nl-inner{display:flex;justify-content:space-between;align-items:center;gap:64px;}
 .nl-left{flex:1;}
 .nl-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,4vw,56px);font-weight:900;text-transform:uppercase;line-height:.95;letter-spacing:-1px;margin-bottom:12px;}
@@ -914,6 +937,14 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 /* Google OAuth button — matches login-input border-radius:10px, same dark family */
 .login-google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:13px 16px;background:transparent;color:#f0f0f0;border:1px solid var(--border);border-radius:10px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:18px;transition:border-color .2s;min-height:48px;box-sizing:border-box;}
 .login-google-btn:hover{border-color:#6ab04c;}
+/* Apple Sign In — Apple HIG: black bg, white logo, SF font, 44px+ touch target */
+.login-apple-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px 16px;background:#000;color:#fff;border:0.5px solid rgba(255,255,255,.15);border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-bottom:18px;transition:background .2s cubic-bezier(.22,1,.36,1);min-height:48px;box-sizing:border-box;}
+.login-apple-btn:hover{background:#1a1a1a;}
+.login-apple-btn .apple-logo{color:#fff;flex-shrink:0;}
+/* OAuth row — Google + Apple side-by-side on desktop, stacked on mobile */
+.login-oauth-row{display:flex;gap:10px;margin-bottom:18px;}
+.login-oauth-row .login-google-btn,
+.login-oauth-row .login-apple-btn{flex:1;margin-bottom:0;}
 /* OR divider */
 .login-or-divider{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
 .login-or-line{flex:1;height:1px;background:var(--border);}
@@ -1283,7 +1314,7 @@ body.drawer-open{overflow:hidden;}
 /* ════════════════════════════════════════════════════════════════
    FOOTER PROFESIONAL (redesigned FASE 3)
    ════════════════════════════════════════════════════════════════ */
-.site-footer{background:#050505;border-top:1px solid #1a1a1a;margin-top:80px;}
+.site-footer{background:#0a0a0a;border-top:1px solid #1a1a1a;margin-top:80px;}
 .footer-container{max-width:1320px;margin:0 auto;padding:56px 28px 24px;}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
 .footer-brand{max-width:320px;}
@@ -1467,6 +1498,15 @@ body.drawer-open{overflow:hidden;}
 .ca-google-btn:active{transform:scale(.995);}
 .ca-google-text{flex:0 1 auto;}
 .ca-google-badge{font-family:'Barlow',sans-serif;font-size:10px;color:#999;background:rgba(255,255,255,.04);padding:2px 8px;border-radius:10px;letter-spacing:.05em;font-weight:500;}
+/* Apple Sign In — checkout (smaller proportions than login, same HIG) */
+.ca-apple-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 16px;background:#000;color:#fff;border:0.5px solid rgba(255,255,255,.15);border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-bottom:16px;min-height:46px;transition:background .2s cubic-bezier(.22,1,.36,1),transform .15s ease;}
+.ca-apple-btn:hover{background:#1a1a1a;}
+.ca-apple-btn:active{transform:scale(.995);}
+.ca-apple-btn .apple-logo{color:#fff;flex-shrink:0;}
+/* OAuth row — Google + Apple side-by-side on desktop, stacked on mobile */
+.ca-oauth-row{display:flex;gap:10px;margin-bottom:16px;}
+.ca-oauth-row .ca-google-btn,
+.ca-oauth-row .ca-apple-btn{flex:1;margin-bottom:0;}
 
 /* divider */
 .ca-divider{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
@@ -1598,4 +1638,7 @@ body.drawer-open{overflow:hidden;}
   .ca-logged-badge{flex-wrap:wrap;padding:14px 16px;}
   .ca-logged-switch{margin-left:auto;}
   .ca-google-btn{flex-wrap:wrap;gap:8px;}
+  /* OAuth row stacks on mobile */
+  .login-oauth-row,
+  .ca-oauth-row{flex-direction:column;}
 }

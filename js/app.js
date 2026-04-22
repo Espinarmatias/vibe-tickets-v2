@@ -81,11 +81,20 @@ function authLogin(email, password) {
 }
 
 function authGoogleLogin() {
-  // FAKE: simulates Google OAuth with prompts
-  // TODO: FASE 7 — replace with real Google OAuth via Supabase
-  var simEmail = prompt('[Simulated Google OAuth]\n\nEnter email to simulate Google login:');
+  return authProviderLogin('google');
+}
+
+function authAppleLogin() {
+  return authProviderLogin('apple');
+}
+
+function authProviderLogin(provider) {
+  // FAKE: simulates provider OAuth with prompts
+  // TODO: FASE 7 — replace with real OAuth via Supabase
+  var label = provider === 'apple' ? 'Apple' : 'Google';
+  var simEmail = prompt('[Simulated ' + label + ' OAuth]\n\nEnter email to simulate ' + label + ' login:');
   if (!simEmail) return { success: false, error: 'Cancelled' };
-  var simName = prompt('[Simulated Google OAuth]\n\nEnter full name:');
+  var simName = prompt('[Simulated ' + label + ' OAuth]\n\nEnter full name:');
   if (!simName) return { success: false, error: 'Cancelled' };
   var parts = simName.trim().split(' ');
   var user = {
@@ -95,7 +104,7 @@ function authGoogleLogin() {
     lastName: parts.slice(1).join(' ') || '',
     fullName: simName.trim(),
     emailVerified: true,
-    provider: 'google',
+    provider: provider,
     createdAt: new Date().toISOString()
   };
   localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
@@ -445,14 +454,23 @@ function renderCheckoutAuth() {
     ? 'By creating an account you agree to our <a href="#" class="ca-link" onclick="return false">Terms</a> and <a href="#" class="ca-link" onclick="return false">Privacy Policy</a>. Already have an account? <a href="#" onclick="switchCheckoutAuthMode(\'login\'); return false;" class="ca-link ca-link-strong">Log in</a>'
     : 'Don\'t have an account? <a href="#" onclick="switchCheckoutAuthMode(\'signup\'); return false;" class="ca-link ca-link-strong">Sign up</a>';
 
+  var appleText = isSignup ? 'Continue with Apple' : 'Sign in with Apple';
+  var appleSVG  = '<svg class="apple-logo" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.41-1.09-.47-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.41C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>';
+
   section.innerHTML =
     headerHTML +
     '<div class="ca-card">' +
-      '<button type="button" class="ca-google-btn" onclick="handleCheckoutGoogleAuth()">' +
-        googleSVG +
-        '<span class="ca-google-text">' + googleText + '</span>' +
-        googleBadge +
-      '</button>' +
+      '<div class="ca-oauth-row">' +
+        '<button type="button" class="ca-google-btn" onclick="handleCheckoutGoogleAuth()">' +
+          googleSVG +
+          '<span class="ca-google-text">' + googleText + '</span>' +
+          googleBadge +
+        '</button>' +
+        '<button type="button" class="ca-apple-btn" onclick="handleCheckoutAppleAuth()" aria-label="' + appleText + '">' +
+          appleSVG +
+          '<span class="ca-apple-text">' + appleText + '</span>' +
+        '</button>' +
+      '</div>' +
       '<div class="ca-divider">' +
         '<span class="ca-divider-line"></span>' +
         '<span class="ca-divider-text">' + dividerText + '</span>' +
@@ -515,6 +533,11 @@ function handleCheckoutLogin(event) {
 
 function handleCheckoutGoogleAuth() {
   var result = authGoogleLogin();
+  if (result.success) { onCheckoutAuthSuccess(); }
+}
+
+function handleCheckoutAppleAuth() {
+  var result = authAppleLogin();
   if (result.success) { onCheckoutAuthSuccess(); }
 }
 
@@ -1327,6 +1350,11 @@ function handleGoogleAuth() {
   if (result.success) { renderAuthState(); goPage('home'); }
 }
 
+function handleAppleAuth() {
+  var result = authAppleLogin();
+  if (result.success) { renderAuthState(); goPage('home'); }
+}
+
 function handleForgotPassword(event) {
   event.preventDefault();
   alert('[Simulated] Password reset flow — FASE 7 integrates real email reset via Supabase.');
@@ -1643,6 +1671,33 @@ function initAllEventsEntrance() {
   document.querySelectorAll(sel).forEach(function(el){ io.observe(el); });
 }
 
+// ─── HOME PARALLAX (JS fallback when animation-timeline:view() unsupported)
+function initHomeParallax() {
+  var sections = document.querySelectorAll('.home-section');
+  if (!sections.length) return;
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  var supportsViewTimeline = CSS && CSS.supports && CSS.supports('animation-timeline: view()');
+  if (supportsViewTimeline) return;
+  var mobile = window.matchMedia && window.matchMedia('(max-width:900px)').matches;
+  var maxOffset = mobile ? 15 : 30;
+  var ticking = false;
+  function update() {
+    var vh = window.innerHeight;
+    sections.forEach(function(sec) {
+      var rect = sec.getBoundingClientRect();
+      if (rect.top > vh || rect.bottom < 0) return;
+      var progress = Math.max(0, Math.min(1, (vh - rect.top) / vh));
+      sec.style.transform = 'translateY(' + ((1 - progress) * maxOffset).toFixed(2) + 'px)';
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+}
+
 // ─── CAROUSEL AUTO-SCROLL (RAF-driven, seamless pause/resume) ───
 function initCarouselAutoScroll() {
   var scroller = document.querySelector('.flyer-scroll');
@@ -1723,6 +1778,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initFadeIns();
   initFlyerCarousel();
   initAllEventsEntrance();
+  initHomeParallax();
   initCarouselAutoScroll();
   updateCardCountdowns();
   // Trigger fade for elements already in viewport
