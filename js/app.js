@@ -652,7 +652,6 @@ function updWidget() {
   if (wDate) wDate.textContent = ev.date;
   var wPlace = document.getElementById("ed-info-place");
   if (wPlace) wPlace.textContent = ev.place;
-  renderTiers();
   updTotals();
   updateLineup(ev);
 }
