@@ -1624,10 +1624,104 @@ function joinNewsletter() {
 }
 
 
+// ─── ALL EVENTS — entrance observer ──────────────────────────────
+function initAllEventsEntrance() {
+  if (!window.IntersectionObserver) {
+    document.querySelectorAll('.all-events').forEach(function(el){ el.classList.add('in-view'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.all-events').forEach(function(el){ io.observe(el); });
+}
+
+// ─── CAROUSEL AUTO-SCROLL (RAF-driven, seamless pause/resume) ───
+function initCarouselAutoScroll() {
+  var scroller = document.querySelector('.flyer-scroll');
+  var track    = document.getElementById('flyer-track');
+  if (!scroller || !track) return;
+
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SPEED = 70; // px/s — ~20s per original set (track half ~ 1372px)
+  var paused = prefersReduced;
+  var pauseTimer = null;
+  var lastTs = 0;
+
+  function step(ts) {
+    if (!lastTs) lastTs = ts;
+    var dt = (ts - lastTs) / 1000;
+    lastTs = ts;
+    if (!paused) {
+      var half = track.scrollWidth / 2;
+      if (half > 0) {
+        var next = scroller.scrollLeft + SPEED * dt;
+        if (next >= half) next -= half;
+        else if (next < 0) next += half;
+        scroller.scrollLeft = next;
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function scheduleResume(ms) {
+    if (pauseTimer) clearTimeout(pauseTimer);
+    pauseTimer = setTimeout(function() {
+      pauseTimer = null;
+      lastTs = 0;
+      paused = false;
+    }, ms);
+  }
+
+  // Pause on hover (desktop) — instant resume when leaving, unless timer active
+  scroller.addEventListener('mouseenter', function() { paused = true; });
+  scroller.addEventListener('mouseleave', function() {
+    if (!pauseTimer) { lastTs = 0; paused = false; }
+  });
+
+  // Pause on touch drag (mobile) — resume after 5s of no interaction
+  scroller.addEventListener('touchstart', function() {
+    paused = true;
+    if (pauseTimer) { clearTimeout(pauseTimer); pauseTimer = null; }
+  }, { passive: true });
+  scroller.addEventListener('touchend', function() { scheduleResume(5000); }, { passive: true });
+
+  // Arrow handler (global — onclick=carouselArrow(±1))
+  window.carouselArrow = function(dir) {
+    paused = true;
+    var first = track.querySelector('.flyer-slide');
+    var step = first ? (first.offsetWidth + 16) : 196;
+    scroller.scrollBy({ left: dir * step, behavior: 'smooth' });
+    scheduleResume(5000);
+  };
+
+  // React to reduced-motion preference changes
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var handler = function(e) {
+      prefersReduced = e.matches;
+      if (prefersReduced) paused = true;
+      else if (!pauseTimer) { lastTs = 0; paused = false; }
+    };
+    if (mq.addEventListener) mq.addEventListener('change', handler);
+    else if (mq.addListener) mq.addListener(handler);
+  }
+
+  // Small delay so slides have measured width before we start
+  setTimeout(function() { requestAnimationFrame(step); }, 120);
+}
+
 // ─── INIT ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   initFadeIns();
   initFlyerCarousel();
+  initAllEventsEntrance();
+  initCarouselAutoScroll();
   updateCardCountdowns();
   // Trigger fade for elements already in viewport
   setTimeout(function() {

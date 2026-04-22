@@ -89,9 +89,33 @@ nav.nav-hidden{transform:translateY(-100%);}
 }
 
 
-/* Carousel scroll keyframe — used by #flyer-track inline animation */
+/* Carousel scroll keyframe — legacy fallback, no-JS only */
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-#flyer-track{will-change:transform;}
+
+/* ─── ALL EVENTS — entrance + carousel ─── */
+.all-events .all-events-header,
+.all-events .all-events-carousel{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);}
+.all-events.in-view .all-events-header{opacity:1;transform:translateY(0);}
+.all-events.in-view .all-events-carousel{opacity:1;transform:translateY(0);transition-delay:.15s;}
+
+/* Scroll container — native horizontal scroll, hidden scrollbar */
+.flyer-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:auto;-webkit-overflow-scrolling:touch;}
+.flyer-scroll::-webkit-scrollbar{display:none;}
+
+/* Floating side arrows */
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(20,20,20,.85);border:0.5px solid rgba(255,255,255,.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;padding:0;transition:background .2s cubic-bezier(.22,1,.36,1),color .2s cubic-bezier(.22,1,.36,1),transform .2s cubic-bezier(.22,1,.36,1),border-color .2s cubic-bezier(.22,1,.36,1);}
+.carousel-arrow-left{left:16px;}
+.carousel-arrow-right{right:16px;}
+.carousel-arrow:hover{background:rgba(106,176,76,.9);color:#0a0a0a;border-color:transparent;transform:translateY(-50%) scale(1.08);}
+.carousel-arrow:focus-visible{outline:2px solid var(--green);outline-offset:3px;}
+.carousel-arrow:active{transform:translateY(-50%) scale(.96);}
+@media(max-width:768px){.carousel-arrow{display:none;}}
+
+/* Reduced motion — no entrance animation, no auto-scroll */
+@media(prefers-reduced-motion:reduce){
+  .all-events .all-events-header,
+  .all-events .all-events-carousel{opacity:1;transform:none;transition:none;}
+}
 
 /* ─── HERO ANIMATIONS ─── */
 @keyframes haloBreath{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.12);opacity:1}}

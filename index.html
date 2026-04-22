@@ -107,8 +107,8 @@
   </section>
 
   <!-- EVENTS -->
-  <section id="events-section">
-    <div class="events-header fade-in">
+  <section id="events-section" class="all-events">
+    <div class="events-header fade-in all-events-header">
       <div>
         <div class="section-eyebrow">✦ Upcoming events</div>
         <h2 class="section-title">ALL <em>EVENTS.</em></h2>
@@ -117,9 +117,16 @@
     </div>
 
     <!-- FLYER CAROUSEL -->
-    <div class="flyer-carousel-wrap" style="overflow:hidden;margin:0 -64px 32px;position:relative;">
-      <div id="flyer-track" style="display:flex;gap:16px;width:max-content;animation:ticker 30s linear infinite;">
+    <div class="flyer-carousel-wrap all-events-carousel" style="margin:0 -64px 32px;position:relative;">
+      <div class="flyer-scroll">
+        <div id="flyer-track" style="display:flex;gap:16px;width:max-content;"></div>
       </div>
+      <button class="carousel-arrow carousel-arrow-left" aria-label="Previous events" onclick="carouselArrow(-1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="carousel-arrow carousel-arrow-right" aria-label="Next events" onclick="carouselArrow(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
 
     <div class="fade-in" style="margin-bottom:24px;">
