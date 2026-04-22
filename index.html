@@ -76,53 +76,19 @@
 <!-- HOME PAGE -->
 <div class="page active" id="pg-home">
 
-  <!-- HERO (PNG 10 + 11 design) -->
-  <section style="padding:0;position:relative;" class="hero">
+  <!-- HERO — FASE 2.5 -->
+  <section class="hero" style="padding:0;position:relative;">
     <div class="hero-bg-overlay"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-accent-line"></div>
 
-    <!-- Globe decoration (PNG 10) -->
-    <div class="hero-globe-deco">
-      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="100" cy="100" r="90" stroke="#6ab04c" stroke-width="1"/>
-        <ellipse cx="100" cy="100" rx="50" ry="90" stroke="#6ab04c" stroke-width="1"/>
-        <ellipse cx="100" cy="100" rx="90" ry="35" stroke="#6ab04c" stroke-width="1"/>
-        <line x1="10" y1="100" x2="190" y2="100" stroke="#6ab04c" stroke-width="1"/>
-        <line x1="100" y1="10" x2="100" y2="190" stroke="#6ab04c" stroke-width="1"/>
-        <ellipse cx="100" cy="100" rx="75" ry="90" stroke="#6ab04c" stroke-width=".5" opacity=".5"/>
-        <ellipse cx="100" cy="100" rx="25" ry="90" stroke="#6ab04c" stroke-width=".5" opacity=".5"/>
-        <ellipse cx="100" cy="100" rx="90" ry="60" stroke="#6ab04c" stroke-width=".5" opacity=".5"/>
-      </svg>
-    </div>
-
-    <!-- Stats bar (PNG 11) -->
-    <div class="hero-stats-bar">
-      <div class="hero-stat-item">
-        <span class="hero-stat-val">1,200+</span>
-        <span class="hero-stat-sub">Tickets · Rawdeo 2</span>
-      </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-val">$45</span>
-        <span class="hero-stat-sub">Ticket Price</span>
-      </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-val">Jun 6</span>
-        <span class="hero-stat-sub">Next Event</span>
-      </div>
-    </div>
-
-    <!-- Countdown -->
-
-
-    <!-- Main content -->
     <div class="hero-content fade-in">
-      <div class="hero-event-label"><span class="hero-eyebrow-dot"></span>Costa Rica · Season 2026</div>
-      <h1 class="hero-title">JOIN<br>THE<br><span class="green">VIBE.</span></h1>
-      <p class="hero-sub">The #1 ticket platform in Costa Rica. Parties, concerts &amp; unique events — instant secure payments via card, SINPE Móvil, or Apple Pay.</p>
+      <div class="hero-eyebrow">● COSTA RICA · SEASON 2026</div>
+      <h1 class="hero-title">
+        <span class="hero-title-white">JOIN THE </span><span class="hero-title-green">VIBE.</span>
+      </h1>
+      <p class="hero-tagline">Built by people who actually go out.<br class="mobile-br"> For people who do too.</p>
       <div class="hero-ctas">
-        <button class="btn-primary" onclick="document.getElementById('events-section').scrollIntoView({behavior:'smooth'})">Explore Events</button>
-        <button class="btn-ghost" onclick="goPage('organizer')">For Organizers →</button>
+        <button class="btn-pill btn-pill-primary" onclick="document.getElementById('events-section').scrollIntoView({behavior:'smooth'})">EXPLORE EVENTS</button>
+        <button class="btn-pill btn-pill-ghost" onclick="goPage('organizer')">FOR ORGANIZERS</button>
       </div>
       <!-- Keep for JS access -->
       <p class="hero-ticket-cta" style="display:none;">Buy your tickets <em onclick="openCheckout('rawdeo')">here.</em></p>
