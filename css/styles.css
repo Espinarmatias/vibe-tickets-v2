@@ -25,8 +25,8 @@
   --section-pad-mobile:40px;
   --section-pad-compact:24px;
 }
-html{scroll-behavior:smooth;background-color:#0a0a0a;}
-body{background:#0a0a0a;color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;overscroll-behavior-y:none;}
+html{scroll-behavior:smooth;background-color:#141414;}
+body{background:#141414;color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;overscroll-behavior-y:none;}
 body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.018;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.03) 2px,rgba(255,255,255,.03) 4px);}
 
 /* ─── SCROLLBAR ─── */
@@ -344,7 +344,7 @@ section{padding-block:var(--section-pad-desktop);padding-inline:64px;}
 .ev-card-placeholder{display:none;}
 
 /* ─── BUY IN 2 MINUTES (dark section) ─── */
-.buy-in-2min{background:#141414;color:#ffffff;padding-block:clamp(80px,12vh,140px);}
+.buy-in-2min{background:transparent;color:#ffffff;padding-block:clamp(80px,12vh,140px);}
 .buy-in-2min-inner{max-width:1200px;margin:0 auto;}
 .buy-in-2min-eyebrow{font-family:'Barlow',sans-serif;color:var(--green);font-size:11px;letter-spacing:3px;font-weight:600;margin-bottom:16px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
 .buy-in-2min-eyebrow::before{content:'✦';font-size:8px;}
@@ -1314,7 +1314,7 @@ body.drawer-open{overflow:hidden;}
 /* ════════════════════════════════════════════════════════════════
    FOOTER PROFESIONAL (redesigned FASE 3)
    ════════════════════════════════════════════════════════════════ */
-.site-footer{background:#0a0a0a;border-top:1px solid #1a1a1a;margin-top:80px;}
+.site-footer{background:#141414;border-top:1px solid #1a1a1a;margin-top:80px;}
 .footer-container{max-width:1320px;margin:0 auto;padding:56px 28px 24px;}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
 .footer-brand{max-width:320px;}
