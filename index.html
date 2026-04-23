@@ -22,11 +22,8 @@
 
 
 <nav id="main-nav">
-  <div class="nav-logo" onclick="goPage('home')" ondblclick="window.open('admin/')" id="nav-logo-area">
-    <div class="nav-logo-globe">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-    </div>
-    <span class="nav-logo-text">VIBE<span class="nav-logo-dot">.</span></span>
+  <div class="nav-logo" onclick="goPage('home')" id="nav-logo-area">
+    <span class="nav-logo__text">VIBE<span class="nav-logo__accent">.</span></span>
   </div>
   <div class="nav-center">
     <button class="nav-center-link" onclick="closeMenu();goPage('login')">LOG IN</button>
@@ -199,7 +196,7 @@
   <section class="home-section about-vibe">
     <div class="about-vibe__inner fade-in">
 
-      <p class="about-vibe__eyebrow">WHAT WE DO</p>
+      <p class="about-vibe__eyebrow">WHY VIBE</p>
 
       <h2 class="about-vibe__title">
         We make going out<br />
@@ -662,12 +659,11 @@
         <h1 class="section-title">SELL YOUR<br/><em>TICKETS</em><br/>WITH VIBE.</h1>
         <p class="section-sub">The #1 ticket platform in Costa Rica. You bring the event, we handle payments, tickets and logistics.</p>
         <div class="org-features">
-          <div class="org-feature"><div class="org-feature-icon">💰</div><div><div class="org-feature-title">You get paid</div><div class="org-feature-desc">Payments go directly to your account. VIBE. charges the service fee to the buyer.</div></div></div>
-          <div class="org-feature"><div class="org-feature-icon">🎟</div><div><div class="org-feature-title">Automatic tickets</div><div class="org-feature-desc">After purchase, buyers receive their QR ticket by email. Zero manual work.</div></div></div>
-          <div class="org-feature"><div class="org-feature-icon">📊</div><div><div class="org-feature-title">Live dashboard</div><div class="org-feature-desc">Sales, revenue and buyers in real time from your phone.</div></div></div>
-          <div class="org-feature"><div class="org-feature-icon">💳</div><div><div class="org-feature-title">All payment methods</div><div class="org-feature-desc">Card, SINPE Móvil, Apple Pay and Google Pay.</div></div></div>
-          <div class="org-feature"><div class="org-feature-icon">📄</div><div><div class="org-feature-title">Tax report included</div><div class="org-feature-desc">PDF ready for Hacienda at the close of each event.</div></div></div>
-          <div class="org-feature"><div class="org-feature-icon">🇨🇷</div><div><div class="org-feature-title">100% Local</div><div class="org-feature-desc">Made in Costa Rica. Payments in USD and colones. Spanish support.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6ab04c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></div><div><div class="org-feature-title">You get paid</div><div class="org-feature-desc">Payments go directly to your account. VIBE. charges the service fee to the buyer.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6ab04c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg></div><div><div class="org-feature-title">Automatic tickets</div><div class="org-feature-desc">After purchase, buyers receive their QR ticket by email. Zero manual work.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6ab04c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div><div><div class="org-feature-title">Live dashboard</div><div class="org-feature-desc">Sales, revenue and buyers in real time from your phone.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6ab04c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div><div><div class="org-feature-title">All payment methods</div><div class="org-feature-desc">Card, SINPE Móvil, Apple Pay and Google Pay.</div></div></div>
+          <div class="org-feature"><div class="org-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6ab04c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div><div><div class="org-feature-title">Tax report included</div><div class="org-feature-desc">PDF ready for Hacienda at the close of each event.</div></div></div>
         </div>
       </div>
       <div class="org-form">
@@ -690,7 +686,7 @@
           <div class="currency-opts">
             <div class="currency-opt" id="curr-usd" onclick="selectCurrency('usd')">
               <div class="currency-opt-radio"></div>
-              <div class="currency-opt-flag">🇺🇸</div>
+              <span class="currency-badge currency-badge--usd">$</span>
               <div class="currency-opt-body">
                 <div class="currency-opt-name">USD only ($)</div>
                 <div class="currency-opt-desc">All prices and payments in US dollars.</div>
@@ -698,7 +694,7 @@
             </div>
             <div class="currency-opt" id="curr-crc" onclick="selectCurrency('crc')">
               <div class="currency-opt-radio"></div>
-              <div class="currency-opt-flag">🇨🇷</div>
+              <span class="currency-badge currency-badge--crc">₡</span>
               <div class="currency-opt-body">
                 <div class="currency-opt-name">Colones only (₡)</div>
                 <div class="currency-opt-desc">All prices and payments in Costa Rican colones.</div>
@@ -706,7 +702,10 @@
             </div>
             <div class="currency-opt" id="curr-both" onclick="selectCurrency('both')">
               <div class="currency-opt-radio"></div>
-              <div class="currency-opt-flag">🔄</div>
+              <span class="currency-badge-group">
+                <span class="currency-badge currency-badge--small">$</span>
+                <span class="currency-badge currency-badge--small">₡</span>
+              </span>
               <div class="currency-opt-body">
                 <div class="currency-opt-name">Both currencies</div>
                 <div class="currency-opt-desc">Buyer chooses at checkout.</div>
