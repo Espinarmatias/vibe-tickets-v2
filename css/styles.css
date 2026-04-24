@@ -1539,17 +1539,9 @@ body.drawer-open{overflow:hidden;}
 .ca-google-btn:active{transform:scale(.995);}
 .ca-google-text{flex:0 1 auto;}
 .ca-google-badge{font-family:'Barlow',sans-serif;font-size:10px;color:#999;background:rgba(255,255,255,.04);padding:2px 8px;border-radius:10px;letter-spacing:.05em;font-weight:500;}
-/* Apple Sign In — checkout (smaller proportions than login, same HIG) */
-/* Apple HIG requirement: pure white on black */
-.ca-apple-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 16px;background:#000;color:#ffffff;border:0.5px solid rgba(255,255,255,.15);border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-bottom:16px;min-height:46px;transition:background .2s cubic-bezier(.22,1,.36,1),transform .15s ease;}
-.ca-apple-btn:hover{background:#1a1a1a;}
-.ca-apple-btn:active{transform:scale(.995);}
-/* Apple HIG requirement: pure white on black */
-.ca-apple-btn .apple-logo{color:#ffffff;flex-shrink:0;}
-/* OAuth row — Google + Apple side-by-side on desktop, stacked on mobile */
+/* OAuth row — Google only (Apple Sign In postponed to V1) */
 .ca-oauth-row{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-.ca-oauth-row .ca-google-btn,
-.ca-oauth-row .ca-apple-btn{width:100%;margin-bottom:0;}
+.ca-oauth-row .ca-google-btn{width:100%;margin-bottom:0;}
 
 /* divider */
 .ca-divider{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
