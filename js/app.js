@@ -1741,6 +1741,7 @@ function initCarouselAutoScroll() {
 var cdCurrentStep = 1;
 var _cdLastFocus = null;
 var _cdKeyHandler = null;
+var _cdSavedScrollY = null;
 
 function cdFocusables(root) {
   if (!root) return [];
@@ -1800,7 +1801,9 @@ function openCheckoutDrawer() {
   goToStep(1);
 
   _cdLastFocus = document.activeElement;
-  document.body.style.overflow = 'hidden';
+  _cdSavedScrollY = window.scrollY || window.pageYOffset || 0;
+  document.documentElement.style.setProperty('--drawer-scroll-top', '-' + _cdSavedScrollY + 'px');
+  document.body.classList.add('drawer-open');
   drawer.setAttribute('aria-hidden', 'false');
   requestAnimationFrame(function() { drawer.classList.add('is-open'); });
 
@@ -1828,7 +1831,12 @@ function closeCheckoutDrawer(silent) {
   if (!drawer) return;
   drawer.classList.remove('is-open');
   drawer.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  document.body.classList.remove('drawer-open');
+  document.documentElement.style.removeProperty('--drawer-scroll-top');
+  if (typeof _cdSavedScrollY === 'number') {
+    window.scrollTo(0, _cdSavedScrollY);
+    _cdSavedScrollY = null;
+  }
   if (_cdKeyHandler) { document.removeEventListener('keydown', _cdKeyHandler); _cdKeyHandler = null; }
   if (!silent && _cdLastFocus && _cdLastFocus.focus) {
     try { _cdLastFocus.focus(); } catch (e) {}
