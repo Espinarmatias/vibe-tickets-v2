@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About VIBE — Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #141414;
+      color: #ffffff;
+      font-family: 'Barlow', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    .about-section {
+      padding: clamp(64px, 8vh, 96px) 24px;
+    }
+
+    .about-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* Top eyebrow */
+    .about-eyebrow {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-size: 12px;
+      color: #6ab04c;
+      margin: 0 0 24px 0;
+      text-align: left;
+    }
+
+    /* Main title */
+    .about-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin: 0 0 80px 0;
+      text-align: left;
+    }
+
+    .about-title .italic-sage {
+      font-style: italic;
+      color: #6ab04c;
+    }
+
+    /* Hairline separator */
+    .about-hairline {
+      border: 0;
+      border-top: 0.5px solid rgba(255, 255, 255, 0.12);
+      width: 100%;
+      margin: 0 0 64px 0;
+    }
+
+    .about-hairline--bottom {
+      margin: 64px 0 48px 0;
+    }
+
+    /* Block */
+    .about-block {
+      margin-bottom: 48px;
+    }
+
+    .about-block:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .about-block-label {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-size: 12px;
+      color: #6ab04c;
+      margin: 0 0 20px 0;
+    }
+
+    .about-block-text {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.55);
+      margin: 0;
+    }
+
+    .about-block-text + .about-block-text {
+      margin-top: 20px;
+    }
+
+    .about-block-text .about-emphasis {
+      color: #ffffff;
+    }
+
+    /* Signature */
+    .about-signature-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-size: 15px;
+      color: #ffffff;
+      margin: 0 0 8px 0;
+    }
+
+    .about-signature-role {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.55);
+      margin: 0 0 4px 0;
+    }
+
+    .about-signature-location {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      margin: 0;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .about-section {
+        padding: 40px 24px;
+      }
+
+      .about-title {
+        margin-bottom: 56px;
+      }
+
+      .about-hairline {
+        margin-bottom: 40px;
+      }
+
+      .about-hairline--bottom {
+        margin: 40px 0 32px 0;
+      }
+
+      .about-block {
+        margin-bottom: 32px;
+      }
+
+      .about-block-text {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="about-section">
+    <div class="about-inner">
+
+      <p class="about-eyebrow">WHAT WE DO</p>
+
+      <h2 class="about-title">
+        We make going out<br />
+        <span class="italic-sage">simple.</span>
+      </h2>
+
+      <hr class="about-hairline" />
+
+      <!-- Paragraph 01 -->
+      <div class="about-block">
+        <p class="about-block-text">Going out should be the easy part of a night. The decision, the ticket, the door &mdash; three small moments that should disappear into the experience. The tools to make that happen haven&rsquo;t caught up with how people actually live it.</p>
+      </div>
+
+      <!-- Paragraph 02 -->
+      <div class="about-block">
+        <p class="about-block-text">So we built VIBE &mdash; one platform for both sides of the night. <span class="about-emphasis">Fewer steps for guests. Fewer clicks for organizers. Real support for both.</span> The place where curated nights live.</p>
+      </div>
+
+      <!-- Paragraph 03 -->
+      <div class="about-block">
+        <p class="about-block-text">Our mission is to make going out simple at every step, and to build the marketplace where the best experiences in the region live. <span class="about-emphasis">We&rsquo;re starting with RAWDEO 2 in June. One event, one city, one chance to get it right.</span></p>
+      </div>
+
+      <!-- Paragraph 04 -->
+      <div class="about-block">
+        <p class="about-block-text">Costa Rica first. Then wherever nights worth having are waiting for a better way to happen.</p>
+      </div>
+
+      <hr class="about-hairline about-hairline--bottom" />
+
+      <!-- Signature -->
+      <p class="about-signature-name">MAT&Iacute;AS &amp; ALBERTO</p>
+      <p class="about-signature-role">Founders, VIBE</p>
+      <p class="about-signature-location">San Jos&eacute;, Costa Rica</p>
+
+    </div>
+  </section>
+</body>
+</html>
