@@ -974,15 +974,9 @@ footer{padding:60px 64px 32px;border-top:1px solid var(--border);}
 /* Google OAuth button — matches login-input border-radius:10px, same dark family */
 .login-google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:13px 16px;background:transparent;color:#f0f0f0;border:1px solid var(--border);border-radius:10px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:18px;transition:border-color .2s;min-height:48px;box-sizing:border-box;}
 .login-google-btn:hover{border-color:#6ab04c;}
-/* Apple Sign In — Apple HIG: black bg, white logo, SF font, 44px+ touch target */
-.login-apple-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px 16px;background:#000;color:#ffffff;border:0.5px solid rgba(255,255,255,.15);border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-bottom:18px;transition:background .2s cubic-bezier(.22,1,.36,1);min-height:48px;box-sizing:border-box;}
-.login-apple-btn:hover{background:#1a1a1a;}
-/* Apple HIG requirement: pure white on black */
-.login-apple-btn .apple-logo{color:#ffffff;flex-shrink:0;}
-/* OAuth row — Google + Apple side-by-side on desktop, stacked on mobile */
+/* OAuth row — Google only (Apple Sign In postponed to V1) */
 .login-oauth-row{display:flex;gap:10px;margin-bottom:18px;}
-.login-oauth-row .login-google-btn,
-.login-oauth-row .login-apple-btn{flex:1;margin-bottom:0;}
+.login-oauth-row .login-google-btn{flex:1;margin-bottom:0;}
 /* OR divider */
 .login-or-divider{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
 .login-or-line{flex:1;height:1px;background:var(--border);}

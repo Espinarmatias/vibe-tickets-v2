@@ -90,14 +90,10 @@ function authGoogleLogin() {
   return authProviderLogin('google');
 }
 
-function authAppleLogin() {
-  return authProviderLogin('apple');
-}
-
 function authProviderLogin(provider) {
   // FAKE: simulates provider OAuth with prompts
   // TODO: FASE 7 — replace with real OAuth via Supabase
-  var label = provider === 'apple' ? 'Apple' : 'Google';
+  var label = 'Google';
   var simEmail = prompt('[Simulated ' + label + ' OAuth]\n\nEnter email to simulate ' + label + ' login:');
   if (!simEmail) return { success: false, error: 'Cancelled' };
   var simName = prompt('[Simulated ' + label + ' OAuth]\n\nEnter full name:');
@@ -1311,11 +1307,6 @@ function submitLogin() {
 
 function handleGoogleAuth() {
   var result = authGoogleLogin();
-  if (result.success) { renderAuthState(); goPage('home'); }
-}
-
-function handleAppleAuth() {
-  var result = authAppleLogin();
   if (result.success) { renderAuthState(); goPage('home'); }
 }
 
