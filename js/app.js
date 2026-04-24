@@ -4,8 +4,14 @@
 // ════════════════════════════════════════════════════════════════
 
 // ─── STATE ───────────────────────────────────────────────────────
-var tickets        = [];
-var userTickets = [];
+var USER_TICKETS_KEY = 'vibe_user_tickets';
+var userTickets = (function(){
+  try {
+    var raw = localStorage.getItem(USER_TICKETS_KEY);
+    var parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) { return []; }
+})();
 var myTicketsTab = 'upcoming';
 var currentEvent   = "rawdeo";
 var qty            = 1;
@@ -121,7 +127,10 @@ function authVerifyEmail() {
 
 function authLogout(skipRedirect) {
   localStorage.removeItem(AUTH_STORAGE_KEY);
+  localStorage.removeItem(USER_TICKETS_KEY);
   userTickets = [];
+  var badge = document.getElementById('menu-ticket-badge');
+  if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
   renderAuthState();
   if (!skipRedirect) goPage('home');
 }
@@ -630,6 +639,7 @@ function updTotals() {
   if (totalEl) totalEl.innerHTML = disp;
   var lblEl = document.getElementById("ed-qty-label");
   if (lblEl) lblEl.textContent = lbl;
+  if (typeof updateDrawerCTA === 'function') updateDrawerCTA();
 }
 
 
@@ -795,40 +805,32 @@ function doPay() {
     if (warning) warning.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-  var btn = document.getElementById("ed-buy-btn");
+  var btn = document.getElementById("cd-cta") || document.getElementById("ed-buy-btn");
   if (!btn) return;
-  btn.textContent = "⏳ Processing...";
+  var originalLabel = btn.textContent;
+  btn.textContent = "PROCESSING…";
   btn.disabled = true;
+  btn.classList.add("cd-cta--processing");
   setTimeout(function() {
     var ev   = EVENTS[currentEvent];
     var tier = currentTier || (ev.tiers ? ev.tiers.find(function(t){ return !t.soldout && (t.capacity - t.sold) > 0; }) || ev.tiers[0] : ev);
-    var price    = tier.price    !== undefined ? tier.price    : ev.price;
     var priceCRC = tier.priceCRC !== undefined ? tier.priceCRC : ev.priceCRC;
-    var t        = qty * price;
-    var tc       = qty * priceCRC;
     var code     = "VB-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    var totalStr = price === 0 ? "Complimentary" : (payM === "sinpe" ? "₡" + tc.toLocaleString() : "$" + t);
     var tierName = tier.name || "General";
 
-    tickets.push({
-      ev: ev.name, date: ev.date, place: ev.place,
-      qty: qty + " ticket" + (qty > 1 ? "s" : ""),
-      total: totalStr, code: code, tier: tierName,
-      isRawdeo: ev.isRawdeo, isMansita: ev.isMansita
-    });
+    addPurchaseToUserTickets();
 
-    // Update My Tickets list and nav badge immediately
-    renderTickets();
     var badge = document.getElementById("menu-ticket-badge");
     if (badge) {
-      badge.textContent = tickets.length;
-      badge.style.display = "inline-flex";
+      badge.textContent = userTickets.length;
+      badge.style.display = userTickets.length ? "inline-flex" : "none";
     }
 
-    btn.textContent = "🔒 Complete purchase";
+    btn.textContent = originalLabel;
     btn.disabled = false;
+    btn.classList.remove("cd-cta--processing");
 
-    addPurchaseToUserTickets();
+    closeCheckoutDrawer(true);
     showConfirmation({
       id: currentEvent,
       name: ev.name,
@@ -840,7 +842,7 @@ function doPay() {
       total: qty * priceCRC,
       ticketId: code
     });
-  }, 1800);
+  }, 1400);
 }
 
 function closeConfirm() {
@@ -871,6 +873,7 @@ function addPurchaseToUserTickets() {
     });
   }
   attendeeData = [];
+  try { localStorage.setItem(USER_TICKETS_KEY, JSON.stringify(userTickets)); } catch (e) {}
 }
 
 // ─── EMAIL VERIFICATION BANNER ───────────────────────────────────
@@ -1015,10 +1018,12 @@ function showConfirmation(data) {
   var screen = document.getElementById('confirm-screen');
   if (!screen) return;
 
-  document.getElementById('confirm-event-name').textContent = data.name;
-  document.getElementById('confirm-event-date').textContent = data.date;
-  document.getElementById('confirm-event-venue').textContent = data.venue;
-  document.getElementById('confirm-subtitle-event').textContent = data.name;
+  var setText = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+  setText('confirm-event-name', data.name);
+  setText('confirm-event-date', data.date);
+  setText('confirm-event-venue', data.venue);
+  setText('confirm-subtitle-event', data.name);
+  setText('confirm-qr-order', 'Order ' + (data.ticketId || ''));
 
   var imgEl = document.getElementById('confirm-event-img');
   if (imgEl && data.image) {
@@ -1087,47 +1092,6 @@ function setWalletButton() {
   var currentIcon = btn.querySelector('.wallet-icon');
   if (currentIcon) currentIcon.outerHTML = iconSVG;
   else btn.insertAdjacentHTML('afterbegin', iconSVG);
-}
-
-
-// ─── MY TICKETS ───────────────────────────────────────────────────
-function renderTickets() {
-  var c = document.getElementById("mt-content");
-  if (!c) return;
-  if (!tickets.length) {
-    c.innerHTML = '<div class="mt-empty"><div class="mt-empty-icon">🎟</div><div class="mt-empty-title">No tickets yet</div><div class="mt-empty-sub">Buy your first ticket and it will show up here</div></div>';
-    var btn = document.createElement("button");
-    btn.className = "btn-primary";
-    btn.style = "margin: 0 auto; display: block;";
-    btn.textContent = "View events";
-    btn.onclick = function() { goPage("home"); };
-    c.querySelector(".mt-empty").appendChild(btn);
-    return;
-  }
-  var html = '<div class="mt-grid">';
-  tickets.forEach(function(t) {
-    var imgHtml = t.isRawdeo
-      ? '<img src="' + RAWDEO_B64 + '" alt="event" style="width:100%;height:100%;object-fit:cover;"/>'
-      : t.isMansita
-      ? '<img src="' + MANSITA_B64 + '" alt="event" style="width:100%;height:100%;object-fit:cover;"/>'
-      : '<div style="width:100%;height:100%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:36px;">🎟</div>';
-    html += '<div class="mt-card">';
-    html += '<div class="mt-card-banner">' + imgHtml + '</div>';
-    html += '<div class="mt-card-body">';
-    html += '<div class="mt-card-name">' + t.ev + '</div>';
-    html += '<div class="mt-card-sub">' + t.date + ' · ' + t.place + '</div>';
-    html += '<div class="mt-card-divider"></div>';
-    html += '<div class="mt-card-qr-row">';
-    html += '<div class="mt-card-qr"><img src="' + QR_B64 + '" alt="QR"/></div>';
-    html += '<div class="mt-card-info">';
-    html += '<div class="mt-info-row"><span class="mt-info-k">Tickets</span><span class="mt-info-v">' + t.qty + '</span></div>';
-    html += '<div class="mt-info-row"><span class="mt-info-k">Total</span><span class="mt-info-v">' + t.total + '</span></div>';
-    html += '<div class="mt-code">' + t.code + '</div>';
-    html += '<button onclick="addToWallet()" style="margin-top:12px;width:100%;background:#000;border:none;border-radius:10px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><span style="color:white;font-family:\'Barlow\',sans-serif;font-size:13px;font-weight:500;">Add to Apple Wallet</span></button>';
-    html += '</div></div></div></div>';
-  });
-  html += '</div>';
-  c.innerHTML = html;
 }
 
 
@@ -1776,6 +1740,200 @@ function initCarouselAutoScroll() {
   setTimeout(function() { requestAnimationFrame(step); }, 120);
 }
 
+// ─── CHECKOUT DRAWER ──────────────────────────────────────────────
+var cdCurrentStep = 1;
+var _cdLastFocus = null;
+var _cdKeyHandler = null;
+
+function cdFocusables(root) {
+  if (!root) return [];
+  var sel = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  return Array.prototype.slice.call(root.querySelectorAll(sel)).filter(function(el) {
+    return el.offsetParent !== null || el.getClientRects().length > 0;
+  });
+}
+
+function openCheckoutDrawer() {
+  var drawer = document.getElementById('checkout-drawer');
+  if (!drawer) return;
+
+  // Reset checkout state (mirrors openCheckout body)
+  discountApplied = false; discountPct = 0;
+  var di = document.getElementById('discount-input');
+  var dm = document.getElementById('discount-msg');
+  if (di) { di.value = ''; di.disabled = false; }
+  if (dm) { dm.style.display = 'none'; dm.textContent = ''; }
+  qty = 1;
+  payM = 'card';
+  currentTier = null;
+  attendeeData = [];
+  attendeeValidationTriggered = false;
+
+  if (!currentEvent) currentEvent = 'rawdeo';
+  var ev = EVENTS[currentEvent];
+
+  // Sync drawer event strip
+  var stripImg = document.getElementById('cd-event-img');
+  var stripName = document.getElementById('cd-event-name');
+  var stripMeta = document.getElementById('cd-event-meta');
+  if (stripImg) stripImg.src = ev.isMansita ? MANSITA_B64 : RAWDEO_B64;
+  if (stripName) stripName.textContent = ev.name;
+  if (stripMeta) stripMeta.textContent = ev.date + ' · ' + ev.place;
+
+  // Sync quantity widget
+  var qEl = document.getElementById('ed-q');
+  if (qEl) qEl.textContent = qty;
+
+  // Default tier + totals
+  var firstAvail = (ev.tiers || []).find(function(t){ return !t.soldout && (t.capacity - t.sold) > 0; });
+  if (firstAvail) selectTier(firstAvail.id);
+  else updTotals();
+
+  // Default payment panel
+  document.querySelectorAll('.pay-panel').forEach(function(p){ p.classList.remove('show'); });
+  var cardPanel = document.getElementById('pp-card');
+  if (cardPanel) cardPanel.classList.add('show');
+  document.querySelectorAll('.pay-opt').forEach(function(o){ o.classList.remove('on'); });
+  var firstOpt = document.querySelector('.pay-opt[data-pay="card"]') || document.querySelector('.pay-opt');
+  if (firstOpt) firstOpt.classList.add('on');
+
+  checkoutAuthMode = 'signup';
+  renderCheckoutAuth();
+
+  goToStep(1);
+
+  _cdLastFocus = document.activeElement;
+  document.body.style.overflow = 'hidden';
+  drawer.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(function() { drawer.classList.add('is-open'); });
+
+  _cdKeyHandler = function(e) {
+    if (e.key === 'Escape') { e.preventDefault(); closeCheckoutDrawer(); return; }
+    if (e.key === 'Tab') {
+      var panel = drawer.querySelector('.checkout-drawer__panel');
+      var focusables = cdFocusables(panel);
+      if (!focusables.length) return;
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
+  document.addEventListener('keydown', _cdKeyHandler);
+
+  setTimeout(function() {
+    var closeBtn = drawer.querySelector('.cd-close-btn');
+    if (closeBtn) closeBtn.focus();
+  }, 240);
+}
+
+function closeCheckoutDrawer(silent) {
+  var drawer = document.getElementById('checkout-drawer');
+  if (!drawer) return;
+  drawer.classList.remove('is-open');
+  drawer.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (_cdKeyHandler) { document.removeEventListener('keydown', _cdKeyHandler); _cdKeyHandler = null; }
+  if (!silent && _cdLastFocus && _cdLastFocus.focus) {
+    try { _cdLastFocus.focus(); } catch (e) {}
+  }
+  _cdLastFocus = null;
+}
+
+function goToStep(n) {
+  cdCurrentStep = Math.max(1, Math.min(3, n));
+  var drawer = document.getElementById('checkout-drawer');
+  if (!drawer) return;
+  // Progress indicator
+  drawer.querySelectorAll('.cd-progress .cd-step').forEach(function(el) {
+    var s = parseInt(el.getAttribute('data-step'), 10);
+    el.classList.toggle('cd-step--active', s === cdCurrentStep);
+    el.classList.toggle('cd-step--done', s < cdCurrentStep);
+  });
+  var bar = drawer.querySelector('.cd-progress');
+  if (bar) bar.setAttribute('aria-valuenow', String(cdCurrentStep));
+  // Step panels
+  drawer.querySelectorAll('.cd-step-content').forEach(function(el) {
+    el.classList.remove('cd-step-content--active');
+  });
+  var active = document.getElementById('cd-step-' + cdCurrentStep);
+  if (active) active.classList.add('cd-step-content--active');
+  // Back btn visibility
+  var back = drawer.querySelector('.cd-back-btn');
+  if (back) back.style.visibility = cdCurrentStep > 1 ? 'visible' : 'hidden';
+  // Scroll body to top
+  var body = drawer.querySelector('.cd-body');
+  if (body) body.scrollTop = 0;
+
+  if (cdCurrentStep === 2) {
+    renderCheckoutAuth();
+    renderAttendeeFields();
+  }
+  updateDrawerCTA();
+}
+
+function updateDrawerCTA() {
+  var btn = document.getElementById('cd-cta');
+  if (!btn) return;
+  var ev = EVENTS[currentEvent] || EVENTS.rawdeo;
+  var tier = currentTier || (ev.tiers ? ev.tiers[0] : ev);
+  var priceCRC = tier.priceCRC !== undefined ? tier.priceCRC : ev.priceCRC;
+  if (discountApplied && discountPct > 0) priceCRC = priceCRC * (1 - discountPct / 100);
+  var total = Math.round(priceCRC * qty);
+  var totalStr = priceCRC === 0 ? 'Free' : formatCRC(total);
+  var summaryAmt = document.getElementById('cd-summary-total-amt');
+  if (summaryAmt) summaryAmt.innerHTML = priceCRC === 0 ? 'Free' : formatCRC(total);
+  if (cdCurrentStep === 1) {
+    btn.textContent = priceCRC === 0 ? 'CONTINUE →' : 'CHECKOUT · ' + totalStr;
+  } else if (cdCurrentStep === 2) {
+    btn.textContent = 'CONTINUE TO PAYMENT →';
+  } else {
+    btn.textContent = priceCRC === 0 ? 'CONFIRM · FREE' : 'COMPLETE PURCHASE · ' + totalStr;
+  }
+}
+
+function cdNext() {
+  if (cdCurrentStep === 1) {
+    if (!currentTier) { return; }
+    goToStep(2);
+    return;
+  }
+  if (cdCurrentStep === 2) {
+    if (!authIsLoggedIn()) {
+      var authSec = document.getElementById('checkout-auth-section');
+      if (authSec) {
+        authSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        authSec.style.animation = 'none';
+        setTimeout(function() { authSec.style.animation = 'ca-pulse .6s ease'; }, 10);
+      }
+      return;
+    }
+    attendeeValidationTriggered = true;
+    if (!validateAttendees()) {
+      var w = document.getElementById('attendee-warning');
+      if (w) w.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    goToStep(3);
+    return;
+  }
+  // Step 3 → pay
+  doPay();
+}
+
+function cdBack() {
+  if (cdCurrentStep > 1) goToStep(cdCurrentStep - 1);
+  else closeCheckoutDrawer();
+}
+
+// PDF placeholder: browser print of confirmation screen
+function downloadTicketPDF() {
+  try {
+    window.print();
+  } catch (e) {
+    alert('Ticket PDF will be emailed to you. Check your inbox.');
+  }
+}
+
 // ─── INIT ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   initFadeIns();
@@ -1784,6 +1942,12 @@ document.addEventListener('DOMContentLoaded', function() {
   initHomeParallax();
   initCarouselAutoScroll();
   updateCardCountdowns();
+  // Sync ticket badge from persisted userTickets
+  var badge = document.getElementById('menu-ticket-badge');
+  if (badge) {
+    badge.textContent = userTickets.length;
+    badge.style.display = userTickets.length ? 'inline-flex' : 'none';
+  }
   // Trigger fade for elements already in viewport
   setTimeout(function() {
     document.querySelectorAll(".fade-in").forEach(function(el) {
